@@ -15,7 +15,7 @@ import java.util.List;
 @WebServlet(name = "InsumoServlet", urlPatterns = {"/insumos"})
 public class InsumoServlet extends HttpServlet {
 
-    private static final String VISTA_INVENTARIO = "/inventario.jsp";
+    private static final String VISTA_INVENTARIO = "/WEB-INF/views/inventario.jsp";
     private static final String MENSAJE = "mensaje";
     private static final String ERROR = "error";
 

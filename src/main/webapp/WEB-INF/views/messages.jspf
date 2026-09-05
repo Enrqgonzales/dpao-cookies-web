@@ -1,0 +1,2 @@
+<c:if test="${not empty mensaje}"><p class="success" role="status"><c:out value="${mensaje}"/></p></c:if>
+<c:if test="${not empty error}"><p class="error" role="alert"><c:out value="${error}"/></p></c:if>

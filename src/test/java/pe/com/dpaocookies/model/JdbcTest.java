@@ -34,6 +34,26 @@ class JdbcTest {
             assertTrue(r.next()); assertEquals(1,r.getInt(1));
         }
     }
+    @Test void errorDeConexionReal() {
+        String previo=System.getProperty("DPAO_DB_URL");
+        try {
+            System.setProperty("DPAO_DB_URL","jdbc:mysql://127.0.0.1:1/"+schema+"?connectTimeout=1000");
+            assertThrows(SQLException.class,ConexionBD::getConnection);
+        } finally { System.setProperty("DPAO_DB_URL",previo); }
+    }
+    @Test void movimientosConcurrentesNoPierdenStock() throws Exception {
+        ProductoDAO dao=new ProductoDAO(); dao.guardar(0,"CONC","Concurrencia",BigDecimal.ONE,2);
+        int id=((Number)dao.listar().stream().filter(p->p.get("codigo").equals("CONC")).findFirst().orElseThrow().get("id_producto")).intValue();
+        var executor=java.util.concurrent.Executors.newFixedThreadPool(2);
+        try {
+            var tareas=new java.util.ArrayList<java.util.concurrent.Callable<Void>>();
+            for(int n=0;n<10;n++) tareas.add(()->{ new KardexDAO().mover("producto",id,"ENTRADA",new BigDecimal("0.10"),"Concurrente"); return null; });
+            for(var f:executor.invokeAll(tareas)) f.get();
+            try(Connection c=ConexionBD.getConnection(); Statement s=c.createStatement(); ResultSet r=s.executeQuery("SELECT stock_actual FROM producto WHERE id_producto="+id)) {
+                assertTrue(r.next()); assertEquals(new BigDecimal("1.00"),r.getBigDecimal(1));
+            }
+        } finally { executor.shutdown(); }
+    }
     @Test void registroConsultaActualizacionYErrores() throws Exception {
         InsumoDAO dao=new InsumoDAO();
         Insumo i=new Insumo("TEST-UTF8","Azúcar ñ","kg",new BigDecimal("0.10"),BigDecimal.ONE,BigDecimal.ONE,1);

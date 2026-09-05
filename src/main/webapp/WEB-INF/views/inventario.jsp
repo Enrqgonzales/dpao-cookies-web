@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inventario | D'PAO COOKIES</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/app.css">
     <style>
         :root {
             --brown-900: #3d2418;
@@ -72,6 +73,7 @@
     <p class="eyebrow">Gestión operativa</p>
     <h1>D'PAO COOKIES - Control de Inventario</h1>
     <p>Consulta y actualiza las existencias de tus insumos en un solo lugar.</p>
+    <%@ include file="nav.jspf" %>
 </header>
 
 <main>
@@ -88,6 +90,7 @@
             <span class="muted">Completa todos los campos requeridos</span>
         </div>
         <form action="${pageContext.request.contextPath}/insumos" method="post">
+            <input type="hidden" name="csrf" value="${sessionScope.csrf}">
             <input type="hidden" name="accion" value="registrar">
             <div class="form-grid">
                 <div class="field"><label for="codigo">Código</label><input id="codigo" name="codigo" maxlength="20" required></div>
@@ -131,6 +134,7 @@
                                 </td>
                                 <td>
                                     <form class="stock-form" action="${pageContext.request.contextPath}/insumos" method="post">
+                                        <input type="hidden" name="csrf" value="${sessionScope.csrf}">
                                         <input type="hidden" name="accion" value="actualizarStock">
                                         <input type="hidden" name="idInsumo" value="${insumo.idInsumo}">
                                         <input aria-label="Nuevo stock" name="nuevoStock" type="number" min="0" step="0.01" value="${insumo.stockActual}" required>

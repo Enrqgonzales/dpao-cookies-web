@@ -1,4 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    response.sendRedirect(request.getContextPath() + "/insumos");
+    response.sendRedirect(request.getContextPath() + "/acceso");
 %>

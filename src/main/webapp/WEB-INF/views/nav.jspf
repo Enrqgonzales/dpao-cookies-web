@@ -1,0 +1,8 @@
+<%@ page pageEncoding="UTF-8" %>
+<nav aria-label="Navegación principal">
+ <a href="${pageContext.request.contextPath}/tablero">Tablero</a>
+ <a href="${pageContext.request.contextPath}/insumos">Inventario</a>
+ <a href="${pageContext.request.contextPath}/productos">Productos</a>
+ <a href="${pageContext.request.contextPath}/kardex">Kardex</a>
+ <form action="${pageContext.request.contextPath}/salir" method="post"><input type="hidden" name="csrf" value="${sessionScope.csrf}"><button type="submit">Cerrar sesión</button></form>
+</nav>

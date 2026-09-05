@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="4.0">
+ <session-config><cookie-config><http-only>true</http-only></cookie-config><tracking-mode>COOKIE</tracking-mode></session-config>
+ <jsp-config><jsp-property-group><url-pattern>*.jsp</url-pattern><url-pattern>*.jspf</url-pattern><page-encoding>UTF-8</page-encoding></jsp-property-group></jsp-config>
+</web-app>

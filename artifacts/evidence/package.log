@@ -1,0 +1,62 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------< pe.com.dpaocookies:dpao-cookies-web >-----------------
+[INFO] Building dpao-cookies-web 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/3.2.0/maven-clean-plugin-3.2.0.pom
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/3.2.0/maven-clean-plugin-3.2.0.pom (5.3 kB at 8.7 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/35/maven-plugins-35.pom
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-plugins/35/maven-plugins-35.pom (9.9 kB at 144 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven-parent/35/maven-parent-35.pom
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/maven-parent/35/maven-parent-35.pom (45 kB at 545 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/apache/25/apache-25.pom
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/apache/25/apache-25.pom (21 kB at 263 kB/s)
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/3.2.0/maven-clean-plugin-3.2.0.jar
+[INFO] Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-clean-plugin/3.2.0/maven-clean-plugin-3.2.0.jar (36 kB at 420 kB/s)
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ dpao-cookies-web ---
+[INFO] Deleting C:\Users\junio\Documents\NetBeansProjects\dpao-cookies-web\target
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ dpao-cookies-web ---
+[INFO] skip non existing resourceDirectory C:\Users\junio\Documents\NetBeansProjects\dpao-cookies-web\src\main\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ dpao-cookies-web ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 10 source files with javac [debug release 17] to target\classes
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ dpao-cookies-web ---
+[INFO] skip non existing resourceDirectory C:\Users\junio\Documents\NetBeansProjects\dpao-cookies-web\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ dpao-cookies-web ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 2 source files with javac [debug release 17] to target\test-classes
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ dpao-cookies-web ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running pe.com.dpaocookies.model.InsumoTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.109 s -- in pe.com.dpaocookies.model.InsumoTest
+[INFO] Running pe.com.dpaocookies.model.JdbcTest
+[WARNING] Tests run: 6, Failures: 0, Errors: 0, Skipped: 6, Time elapsed: 0 s -- in pe.com.dpaocookies.model.JdbcTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 11, Failures: 0, Errors: 0, Skipped: 6
+[INFO] 
+[INFO] 
+[INFO] --- war:3.4.0:war (default-war) @ dpao-cookies-web ---
+[INFO] Packaging webapp
+[INFO] Assembling webapp [dpao-cookies-web] in [C:\Users\junio\Documents\NetBeansProjects\dpao-cookies-web\target\dpao-cookies-web]
+[INFO] Processing war project
+[INFO] Copying webapp resources [C:\Users\junio\Documents\NetBeansProjects\dpao-cookies-web\src\main\webapp]
+[INFO] Building war: C:\Users\junio\Documents\NetBeansProjects\dpao-cookies-web\target\dpao-cookies-web.war
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.353 s
+[INFO] Finished at: 2026-09-05T12:30:22-05:00
+[INFO] ------------------------------------------------------------------------
