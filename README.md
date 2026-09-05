@@ -100,6 +100,8 @@ Este script agrega registros ficticios identificados por fecha de ejecución. Ve
 
 ## Evidencias y límites
 
+Informe final: [APF1 en Word](docs/APF1_DesarrolloWebIntegrado_Casas_Anderson.docx), 21 páginas, índice actualizado con Word y revisión visual de cada página. La sección 18 contiene la matriz de los seis criterios y sus límites.
+
 - `artifacts/evidence/jdbc-tests.log`: suite completa con MySQL real.
 - `artifacts/evidence/http-tests.log`: estados HTTP y aserciones del flujo.
 - `artifacts/evidence/versions.log`, `package.log`: versiones y empaquetado.
