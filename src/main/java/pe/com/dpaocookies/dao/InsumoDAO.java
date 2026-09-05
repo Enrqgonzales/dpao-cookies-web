@@ -4,6 +4,8 @@ import pe.com.dpaocookies.model.Insumo;
 import pe.com.dpaocookies.util.ConexionBD;
 
 import java.sql.Connection;
+import java.math.BigDecimal;
+import pe.com.dpaocookies.util.Validacion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,8 +26,6 @@ public class InsumoDAO {
                                 stock_minimo, costo_unitario, id_categoria)
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """;
-    private static final String SQL_ACTUALIZAR_STOCK =
-            "UPDATE insumo SET stock_actual = ? WHERE id_insumo = ?";
 
     public List<Insumo> listar() {
         List<Insumo> insumos = new ArrayList<>();
@@ -38,16 +38,13 @@ public class InsumoDAO {
             }
             return insumos;
         } catch (SQLException exception) {
-            exception.printStackTrace();
             LOGGER.log(Level.SEVERE, "No se pudo listar los insumos", exception);
             throw new IllegalStateException("No se pudo consultar el inventario.", exception);
         }
     }
 
     public boolean registrar(Insumo insumo) {
-        if (insumo == null) {
-            return false;
-        }
+        Validacion.insumo(insumo);
 
         try (Connection connection = ConexionBD.getConnection();
                 PreparedStatement statement = connection.prepareStatement(SQL_REGISTRAR)) {
@@ -60,25 +57,23 @@ public class InsumoDAO {
             statement.setInt(7, insumo.getIdCategoria());
             return statement.executeUpdate() == 1;
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            if (exception.getErrorCode() == 1062) throw new IllegalArgumentException("El código ya existe.");
+            if (exception.getErrorCode() == 1452) throw new IllegalArgumentException("La categoría no existe.");
             LOGGER.log(Level.SEVERE, "No se pudo registrar el insumo", exception);
             return false;
         }
     }
 
-    public boolean actualizarStock(int idInsumo, double nuevoStock) {
-        if (idInsumo <= 0 || Double.isNaN(nuevoStock) || Double.isInfinite(nuevoStock)
-                || nuevoStock < 0) {
+    public boolean actualizarStock(int idInsumo, BigDecimal nuevoStock) {
+        Validacion.decimal(nuevoStock);
+        if (idInsumo <= 0) {
             return false;
         }
 
-        try (Connection connection = ConexionBD.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_ACTUALIZAR_STOCK)) {
-            statement.setDouble(1, nuevoStock);
-            statement.setInt(2, idInsumo);
-            return statement.executeUpdate() == 1;
+        try {
+            new KardexDAO().ajustarInsumo(idInsumo, nuevoStock);
+            return true;
         } catch (SQLException exception) {
-            exception.printStackTrace();
             LOGGER.log(Level.SEVERE, "No se pudo actualizar el stock del insumo " + idInsumo, exception);
             return false;
         }

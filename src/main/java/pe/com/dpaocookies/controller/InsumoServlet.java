@@ -76,7 +76,7 @@ public class InsumoServlet extends HttpServlet {
         int idInsumo = enteroPositivo(request, "idInsumo", "El insumo no es válido.");
         BigDecimal stock = decimalNoNegativo(request, "nuevoStock", "El nuevo stock no es válido.");
 
-        if (!insumoDAO.actualizarStock(idInsumo, stock.doubleValue())) {
+        if (!insumoDAO.actualizarStock(idInsumo, stock)) {
             throw new IllegalArgumentException("No se pudo actualizar el stock del insumo.");
         }
         request.getSession().setAttribute(MENSAJE, "Stock actualizado correctamente.");
@@ -96,7 +96,7 @@ public class InsumoServlet extends HttpServlet {
             if (valor.signum() < 0) {
                 throw new NumberFormatException();
             }
-            return valor;
+            return pe.com.dpaocookies.util.Validacion.decimal(valor);
         } catch (NumberFormatException exception) {
             throw new IllegalArgumentException(mensaje);
         }

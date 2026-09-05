@@ -37,7 +37,7 @@ public class Insumo {
 
     public boolean isBajoStock() {
         return stockActual != null && stockMinimo != null
-                && stockActual.compareTo(stockMinimo) < 0;
+                && stockActual.compareTo(stockMinimo) <= 0;
     }
 
     public int getIdInsumo() {

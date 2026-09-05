@@ -6,9 +6,11 @@ import java.sql.SQLException;
 
 public final class ConexionBD {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/db_dpao_cookies?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static String configuracion(String nombre) throws SQLException {
+        String valor = System.getProperty(nombre, System.getenv(nombre));
+        if (valor == null) throw new SQLException("Falta configuración de base de datos: " + nombre);
+        return valor;
+    }
 
     private ConexionBD() {
         // Clase utilitaria.
@@ -20,7 +22,8 @@ public final class ConexionBD {
         } catch (ClassNotFoundException exception) {
             throw new SQLException("No se encontró el driver JDBC de MySQL.", exception);
         }
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return DriverManager.getConnection(configuracion("DPAO_DB_URL"),
+                configuracion("DPAO_DB_USER"), configuracion("DPAO_DB_PASSWORD"));
     }
 
     /**
