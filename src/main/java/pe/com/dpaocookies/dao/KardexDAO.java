@@ -53,7 +53,7 @@ public class KardexDAO {
         }
     }
     public List<Map<String,Object>> listar(String tipo, LocalDate desde, LocalDate hasta) throws SQLException {
-        String sql = "SELECT m.*, COALESCE(i.nombre,p.nombre) nombre FROM movimiento_kardex m LEFT JOIN insumo i ON m.id_insumo=i.id_insumo LEFT JOIN producto p ON m.id_producto=p.id_producto WHERE (?='' OR tipo_movimiento=?) AND (? IS NULL OR fecha_registro>=?) AND (? IS NULL OR fecha_registro<DATE_ADD(?, INTERVAL 1 DAY)) ORDER BY id_movimiento DESC";
+        String sql = "SELECT m.*, COALESCE(i.nombre,p.nombre) nombre, COALESCE(i.codigo,p.codigo) codigo FROM movimiento_kardex m LEFT JOIN insumo i ON m.id_insumo=i.id_insumo LEFT JOIN producto p ON m.id_producto=p.id_producto WHERE (?='' OR tipo_movimiento=?) AND (? IS NULL OR fecha_registro>=?) AND (? IS NULL OR fecha_registro<DATE_ADD(?, INTERVAL 1 DAY)) ORDER BY id_movimiento DESC";
         try (Connection c = ConexionBD.getConnection(); PreparedStatement s = c.prepareStatement(sql)) {
             s.setString(1,tipo); s.setString(2,tipo);
             s.setObject(3,desde); s.setObject(4,desde); s.setObject(5,hasta); s.setObject(6,hasta);

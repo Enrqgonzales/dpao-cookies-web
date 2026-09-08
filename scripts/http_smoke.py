@@ -22,6 +22,8 @@ def post(path, data, page):
     data['csrf']=re.search(r'name="csrf" value="([^"]+)"',page).group(1)
     code,_,headers=request(path,data); assert code==302,(path,code)
     assert headers['Location'].endswith(path) or path=='/acceso' or path=='/salir'
+code,_,h=request('/acceso')
+assert code==200 and h.get('X-DPAO-Test-Database')=='isolated', 'El servidor no está conectado a dpao_test. No se modificarán datos.'
 code,_,h=request('/insumos'); assert code==302 and h['Location'].endswith('/acceso')
 page=get('/acceso')
 post('/acceso',{'usuario':'incorrecto','clave':'incorrecta'},page)

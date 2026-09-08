@@ -73,6 +73,14 @@ Kardex utiliza dos FK anulables (`id_insumo`, `id_producto`) y un CHECK XOR. Blo
 
 ## Pruebas
 
+### Separar presentación y pruebas
+
+Para presentar la aplicación, crear una base nueva `dpao_demo` y ejecutar `schema.sql` seguido de `demo.sql` (no `seed.sql`). Contiene tres insumos, tres productos y cuatro movimientos ficticios coherentes. Conectar Tomcat a esa base. Las alertas muestran código y unidad, y el historial identifica el código del ítem y explica el signo de las cantidades.
+
+En este equipo, con MySQL disponible en 3307 y el Tomcat anterior detenido, `scripts/start-demo.ps1` arranca la instalación preparada en `.runtime` usando siempre `dpao_demo`; requiere las variables de credenciales configuradas. No reinicializa ni borra datos. La antigua `dpao_test` conserva las pruebas y sus evidencias.
+
+`http_smoke.py` ahora comprueba que el servidor declare conexión a la base aislada `dpao_test` antes de enviar cualquier formulario. Se detiene si se ejecuta contra la demostración, aunque se haya definido `DPAO_HTTP_TEST=true`.
+
 Unitarias, sin MySQL: `mvn -B test`. Los tests JDBC aparecen **omitidos** si no se habilitan; esto no demuestra integración.
 
 Para la suite completa, iniciar una instancia MySQL **exclusiva de pruebas** en `127.0.0.1:3307`, con un directorio de datos nuevo separado de cualquier instalación real. Crear `dpao_test`. La cuenta de pruebas necesita CREATE DATABASE, tablas y triggers, además de DML; no usar estos permisos para la aplicación real.

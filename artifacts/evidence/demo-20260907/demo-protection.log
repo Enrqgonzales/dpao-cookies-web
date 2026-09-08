@@ -1,0 +1,6 @@
+GET /acceso: HTTP 200, 306.1 ms
+Traceback (most recent call last):
+  File "C:\Users\junio\Documents\NetBeansProjects\dpao-cookies-web\scripts\http_smoke.py", line 26, in <module>
+    assert code==200 and h.get('X-DPAO-Test-Database')=='isolated', 'El servidor no está conectado a dpao_test. No se modificarán datos.'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: El servidor no está conectado a dpao_test. No se modificarán datos.

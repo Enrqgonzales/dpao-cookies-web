@@ -10,6 +10,9 @@ public class SeguridadFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest r=(HttpServletRequest)req; HttpServletResponse p=(HttpServletResponse)res;
         r.setCharacterEncoding("UTF-8"); p.setCharacterEncoding("UTF-8");
+        String db=System.getProperty("DPAO_DB_URL",System.getenv("DPAO_DB_URL"));
+        if(db!=null && db.startsWith("jdbc:mysql://127.0.0.1:3307/dpao_test?"))
+            p.setHeader("X-DPAO-Test-Database","isolated");
         p.setHeader("X-Content-Type-Options","nosniff"); p.setHeader("X-Frame-Options","DENY");
         String path=r.getServletPath();
         if(path.startsWith("/assets/")) { chain.doFilter(req,res); return; }
