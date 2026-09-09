@@ -7,74 +7,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inventario | D'PAO COOKIES</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/app.css">
-    <style>
-        :root {
-            --brown-900: #3d2418;
-            --brown-700: #71452d;
-            --cream: #fffaf4;
-            --orange: #d97732;
-            --green: #177245;
-            --red: #b42318;
-            --border: #eadfd4;
-            --shadow: 0 18px 45px rgba(71, 39, 20, .10);
-        }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            background: var(--cream);
-            color: var(--brown-900);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
-        .hero {
-            background: linear-gradient(120deg, #452819, #9a5c34);
-            color: white;
-            padding: 2.25rem max(1.25rem, calc((100% - 1180px) / 2));
-        }
-        .eyebrow { margin: 0 0 .5rem; color: #ffd6b0; font-size: .76rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
-        h1 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.75rem); letter-spacing: -.04em; }
-        .hero p:last-child { margin: .7rem 0 0; color: #f8e6d8; }
-        main { width: min(1180px, calc(100% - 2.5rem)); margin: 2rem auto 4rem; }
-        .panel { background: white; border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); padding: 1.5rem; margin-bottom: 1.5rem; }
-        .panel-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1.25rem; }
-        h2 { margin: 0; font-size: 1.2rem; }
-        .muted { color: #816f63; font-size: .9rem; }
-        .form-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
-        .field { display: flex; flex-direction: column; gap: .42rem; }
-        .field label { color: var(--brown-700); font-size: .82rem; font-weight: 700; }
-        input { width: 100%; border: 1px solid #d9c9bc; border-radius: 9px; padding: .7rem .75rem; color: var(--brown-900); background: #fffdfb; font: inherit; }
-        input:focus { outline: 3px solid rgba(217,119,50,.18); border-color: var(--orange); }
-        .form-actions { display: flex; justify-content: flex-end; margin-top: 1.25rem; }
-        .button { border: 0; border-radius: 9px; padding: .72rem 1.15rem; background: var(--orange); color: white; cursor: pointer; font-weight: 800; }
-        .button:hover { background: #b85c22; }
-        .alert { border-radius: 10px; padding: .85rem 1rem; margin-bottom: 1.5rem; font-weight: 600; }
-        .alert-success { background: #e8f7ee; color: var(--green); border: 1px solid #b8e4c8; }
-        .alert-error { background: #fff0ee; color: var(--red); border: 1px solid #f4c3bd; }
-        .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 820px; }
-        th { padding: .85rem .75rem; border-bottom: 2px solid var(--border); color: #8a7567; font-size: .72rem; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
-        td { padding: 1rem .75rem; border-bottom: 1px solid #f0e8e2; vertical-align: middle; }
-        tbody tr:hover { background: #fffaf6; }
-        .code { color: var(--orange); font-weight: 800; }
-        .insumo-name { font-weight: 750; }
-        .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: .38rem .65rem; font-size: .72rem; font-weight: 850; white-space: nowrap; }
-        .badge-danger { background: #ffebe8; color: var(--red); }
-        .badge-success { background: #e6f6ec; color: var(--green); }
-        .stock-form { display: flex; gap: .45rem; align-items: center; }
-        .stock-form input { width: 105px; padding: .5rem; }
-        .stock-form .button { padding: .5rem .65rem; font-size: .78rem; }
-        .empty { padding: 2.5rem 1rem; text-align: center; color: #816f63; }
-        @media (max-width: 850px) { .form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-        @media (max-width: 520px) { main { width: min(100% - 1.25rem, 1180px); margin-top: 1rem; } .panel { padding: 1rem; } .form-grid { grid-template-columns: 1fr; } .panel-heading { display: block; } }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/app.css?v=20260909">
 </head>
 <body>
-<header class="hero">
-    <p class="eyebrow">Gestión operativa</p>
-    <h1>D'PAO COOKIES - Control de Inventario</h1>
+<header class="hero"><div class="page-shell">
+    <p class="eyebrow">D'PAO COOKIES</p>
+    <h1>Inventario de insumos</h1>
     <p>Consulta y actualiza las existencias de tus insumos en un solo lugar.</p>
     <%@ include file="nav.jspf" %>
-</header>
+</div></header>
 
 <main>
     <c:if test="${not empty mensaje}">
@@ -97,11 +38,11 @@
                 <div class="field"><label for="nombre">Nombre del insumo</label><input id="nombre" name="nombre" maxlength="100" required></div>
                 <div class="field"><label for="unidadMedida">Unidad de medida</label><input id="unidadMedida" name="unidadMedida" maxlength="20" placeholder="kg, unidad, litro" required></div>
                 <div class="field"><label for="idCategoria">ID de categoría</label><input id="idCategoria" name="idCategoria" type="number" min="1" required></div>
-                <div class="field"><label for="stockActual">Stock actual</label><input id="stockActual" name="stockActual" type="number" min="0" step="0.01" required></div>
-                <div class="field"><label for="stockMinimo">Stock mínimo</label><input id="stockMinimo" name="stockMinimo" type="number" min="0" step="0.01" required></div>
-                <div class="field"><label for="costoUnitario">Costo unitario (S/)</label><input id="costoUnitario" name="costoUnitario" type="number" min="0" step="0.01" required></div>
+                <div class="field"><label for="stockActual">Stock actual</label><input id="stockActual" name="stockActual" type="number" min="0" max="99999999.99" step="0.01" required></div>
+                <div class="field"><label for="stockMinimo">Stock mínimo</label><input id="stockMinimo" name="stockMinimo" type="number" min="0" max="99999999.99" step="0.01" required></div>
+                <div class="field"><label for="costoUnitario">Costo unitario (S/)</label><input id="costoUnitario" name="costoUnitario" type="number" min="0" max="99999999.99" step="0.01" required></div>
             </div>
-            <div class="form-actions"><button class="button" type="submit">+ Registrar insumo</button></div>
+            <div class="form-actions"><button class="button" type="submit">Registrar insumo</button></div>
         </form>
     </section>
 
@@ -137,7 +78,7 @@
                                         <input type="hidden" name="csrf" value="${sessionScope.csrf}">
                                         <input type="hidden" name="accion" value="actualizarStock">
                                         <input type="hidden" name="idInsumo" value="${insumo.idInsumo}">
-                                        <input aria-label="Nuevo stock" name="nuevoStock" type="number" min="0" step="0.01" value="${insumo.stockActual}" required>
+                                        <input aria-label="Nuevo stock" name="nuevoStock" type="number" min="0" max="99999999.99" step="0.01" value="${insumo.stockActual}" required>
                                         <button class="button" type="submit">Guardar</button>
                                     </form>
                                 </td>
