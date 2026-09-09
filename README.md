@@ -2,6 +2,25 @@
 
 APF1 de Desarrollo Web Integrado (100000SI54). Aplicación MVC/DAO con Servlets, JSP y JDBC. Cinco vistas operativas: acceso, tablero, inventario, productos y Kardex.
 
+## Acceso para revisión del docente
+
+Cuenta pública de demostración local:
+
+- **Usuario:** `demo`
+- **Contraseña:** `Demo-local-APF1`
+- **Dirección:** http://localhost:8080/dpao-cookies-web/acceso
+
+Antes de arrancar Tomcat, configurar esta cuenta en la misma terminal:
+
+```powershell
+$env:DPAO_APP_USER='demo'
+$env:DPAO_APP_PASSWORD='Demo-local-APF1'
+```
+
+Después, seguir la instalación de MySQL, configuración de las variables `DPAO_DB_*`, compilación y despliegue descritos abajo. Para revisar con datos de ejemplo, crear una base nueva y cargar `sql/schema.sql` seguido de `sql/demo.sql`, en lugar de `sql/seed.sql`. Si Tomcat ya estaba iniciado, reiniciarlo desde la terminal configurada para que reciba las variables.
+
+Esta cuenta es exclusivamente de demostración; no es la cuenta de MySQL ni de GitHub. El repositorio contiene el código, pero no aloja la aplicación: `localhost` funciona en el equipo donde se instalen MySQL y Tomcat. La carpeta `.runtime` es local y no se incluye al clonar; el docente debe utilizar su propia instalación del entorno indicado abajo.
+
 ## Entorno comprobado
 
 Windows 11, Eclipse Temurin JDK **17.0.20.1+1**, Maven **3.9.16**, Tomcat **9.0.115**, MySQL Community **8.4.9**, Connector/J **8.2.0**. `javax.servlet-api:4.0.1`, `javax.servlet.jsp-api:2.3.3` (provided) y JSTL 1.2. Tomcat 10 requiere migración a `jakarta` y no es el destino de este WAR.
@@ -95,7 +114,7 @@ mvn -B test
 
 `JdbcTest` exige exactamente ese host, puerto y base inicial. Cada ejecución crea un esquema `dpao_test_<marca temporal>`, importa SQL y conserva sus datos para inspección. No borra datos ni usa mocks: prueba conexión y error de conexión reales, alta, consulta UTF-8, actualización decimal, duplicados, FK, productos, movimientos, stock insuficiente, restricciones, rollback ante fallo de INSERT y diez movimientos concurrentes sin pérdida de stock.
 
-Pruebas HTTP (Python 3, solo biblioteca estándar): desplegar el WAR conectado a la base **de demostración aislada**, con `schema.sql` y `seed.sql` cargados, y usar las mismas credenciales externas de acceso:
+Pruebas HTTP (Python 3, solo biblioteca estándar): desplegar el WAR conectado a la base **de pruebas aislada `dpao_test` en 127.0.0.1:3307**, con `schema.sql` y `seed.sql` cargados, y usar las mismas credenciales externas de acceso:
 
 ```powershell
 $env:DPAO_HTTP_TEST='true'
