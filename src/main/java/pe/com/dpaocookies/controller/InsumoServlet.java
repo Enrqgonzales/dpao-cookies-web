@@ -1,134 +1,69 @@
 package pe.com.dpaocookies.controller;
 
-import pe.com.dpaocookies.dao.InsumoDAO;
-import pe.com.dpaocookies.model.Insumo;
-
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
+import pe.com.dpaocookies.dto.InsumoDTO;
+import pe.com.dpaocookies.dto.MovimientoDTO;
+import pe.com.dpaocookies.exception.AplicacionException;
+import pe.com.dpaocookies.exception.NegocioException;
 
 @WebServlet(name = "InsumoServlet", urlPatterns = {"/insumos"})
-public class InsumoServlet extends HttpServlet {
+public class InsumoServlet extends BaseServlet {
 
-    private static final String VISTA_INVENTARIO = "/WEB-INF/views/inventario.jsp";
-    private static final String MENSAJE = "mensaje";
-    private static final String ERROR = "error";
-
-    private final InsumoDAO insumoDAO = new InsumoDAO();
+    private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("insumos", List.of());
+        request.setAttribute("categorias", List.of());
         try {
-            List<Insumo> lista = insumoDAO.listar();
-            request.setAttribute("listaInsumos", lista);
-        } catch (IllegalStateException exception) {
-            request.setAttribute(ERROR, exception.getMessage());
+            request.setAttribute("insumos", facade.listarInsumos());
+            request.setAttribute("categorias", facade.listarCategorias());
+        } catch (AplicacionException exception) {
+            falloEnVista(request, exception.getMessage());
         }
-
-        copiarMensajeDeSesion(request);
-        request.getRequestDispatcher(VISTA_INVENTARIO).forward(request, response);
+        mostrar(request, response, "inventario");
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        request.setCharacterEncoding("UTF-8");
-        String accion = valor(request.getParameter("accion"));
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            String accion = texto(request, "accion");
             if ("registrar".equals(accion)) {
-                registrar(request);
+                facade.registrarInsumo(leerInsumo(request));
+                exito(request, "Insumo registrado correctamente.");
             } else if ("actualizarStock".equals(accion)) {
-                actualizarStock(request);
+                Optional<MovimientoDTO> ajuste = facade.ajustarStockInsumo(
+                        entero(request, "idInsumo", "El insumo no es válido."),
+                        decimal(request, "nuevoStock", "El nuevo stock no es válido."));
+                exito(request, ajuste
+                        .map(m -> "Stock actualizado de " + m.getStockAnterior().toPlainString()
+                                + " a " + m.getStockPosterior().toPlainString() + "; ajuste registrado en Kardex.")
+                        .orElse("El stock no cambió; no se registró ningún movimiento."));
             } else {
-                throw new IllegalArgumentException("La operación solicitada no es válida.");
+                throw new NegocioException("La operación solicitada no es válida.");
             }
-        } catch (IllegalArgumentException exception) {
-            request.getSession().setAttribute(ERROR, exception.getMessage());
+        } catch (AplicacionException exception) {
+            fallo(request, exception.getMessage());
         }
-
-        response.sendRedirect(request.getContextPath() + "/insumos");
+        redirigir(request, response);
     }
 
-    private void registrar(HttpServletRequest request) {
-        Insumo insumo = new Insumo(
-                requerido(request, "codigo", "El código es obligatorio."),
-                requerido(request, "nombre", "El nombre es obligatorio."),
-                requerido(request, "unidadMedida", "La unidad de medida es obligatoria."),
-                decimalNoNegativo(request, "stockActual", "El stock actual no es válido."),
-                decimalNoNegativo(request, "stockMinimo", "El stock mínimo no es válido."),
-                decimalNoNegativo(request, "costoUnitario", "El costo unitario no es válido."),
-                enteroPositivo(request, "idCategoria", "La categoría no es válida."));
-
-        if (!insumoDAO.registrar(insumo)) {
-            throw new IllegalArgumentException("No se pudo registrar el insumo. Verifique que el código sea único.");
-        }
-        request.getSession().setAttribute(MENSAJE, "Insumo registrado correctamente.");
-    }
-
-    private void actualizarStock(HttpServletRequest request) {
-        int idInsumo = enteroPositivo(request, "idInsumo", "El insumo no es válido.");
-        BigDecimal stock = decimalNoNegativo(request, "nuevoStock", "El nuevo stock no es válido.");
-
-        if (!insumoDAO.actualizarStock(idInsumo, stock)) {
-            throw new IllegalArgumentException("No se pudo actualizar el stock del insumo.");
-        }
-        request.getSession().setAttribute(MENSAJE, "Stock actualizado correctamente.");
-    }
-
-    private String requerido(HttpServletRequest request, String parametro, String mensaje) {
-        String valor = valor(request.getParameter(parametro));
-        if (valor.isBlank()) {
-            throw new IllegalArgumentException(mensaje);
-        }
-        return valor;
-    }
-
-    private BigDecimal decimalNoNegativo(HttpServletRequest request, String parametro, String mensaje) {
-        try {
-            BigDecimal valor = new BigDecimal(requerido(request, parametro, mensaje));
-            if (valor.signum() < 0) {
-                throw new NumberFormatException();
-            }
-            return pe.com.dpaocookies.util.Validacion.decimal(valor);
-        } catch (NumberFormatException exception) {
-            throw new IllegalArgumentException(mensaje);
-        }
-    }
-
-    private int enteroPositivo(HttpServletRequest request, String parametro, String mensaje) {
-        try {
-            int valor = Integer.parseInt(requerido(request, parametro, mensaje));
-            if (valor <= 0) {
-                throw new NumberFormatException();
-            }
-            return valor;
-        } catch (NumberFormatException exception) {
-            throw new IllegalArgumentException(mensaje);
-        }
-    }
-
-    private void copiarMensajeDeSesion(HttpServletRequest request) {
-        var session = request.getSession(false);
-        if (session == null) {
-            return;
-        }
-        for (String atributo : new String[]{MENSAJE, ERROR}) {
-            Object valor = session.getAttribute(atributo);
-            if (valor != null) {
-                request.setAttribute(atributo, valor);
-                session.removeAttribute(atributo);
-            }
-        }
-    }
-
-    private String valor(String valor) {
-        return valor == null ? "" : valor.trim();
+    private InsumoDTO leerInsumo(HttpServletRequest request) {
+        InsumoDTO insumo = new InsumoDTO();
+        insumo.setCodigo(texto(request, "codigo"));
+        insumo.setNombre(texto(request, "nombre"));
+        insumo.setUnidadMedida(texto(request, "unidadMedida"));
+        insumo.setStockActual(decimal(request, "stockActual", "El stock actual no es válido."));
+        insumo.setStockMinimo(decimal(request, "stockMinimo", "El stock mínimo no es válido."));
+        insumo.setCostoUnitario(decimal(request, "costoUnitario", "El costo unitario no es válido."));
+        insumo.setIdCategoria(entero(request, "idCategoria", "La categoría no es válida."));
+        return insumo;
     }
 }

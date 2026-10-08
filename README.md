@@ -1,6 +1,29 @@
 # D'PAO COOKIES
 
-APF1 de Desarrollo Web Integrado (100000SI54). Aplicación MVC/DAO con Servlets, JSP y JDBC. Cinco vistas operativas: acceso, tablero, inventario, productos y Kardex.
+Desarrollo Web Integrado (100000SI54). Aplicación web transaccional con Servlets, JSP/JSTL y JDBC. Cinco vistas operativas: acceso, tablero, inventario, productos y Kardex. El APF1 entregó la base MVC/DAO; el APF2 (Unidad 2) incorpora DTO, Façade, Kardex transaccional con saldos y vistas sin scriptlets.
+
+## Arquitectura (APF2)
+
+```
+Navegador ─► SeguridadFilter ─► Servlet (controller) ─► InventarioFacade (facade) ─► DAO ─► MySQL
+                                     │  DTO ▲                 │ valida, mapea entidad↔DTO,
+                                     ▼      │                 │ traduce errores SQL
+                               JSP (solo JSTL + EL)            ▼
+                                                        model (entidades, enums)
+```
+
+| Capa | Paquete | Responsabilidad |
+|---|---|---|
+| Controlador | `controller` | `TableroServlet`, `InsumoServlet`, `ProductoServlet`, `KardexServlet` sobre `BaseServlet`: convierten parámetros HTTP en DTO, llaman a la fachada y aplican Post/Redirect/Get. Ningún servlet importa un DAO. `AccesoServlet` y `SeguridadFilter` gestionan sesión y CSRF. |
+| Fachada | `facade` | `InventarioFacade`: único punto de entrada al negocio. Valida reglas, coordina `InsumoDAO`, `ProductoDAO`, `CategoriaDAO` y `KardexDAO`, convierte entidades a DTO (`MapeadorDTO`) y traduce errores MySQL (1062 duplicado, 1452 FK, 3819 CHECK) a mensajes; los demás se registran y se muestran como error genérico. |
+| DTO | `dto` | `InsumoDTO`, `ProductoDTO`, `CategoriaDTO`, `MovimientoDTO` (salida del Kardex), `SolicitudMovimientoDTO` (entrada) y `ResumenTableroDTO`. Las vistas solo reciben DTO. |
+| Acceso a datos | `dao` | SQL parametrizado; reciben un `ProveedorConexion` para pruebas sin MySQL. El stock solo cambia mediante `KardexDAO`. |
+| Modelo | `model` | Entidades de tabla (`Insumo`, `Producto`, `Categoria`, `MovimientoKardex`) y enums `TipoMovimiento` / `ClaseItem` (lista fija de tipos, tablas y columnas). |
+| Excepciones | `exception` | `NegocioException` (incluye `StockInsuficienteException`) y `ServicioException`, ambas con mensaje apto para el usuario. |
+
+**Kardex transaccional.** `KardexDAO.registrar` usa `setAutoCommit(false)`, bloquea la fila con `SELECT ... FOR UPDATE`, calcula `stock_posterior = stock_anterior + cantidad`, rechaza todo saldo negativo (`StockInsuficienteException`), actualiza el stock, inserta el movimiento con ambos saldos y hace `commit()`; ante cualquier excepción ejecuta `rollback()`. Un AJUSTE recibe el stock físico contado y registra la diferencia; si no hay diferencia no crea movimiento.
+
+**Vistas.** `web.xml` declara `<scripting-invalid>true</scripting-invalid>`: Jasper rechaza cualquier scriptlet o expresión Java. Listas, condiciones y formatos usan `c:forEach`, `c:if`, `c:choose`, `fmt:formatNumber`, `fmt:formatDate` y EL, con locale `es_PE` y zona `America/Lima`.
 
 ## Acceso para revisión del docente
 
@@ -81,10 +104,10 @@ Abrir `http://localhost:8080/dpao-cookies-web/acceso`. El filtro establece UTF-8
 | Ruta | Comportamiento |
 |---|---|
 | `/acceso` | Valida credenciales externas; renueva ID de sesión. `/salir` invalida sesión mediante POST. |
-| `/tablero` | Cuenta insumos y productos de MySQL y presenta alertas actuales. |
-| `/insumos` | Registra y lista insumos; ajusta stock y registra el cambio en Kardex. Reabastecer cuando actual ≤ mínimo. |
+| `/tablero` | Cuenta insumos y productos, presenta alertas actuales y los cinco últimos movimientos. |
+| `/insumos` | Registra (categoría desde lista) y lista insumos; el ajuste de stock se registra como AJUSTE en Kardex. Reabastecer cuando actual ≤ mínimo. |
 | `/productos` | Registra y edita código, nombre, precio y categoría. Stock inicial cero; movimientos desde Kardex. |
-| `/kardex` | Entradas, salidas, ventas y mermas para insumos/productos; filtros por tipo y fechas inclusivas. |
+| `/kardex` | Entradas, salidas, ventas, mermas y ajustes por conteo para insumos/productos elegidos por nombre; saldo anterior/posterior; filtros por tipo y fechas inclusivas. |
 
 Cantidades y precios conservan `BigDecimal` hasta `setBigDecimal`. El servidor rechaza valores ausentes, negativos, con escala mayor de dos o mayores de 99999999.99; textos obligatorios y longitudes 20/100/20, códigos duplicados y FK inexistentes. El stock inicial del insumo es su saldo de apertura; el historial registra cambios posteriores. Un ajuste sin diferencia no crea un movimiento vacío.
 
@@ -100,7 +123,7 @@ En este equipo, con MySQL disponible en 3307 y el Tomcat anterior detenido, `scr
 
 `http_smoke.py` ahora comprueba que el servidor declare conexión a la base aislada `dpao_test` antes de enviar cualquier formulario. Se detiene si se ejecuta contra la demostración, aunque se haya definido `DPAO_HTTP_TEST=true`.
 
-Unitarias, sin MySQL: `mvn -B test`. Los tests JDBC aparecen **omitidos** si no se habilitan; esto no demuestra integración.
+Unitarias, sin MySQL: `mvn -B test` (29 pruebas). `KardexDAOTransaccionTest` usa un JDBC simulado con `java.lang.reflect.Proxy` (`support/JdbcFalso`) para comprobar `setAutoCommit(false)`, el orden bloqueo → UPDATE → INSERT, `commit()` y `rollback()` ante fallo del INSERT, stock insuficiente e ítem inexistente. `InventarioFacadeTest` verifica validación, mapeo a DTO, traducción de errores y una llamada de la fachada con rollback. Los tests JDBC aparecen **omitidos** si no se habilitan; esto no demuestra integración.
 
 Para la suite completa, iniciar una instancia MySQL **exclusiva de pruebas** en `127.0.0.1:3307`, con un directorio de datos nuevo separado de cualquier instalación real. Crear `dpao_test`. La cuenta de pruebas necesita CREATE DATABASE, tablas y triggers, además de DML; no usar estos permisos para la aplicación real.
 
@@ -112,7 +135,7 @@ $env:DPAO_DB_PASSWORD='<clave de pruebas>'
 mvn -B test
 ```
 
-`JdbcTest` exige exactamente ese host, puerto y base inicial. Cada ejecución crea un esquema `dpao_test_<marca temporal>`, importa SQL y conserva sus datos para inspección. No borra datos ni usa mocks: prueba conexión y error de conexión reales, alta, consulta UTF-8, actualización decimal, duplicados, FK, productos, movimientos, stock insuficiente, restricciones, rollback ante fallo de INSERT y diez movimientos concurrentes sin pérdida de stock.
+`JdbcTest` exige exactamente ese host, puerto y base inicial. Cada ejecución crea un esquema `dpao_test_<marca temporal>`, importa SQL y conserva sus datos para inspección. No borra datos ni usa mocks: prueba conexión y error de conexión reales, alta, consulta UTF-8, actualización decimal, duplicados, FK, productos, movimientos, stock insuficiente, restricciones, rollback ante fallo de INSERT y diez movimientos concurrentes sin pérdida de stock. `InventarioFacadeIntegracionTest` recorre la fachada contra el mismo esquema: saldos encadenados ENTRADA → VENTA → MERMA → AJUSTE, venta sin stock que no altera stock ni historial, rollback por trigger que hace fallar el INSERT, ajuste sin diferencia, código duplicado y diez ventas concurrentes sobre cinco unidades (cinco aceptadas, cinco rechazadas, stock final cero).
 
 Pruebas HTTP (Python 3, solo biblioteca estándar): desplegar el WAR conectado a la base **de pruebas aislada `dpao_test` en 127.0.0.1:3307**, con `schema.sql` y `seed.sql` cargados, y usar las mismas credenciales externas de acceso:
 
@@ -129,7 +152,8 @@ Este script agrega registros ficticios identificados por fecha de ejecución. Ve
 
 Informe final: [APF1 en Word](docs/APF1_DesarrolloWebIntegrado_Casas_Anderson.docx), 21 páginas, índice actualizado con Word y revisión visual de cada página. La sección 18 contiene la matriz de los seis criterios y sus límites.
 
-- `artifacts/evidence/jdbc-tests.log`: suite completa con MySQL real.
+- `artifacts/evidence/apf2-20261008/`: APF2, `mvn test` completo con MySQL 8.4.9 real (41 pruebas, 0 omitidas) y prueba HTTP sobre Tomcat 9.0.115.
+- `artifacts/evidence/jdbc-tests.log`: suite completa con MySQL real (APF1).
 - `artifacts/evidence/http-tests.log`: estados HTTP y aserciones del flujo.
 - `artifacts/evidence/versions.log`, `package.log`: versiones y empaquetado.
 - `artifacts/evidence/screenshots/`: capturas reales de cinco vistas y móvil.

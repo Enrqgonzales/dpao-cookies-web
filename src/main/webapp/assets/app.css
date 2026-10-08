@@ -9,6 +9,7 @@ h1 { font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.25; margin: 8px 0; }
 h2 { font-size: 1.25rem; line-height: 1.35; margin: 0 0 16px; }
 nav { display: flex; gap: 12px 20px; flex-wrap: wrap; align-items: center; margin-top: 20px; }
 nav a { color: #fff; padding-block: 8px; }
+nav a[aria-current="page"] { font-weight: 700; text-decoration-thickness: 3px; text-underline-offset: 6px; }
 nav form { margin: 0 0 0 auto; }
 main { margin-block: 28px 48px; }
 .panel, .card { min-width: 0; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
@@ -46,6 +47,11 @@ summary { cursor: pointer; padding-block: 8px; }
 .stock-form input { margin: 0; }
 .empty { text-align: center; padding: 24px; color: #78675c; }
 .code, .insumo-name { font-weight: 600; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.etiqueta { display: inline-block; font-size: .75rem; text-transform: lowercase; }
+.etiqueta::first-letter { text-transform: uppercase; }
+.alertas { margin: 0 0 16px; padding-left: 20px; }
+.alertas li { margin-bottom: 8px; }
 @media (max-width: 520px) {
  .page-shell, main { width: calc(100% - 24px); }
  header { padding-block: 20px; }

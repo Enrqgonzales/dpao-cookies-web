@@ -47,21 +47,32 @@ for field,value in [('codigo','X'*21),('nombre',''),('stockActual','-1'),('stock
 assert 'role="alert"' not in get('/insumos'), 'PRG consume el mensaje una sola vez'
 page=get('/productos')
 post('/productos',dict(id='0',codigo='P'+suffix,nombre='Galleta ñ HTTP',precio='6.50',categoria='2'),page)
-page=get('/productos'); assert 'Operación registrada correctamente' in page and 'Galleta ñ HTTP' in page
-pid=re.search(r'<tr><td>(\d+)</td><td>P'+suffix, page).group(1)
+page=get('/productos'); assert 'Producto registrado correctamente' in page and 'Galleta ñ HTTP' in page
+pid=re.search(r'<td>(\d+)</td>\s*<td class="code">P'+suffix, page).group(1)
 post('/productos',dict(id=pid,codigo='P'+suffix,nombre='Galleta cacao HTTP',precio='7.50',categoria='2'),page)
-page=get('/productos'); assert 'Galleta cacao HTTP' in page
-page=get('/kardex')
-post('/kardex',dict(item='producto',id=pid,tipo='ENTRADA',cantidad='3.00',motivo='Horneado ñ HTTP'),page)
-page=get('/kardex'); assert 'Horneado ñ HTTP' in page
-post('/kardex',dict(item='producto',id=pid,tipo='VENTA',cantidad='1.00',motivo='Venta HTTP'),page)
+page=get('/productos'); assert 'Producto actualizado correctamente' in page and 'Galleta cacao HTTP' in page
+page=get('/kardex'); assert f'value="PRODUCTO:{pid}"' in page
+post('/kardex',dict(item='PRODUCTO:'+pid,tipo='ENTRADA',cantidad='3.00',motivo='Horneado ñ HTTP'),page)
+page=get('/kardex'); assert 'Horneado ñ HTTP' in page and 'stock 0.00 → 3.00' in page
+post('/kardex',dict(item='PRODUCTO:'+pid,tipo='VENTA',cantidad='1.00',motivo='Venta HTTP'),page)
 page=get('/kardex?tipo=VENTA'); assert 'Venta HTTP' in page and 'Horneado ñ HTTP' not in page
 page=get('/kardex?desde=2099-01-01&hasta=2099-01-02'); assert 'Sin movimientos' in page
+page=get('/kardex?desde=2099-01-02&hasta=2099-01-01'); assert 'La fecha inicial no puede ser posterior' in page
 page=get('/kardex')
-post('/kardex',dict(item='producto',id=pid,tipo='SALIDA',cantidad='99.00',motivo='Insuficiente'),page)
-page=get('/kardex'); assert 'role="alert"' in page
+post('/kardex',dict(item='PRODUCTO:'+pid,tipo='SALIDA',cantidad='99.00',motivo='Insuficiente'),page)
+page=get('/kardex'); assert 'Stock insuficiente: disponible 2.00, solicitado 99.00.' in page and 'Insuficiente</td>' not in page
+post('/kardex',dict(item='PRODUCTO:'+pid,tipo='AJUSTE',cantidad='5.00',motivo='Conteo HTTP'),page)
+page=get('/kardex'); assert 'stock 2.00 → 5.00' in page and 'Conteo HTTP' in page
+post('/kardex',dict(item='PRODUCTO:'+pid,tipo='AJUSTE',cantidad='5.00',motivo='Conteo sin cambio'),page)
+page=get('/kardex'); assert 'no se registró ningún movimiento' in page and 'Conteo sin cambio' not in page
+page=get('/insumos')
+fila=re.search(r'name="idInsumo" value="(\d+)">\s*<input[^>]*value="([\d.]+)"',page)
+iid,nuevo=fila.group(1),f'{float(fila.group(2))+0.25:.2f}'
+post('/insumos',dict(accion='actualizarStock',idInsumo=iid,nuevoStock=nuevo),page)
+page=get('/insumos'); assert 'ajuste registrado en Kardex' in page
+assert 'Últimos movimientos' in get('/tablero')
 code,_,_=request('/productos',dict(id='0')); assert code==403,'CSRF'
 code,_,_=request('/WEB-INF/views/productos.jsp'); assert code==404
 post('/salir',{},page)
 code,_,h=request('/tablero'); assert code==302 and h['Location'].endswith('/acceso')
-print('PASS: navegación de cinco vistas, autenticación, PRG, UTF-8, registro, edición, validaciones, Kardex, filtros, CSRF y cierre de sesión.')
+print('PASS: navegación de cinco vistas, autenticación, PRG, UTF-8, registro, edición, validaciones, Kardex con saldos, stock insuficiente, ajustes, filtros, CSRF y cierre de sesión.')

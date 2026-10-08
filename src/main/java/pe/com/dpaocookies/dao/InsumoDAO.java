@@ -1,22 +1,21 @@
 package pe.com.dpaocookies.dao;
 
-import pe.com.dpaocookies.model.Insumo;
-import pe.com.dpaocookies.util.ConexionBD;
-
 import java.sql.Connection;
-import java.math.BigDecimal;
-import pe.com.dpaocookies.util.Validacion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import pe.com.dpaocookies.model.Insumo;
+import pe.com.dpaocookies.util.ConexionBD;
+import pe.com.dpaocookies.util.ProveedorConexion;
 
+/**
+ * Acceso a la tabla {@code insumo}. El stock solo cambia mediante
+ * {@link KardexDAO}, para que cada variación quede registrada.
+ */
 public class InsumoDAO {
-
-    private static final Logger LOGGER = Logger.getLogger(InsumoDAO.class.getName());
 
     private static final String SQL_LISTAR = "SELECT id_insumo, codigo, nombre, unidad_medida, "
             + "stock_actual, stock_minimo, costo_unitario, id_categoria "
@@ -27,27 +26,33 @@ public class InsumoDAO {
             VALUES (?, ?, ?, ?, ?, ?, ?)
             """;
 
-    public List<Insumo> listar() {
-        List<Insumo> insumos = new ArrayList<>();
+    private final ProveedorConexion conexiones;
 
-        try (Connection connection = ConexionBD.getConnection();
+    public InsumoDAO() {
+        this(ConexionBD::getConnection);
+    }
+
+    public InsumoDAO(ProveedorConexion conexiones) {
+        this.conexiones = conexiones;
+    }
+
+    public List<Insumo> listar() throws SQLException {
+        List<Insumo> insumos = new ArrayList<>();
+        try (Connection connection = conexiones.obtener();
                 PreparedStatement statement = connection.prepareStatement(SQL_LISTAR);
                 ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 insumos.add(mapear(resultSet));
             }
-            return insumos;
-        } catch (SQLException exception) {
-            LOGGER.log(Level.SEVERE, "No se pudo listar los insumos", exception);
-            throw new IllegalStateException("No se pudo consultar el inventario.", exception);
         }
+        return insumos;
     }
 
-    public boolean registrar(Insumo insumo) {
-        Validacion.insumo(insumo);
-
-        try (Connection connection = ConexionBD.getConnection();
-                PreparedStatement statement = connection.prepareStatement(SQL_REGISTRAR)) {
+    /** Inserta el insumo con su saldo de apertura y devuelve el identificador generado. */
+    public int registrar(Insumo insumo) throws SQLException {
+        try (Connection connection = conexiones.obtener();
+                PreparedStatement statement = connection.prepareStatement(SQL_REGISTRAR,
+                        Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, insumo.getCodigo());
             statement.setString(2, insumo.getNombre());
             statement.setString(3, insumo.getUnidadMedida());
@@ -55,27 +60,10 @@ public class InsumoDAO {
             statement.setBigDecimal(5, insumo.getStockMinimo());
             statement.setBigDecimal(6, insumo.getCostoUnitario());
             statement.setInt(7, insumo.getIdCategoria());
-            return statement.executeUpdate() == 1;
-        } catch (SQLException exception) {
-            if (exception.getErrorCode() == 1062) throw new IllegalArgumentException("El código ya existe.");
-            if (exception.getErrorCode() == 1452) throw new IllegalArgumentException("La categoría no existe.");
-            LOGGER.log(Level.SEVERE, "No se pudo registrar el insumo", exception);
-            return false;
-        }
-    }
-
-    public boolean actualizarStock(int idInsumo, BigDecimal nuevoStock) {
-        Validacion.decimal(nuevoStock);
-        if (idInsumo <= 0) {
-            return false;
-        }
-
-        try {
-            new KardexDAO().ajustarInsumo(idInsumo, nuevoStock);
-            return true;
-        } catch (SQLException exception) {
-            LOGGER.log(Level.SEVERE, "No se pudo actualizar el stock del insumo " + idInsumo, exception);
-            return false;
+            statement.executeUpdate();
+            try (ResultSet claves = statement.getGeneratedKeys()) {
+                return claves.next() ? claves.getInt(1) : 0;
+            }
         }
     }
 
