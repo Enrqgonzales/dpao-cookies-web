@@ -1,0 +1,77 @@
+commit 3a13408bc42b614fbdf85a7a0bcb5e0ebfa6a3cb
+Autor: Enrqgonzales <juniorgonzales140@gmail.com>
+Fecha: Thu Oct 8 16:50:34 2026 -0500
+Rama: apf2 (origin/apf2)
+
+feat(apf2): integrar DTO, InventarioFacade y Kardex transaccional
+
+- Capa DTO (InsumoDTO, ProductoDTO, CategoriaDTO, MovimientoDTO,
+  SolicitudMovimientoDTO, ResumenTableroDTO); las vistas solo reciben DTO.
+- InventarioFacade como punto unico de entrada: valida, coordina los DAO,
+  mapea entidades a DTO y traduce errores MySQL (1062, 1452, 3819).
+- Servlets modulares sobre BaseServlet (Tablero, Insumo, Producto, Kardex);
+  ningun servlet accede a un DAO. Se elimina PanelServlet.
+- KardexDAO: setAutoCommit(false), SELECT ... FOR UPDATE, stock_anterior y
+  stock_posterior, StockInsuficienteException, AJUSTE por conteo, rollback.
+- Entidades Producto, Categoria, MovimientoKardex y enums TipoMovimiento y
+  ClaseItem; CategoriaDAO; ProveedorConexion para inyectar conexiones.
+- JSP solo con JSTL/EL: scripting-invalid en web.xml, locale es_PE y zona
+  America/Lima; selector de items por nombre en Kardex.
+- Pruebas: KardexDAOTransaccionTest (JDBC simulado con Proxy),
+  InventarioFacadeTest, InventarioFacadeIntegracionTest (MySQL real,
+  concurrencia y rollback); JdbcTest y http_smoke.py adaptados.
+- Evidencias en artifacts/evidence/apf2-20261008 y README actualizado.
+
+
+ README.md                                          |  38 +-
+ artifacts/evidence/apf2-20261008/README.md         |  11 +
+ artifacts/evidence/apf2-20261008/http-smoke.log    |  56 +++
+ artifacts/evidence/apf2-20261008/maven-test.log    | 306 ++++++++++++++++
+ scripts/http_smoke.py                              |  31 +-
+ .../pe/com/dpaocookies/controller/BaseServlet.java |  94 +++++
+ .../com/dpaocookies/controller/InsumoServlet.java  | 147 +++-----
+ .../com/dpaocookies/controller/KardexServlet.java  |  71 ++++
+ .../com/dpaocookies/controller/PanelServlet.java   |  59 ----
+ .../dpaocookies/controller/ProductoServlet.java    |  48 +++
+ .../com/dpaocookies/controller/TableroServlet.java |  25 ++
+ .../java/pe/com/dpaocookies/dao/CategoriaDAO.java  |  38 ++
+ .../java/pe/com/dpaocookies/dao/InsumoDAO.java     |  72 ++--
+ .../java/pe/com/dpaocookies/dao/KardexDAO.java     | 238 ++++++++++---
+ .../java/pe/com/dpaocookies/dao/ProductoDAO.java   |  91 ++++-
+ .../java/pe/com/dpaocookies/dto/CategoriaDTO.java  |  35 ++
+ .../java/pe/com/dpaocookies/dto/InsumoDTO.java     | 104 ++++++
+ .../java/pe/com/dpaocookies/dto/MovimientoDTO.java | 116 +++++++
+ .../java/pe/com/dpaocookies/dto/ProductoDTO.java   |  73 ++++
+ .../pe/com/dpaocookies/dto/ResumenTableroDTO.java  |  43 +++
+ .../dpaocookies/dto/SolicitudMovimientoDTO.java    |  71 ++++
+ .../dpaocookies/exception/AplicacionException.java |  16 +
+ .../dpaocookies/exception/NegocioException.java    |   9 +
+ .../dpaocookies/exception/ServicioException.java   |   9 +
+ .../exception/StockInsuficienteException.java      |  25 ++
+ .../com/dpaocookies/facade/InventarioFacade.java   | 228 ++++++++++++
+ .../pe/com/dpaocookies/facade/MapeadorDTO.java     |  74 ++++
+ .../java/pe/com/dpaocookies/model/Categoria.java   |  31 ++
+ .../java/pe/com/dpaocookies/model/ClaseItem.java   |  44 +++
+ .../pe/com/dpaocookies/model/MovimientoKardex.java | 111 ++++++
+ .../java/pe/com/dpaocookies/model/Producto.java    |  74 ++++
+ .../pe/com/dpaocookies/model/TipoMovimiento.java   |  51 +++
+ .../pe/com/dpaocookies/util/ProveedorConexion.java |  11 +
+ .../java/pe/com/dpaocookies/util/Validacion.java   |  35 +-
+ src/main/webapp/WEB-INF/views/acceso.jsp           |   2 +-
+ src/main/webapp/WEB-INF/views/inventario.jsp       |  56 +--
+ src/main/webapp/WEB-INF/views/kardex.jsp           | 102 +++++-
+ src/main/webapp/WEB-INF/views/nav.jspf             |  13 +-
+ src/main/webapp/WEB-INF/views/productos.jsp        |  93 ++++-
+ src/main/webapp/WEB-INF/views/tablero.jsp          |  92 ++++-
+ src/main/webapp/WEB-INF/web.xml                    |  32 +-
+ src/main/webapp/assets/app.css                     |   6 +
+ src/main/webapp/index.jsp                          |   7 +-
+ .../dpaocookies/dao/KardexDAOTransaccionTest.java  | 116 +++++++
+ .../facade/InventarioFacadeIntegracionTest.java    | 157 +++++++++
+ .../dpaocookies/facade/InventarioFacadeTest.java   | 385 +++++++++++++++++++++
+ .../java/pe/com/dpaocookies/model/InsumoTest.java  |  18 +-
+ .../java/pe/com/dpaocookies/model/JdbcTest.java    |  79 ++---
+ .../com/dpaocookies/support/BaseDatosPrueba.java   |  68 ++++
+ .../java/pe/com/dpaocookies/support/JdbcFalso.java | 153 ++++++++
+ 50 files changed, 3452 insertions(+), 412 deletions(-)
+Ramas remotas que contienen el commit (git branch -r --contains): origin/apf2
