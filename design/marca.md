@@ -22,9 +22,9 @@ Valores medidos con muestreo de píxeles sobre las imágenes originales.
 | `--dp-crema-clara` | `#FFF4DD` | La crema del afiche aclarada para leer textos largos. | Fondo de página. |
 | `--dp-crema` | `#F3E0B5` | Paneles del afiche (`#F9DBA9`, `#FDD790`) y campaña (`#F5D29A`). | Fondo de las barras de progreso y esqueletos de carga. |
 | `--dp-arena` | `#EFC58B` | Fondo del afiche de packs. | No se usa en la interfaz. |
-| `--dp-caramelo` | `#C9741E` | Entre la galleta del logo (`#F89848`) y los bordes horneados (`#521B00`). | No se usa en la interfaz (3,21:1 sobre crema). |
+| `--dp-caramelo` | `#C9741E` | Entre la galleta del logo (`#F89848`) y los bordes horneados (`#521B00`). | No se usa en la interfaz (3.21:1 sobre crema). |
 | `--dp-texto-2` | `#6B4A3A` | Derivado del chocolate. | Texto secundario y etiquetas. |
-| `--dp-alerta` | `#993536` | Rojo vino apagado. | Solo alertas, siempre con punto **y** palabra («Reponer», «Agotado», «Falta 8,00»). |
+| `--dp-alerta` | `#993536` | Rojo vino apagado. | Solo alertas, siempre con punto **y** palabra («Reponer», «Agotado», «Falta 8.00»). |
 | `--dp-alerta-sobre-oscuro` | `#D18789` | Su versión para fondo chocolate. | Estado en la cápsula y en la tarjeta oscura. |
 
 No hay verde: lo que sale bien va en chocolate con un check y su palabra («Cuadra», «Caja cerrada»).
@@ -33,12 +33,12 @@ No hay verde: lo que sale bien va en chocolate con un check y su palabra («Cuad
 
 | Par | Relación |
 |---|---|
-| Chocolate sobre crema clara | 16,40:1 |
-| Crema clara sobre chocolate | 16,40:1 |
-| Chocolate sobre mostaza | 9,43:1 |
-| Texto secundario sobre blanco | 7,88:1 |
-| Alerta sobre blanco / sobre crema clara | 7,20:1 / 6,59:1 |
-| Alerta clara sobre chocolate | 6,43:1 |
+| Chocolate sobre crema clara | 16.40:1 |
+| Crema clara sobre chocolate | 16.40:1 |
+| Chocolate sobre mostaza | 9.43:1 |
+| Texto secundario sobre blanco | 7.88:1 |
+| Alerta sobre blanco / sobre crema clara | 7.20:1 / 6.59:1 |
+| Alerta clara sobre chocolate | 6.43:1 |
 
 ## Tipografía
 
@@ -102,16 +102,17 @@ renglones: lo principal a la izquierda y la cifra a la derecha, con el detalle d
 ## Datos usados en los lienzos
 
 - **Catálogo**: los 16 sabores, las 3 categorías y los precios de `00_datos_del_dueno.md`. El afiche escribe
-  «Chin Chim», «Bom Bom», «Pie Limón» y «Mashmellow»; se usó la lista del dueño. **Por confirmar con el dueño.**
+  «Chin Chim», «Bom Bom», «Pie Limón» y «Mashmellow»; se usan los nombres de la lista del dueño (confirmado
+  el 9 de octubre de 2026).
 - **Packs**: Clásico 2/4/6 por S/ 12/22/30; Edición S/ 16/30/42; Premium S/ 20/40/58.
-- **Caja (Plaza Mayor, agosto)**, leída de la hoja de control: 43 galletas por S/ 373,50; recibido S/ 356,50.
-  - Efectivo: esperado S/ 49,50 (6 ventas), declarado S/ 41,50 → faltan S/ 8,00.
-  - Yape: esperado S/ 315,00 (36 ventas), declarado S/ 315,00 → cuadra.
-  - Arándano: 1 venta anotada «R», que no es E, Y, P ni T → faltan S/ 9,00.
-  - Diferencia: −S/ 17,00. El stock de los 16 sabores cuadra (inicial 40 + reposición 46 − vendidas 43 = final 43).
+- **Caja (Plaza Mayor, agosto)**, leída de la hoja de control: 43 galletas por S/ 373.50; recibido S/ 356.50.
+  - Efectivo: esperado S/ 49.50 (6 ventas), declarado S/ 41.50 → faltan S/ 8.00.
+  - Yape: esperado S/ 315.00 (36 ventas), declarado S/ 315.00 → cuadra.
+  - Arándano: 1 venta anotada «R», que no es E, Y, P ni T → faltan S/ 9.00.
+  - Diferencia: −S/ 17.00. El stock de los 16 sabores cuadra (inicial 40 + reposición 46 − vendidas 43 = final 43).
 - **Insumos**: los 9 insumos críticos del dueño; cantidades, mínimos y costos son **valores de ejemplo**.
-- **Formato**: `S/ 373,50` con coma decimal y espacio duro tras «S/». La aplicación actual usa `fmt` con `es_PE`,
-  que muestra punto decimal; hay que decidirlo antes de implementar.
+- **Formato** (decidido el 9 de octubre de 2026): `S/ 373.50`, con punto decimal como el `es_PE` que ya usa la
+  aplicación, y espacio duro tras «S/». Así el diseño y la implementación muestran lo mismo.
 
 ## Cómo se ven los estados
 
