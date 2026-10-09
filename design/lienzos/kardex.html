@@ -5,118 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kardex | D'PAO COOKIES</title>
   <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iconos.css">
   <link rel="stylesheet" href="css/dpao.css">
 </head>
 <body>
-<header class="dp-header">
-  <nav class="navbar navbar-expand-lg" aria-label="Navegación principal">
-    <div class="container-xl">
-      <a class="navbar-brand" href="tablero.html"><img src="../assets/03_logo.jpg" alt=""><span>D'PAO COOKIES<small>Gestión de tiendas</small></span></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="menu">
-        <ul class="navbar-nav ms-lg-4 me-auto gap-1 py-2 py-lg-0">
-          <li class="nav-item"><a class="nav-link" href="tablero.html">Tablero</a></li>
-          <li class="nav-item"><a class="nav-link" href="inventario.html">Insumos</a></li>
-          <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-          <li class="nav-item"><a class="nav-link active" aria-current="page" href="kardex.html">Kardex</a></li>
-          <li class="nav-item"><a class="nav-link" href="cierre-caja.html">Cierre de caja</a></li>
-        </ul>
-        <div class="d-flex flex-wrap align-items-center gap-3 dp-usuario pb-3 pb-lg-0">
-          <span>Tienda: <strong>Plaza Mayor</strong></span>
-          <a class="btn btn-dp-mostaza btn-sm" href="acceso.html">Cerrar sesión</a>
-        </div>
-      </div>
-    </div>
-  </nav>
+<header class="app-cabecera">
+  <div class="contenedor">
+    <a class="marca" href="tablero.html"><img src="../assets/03_logo.jpg" alt="D'PAO COOKIES"><span class="nombre">D'PAO COOKIES</span></a>
+    <nav aria-label="Secciones"><ul class="nav-secciones">
+      <li><a href="tablero.html" title="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+      <li><a href="inventario.html" title="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+      <li><a href="productos.html" title="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+      <li><a href="kardex.html" aria-current="page" title="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+      <li><a href="cierre-caja.html" title="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+    </ul></nav>
+    <span class="capsula"><span class="local">Plaza Mayor</span><span class="sep">·</span><span class="estado-alerta">Caja por cerrar</span></span>
+    <a class="btn-icono" href="acceso.html" aria-label="Cerrar sesión" title="Cerrar sesión"><span class="ico ico-log-out" aria-hidden="true"></span></a>
+  </div>
 </header>
 
-<main class="dp-page container-xl">
-  <div class="dp-titulo-pagina">
-    <div>
-      <h1>Kardex de movimientos</h1>
-      <p>Cada movimiento guarda el saldo anterior y el posterior. Ninguna salida puede dejar el stock en negativo.</p>
+<main class="app-cuerpo contenedor">
+  <div class="titulo-fila">
+    <h1>Kardex</h1>
+    <div class="derecha">
+      <button class="btn-icono" type="button" aria-label="Filtrar movimientos" title="Filtrar movimientos"><span class="ico ico-sliders-horizontal" aria-hidden="true"></span></button>
+      <div class="accion-principal"><a class="btn-principal" href="?estado=hoja"><span class="ico ico-plus" aria-hidden="true"></span>Nuevo movimiento</a></div>
     </div>
   </div>
 
-  <div class="alert alert-danger" role="alert"><strong>No se registró la venta.</strong> Stock insuficiente: disponible 1,00, solicitado 2,00 (Arándano).</div>
-
-  <section class="dp-card dp-card-crema mb-4"><div class="card-body">
-    <h2 class="mb-3">Registrar movimiento</h2>
-    <form class="row g-3" novalidate>
-      <div class="col-md-6 col-lg-4">
-        <label class="form-label" for="item">Ítem</label>
-        <select class="form-select" id="item">
-          <optgroup label="Sabores">
-            <option>G01 · Chispas (vitrina 6)</option>
-            <option>G02 · Chunky (vitrina 1)</option>
-            <option selected>G11 · Arándano (vitrina 1)</option>
-            <option>G16 · Pistacho (vitrina 2)</option>
-          </optgroup>
-          <optgroup label="Insumos">
-            <option>INS-001 · Harina de trigo (18,00 kg)</option>
-            <option>INS-004 · Mantequilla (2,50 kg)</option>
-          </optgroup>
-        </select>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <label class="form-label" for="tipo">Tipo</label>
-        <select class="form-select" id="tipo"><option>Entrada</option><option>Salida</option><option selected>Venta</option><option>Merma</option><option>Ajuste por conteo</option></select>
-      </div>
-      <div class="col-6 col-md-3 col-lg-2">
-        <label class="form-label" for="cantidad">Cantidad</label>
-        <input class="form-control is-invalid" id="cantidad" inputmode="decimal" value="2,00" aria-describedby="cantidad-error">
-        <div class="invalid-feedback" id="cantidad-error">Supera el stock.</div>
-      </div>
-      <div class="col-md-8 col-lg-4">
-        <label class="form-label" for="motivo">Motivo</label>
-        <input class="form-control" id="motivo" value="Venta en vitrina">
-      </div>
-      <div class="col-md-4 col-lg-12 d-flex align-items-end justify-content-lg-end">
-        <button class="btn btn-dp btn-bloque-movil" type="submit">Registrar movimiento</button>
-      </div>
-      <p class="form-text col-12 mb-0">En un ajuste por conteo, la cantidad es el stock físico contado; el sistema registra la diferencia.</p>
-    </form>
-  </div></section>
-
-  <section class="dp-card"><div class="card-body">
-    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
-      <h2 class="mb-0">Historial</h2>
-      <form class="d-flex flex-wrap gap-2 align-items-end" aria-label="Filtros del historial">
-        <div><label class="form-label small mb-1" for="f-tipo">Tipo</label><select class="form-select" id="f-tipo"><option>Todos</option><option>Entrada</option><option>Salida</option><option>Venta</option><option>Merma</option><option>Ajuste</option></select></div>
-        <div><label class="form-label small mb-1" for="f-desde">Desde</label><input class="form-control" id="f-desde" type="date"></div>
-        <div><label class="form-label small mb-1" for="f-hasta">Hasta</label><input class="form-control" id="f-hasta" type="date"></div>
-        <button class="btn btn-outline-dp" type="submit">Filtrar</button>
-      </form>
-    </div>
-    <div class="table-responsive">
-    <table class="table tabla-dp tabla-apilada">
-      <thead><tr><th scope="col">Hora</th><th scope="col">Ítem</th><th scope="col">Tipo</th><th scope="col" class="num">Cantidad</th><th scope="col" class="num">Anterior</th><th scope="col" class="num">Posterior</th><th scope="col">Motivo</th></tr></thead>
+  <section class="superficie" aria-label="Movimientos" data-ocultar="vacio">
+    <table class="tabla tabla-movil">
+      <thead><tr><th scope="col">Hora</th><th scope="col">Ítem</th><th scope="col">Movimiento</th><th scope="col" class="num">Cantidad</th><th scope="col" class="num">Saldo</th><th scope="col">Motivo</th></tr></thead>
       <tbody>
-        <tr><td data-label="Hora">20:10</td><td data-label="Ítem"><span><strong>Pistacho</strong> <span class="small texto-2 text-nowrap">G16</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Venta</span></td><td data-label="Cantidad" class="num">−3,00</td><td data-label="Anterior" class="num">5,00</td><td data-label="Posterior" class="num">2,00</td><td data-label="Motivo">Ventas del turno</td></tr>
-        <tr><td data-label="Hora">20:10</td><td data-label="Ítem"><span><strong>Chunky</strong> <span class="small texto-2 text-nowrap">G02</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Venta</span></td><td data-label="Cantidad" class="num">−9,00</td><td data-label="Anterior" class="num">10,00</td><td data-label="Posterior" class="num">1,00</td><td data-label="Motivo">Ventas del turno</td></tr>
-        <tr><td data-label="Hora">20:10</td><td data-label="Ítem"><span><strong>Limón</strong> <span class="small texto-2 text-nowrap">G12</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Venta</span></td><td data-label="Cantidad" class="num">−4,00</td><td data-label="Anterior" class="num">4,00</td><td data-label="Posterior" class="num">0,00</td><td data-label="Motivo">Ventas del turno</td></tr>
-        <tr><td data-label="Hora">15:30</td><td data-label="Ítem"><span><strong>Mantequilla</strong> <span class="small texto-2 text-nowrap">INS-004</span></span></td><td data-label="Tipo"><span class="mov mov-ajuste">Ajuste</span></td><td data-label="Cantidad" class="num">−0,25</td><td data-label="Anterior" class="num">2,75</td><td data-label="Posterior" class="num">2,50</td><td data-label="Motivo">Conteo físico semanal</td></tr>
-        <tr><td data-label="Hora">11:20</td><td data-label="Ítem"><span><strong>Harina de trigo</strong> <span class="small texto-2 text-nowrap">INS-001</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Salida</span></td><td data-label="Cantidad" class="num">−4,50</td><td data-label="Anterior" class="num">22,50</td><td data-label="Posterior" class="num">18,00</td><td data-label="Motivo">Producción lote Clásico</td></tr>
-        <tr><td data-label="Hora">10:45</td><td data-label="Ítem"><span><strong>Queso crema</strong> <span class="small texto-2 text-nowrap">INS-009</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Merma</span></td><td data-label="Cantidad" class="num">−0,20</td><td data-label="Anterior" class="num">1,00</td><td data-label="Posterior" class="num">0,80</td><td data-label="Motivo">Envase abierto vencido</td></tr>
-        <tr><td data-label="Hora">09:05</td><td data-label="Ítem"><span><strong>Chunky</strong> <span class="small texto-2 text-nowrap">G02</span></span></td><td data-label="Tipo"><span class="mov mov-entrada">Entrada</span></td><td data-label="Cantidad" class="num">+6,00</td><td data-label="Anterior" class="num">4,00</td><td data-label="Posterior" class="num">10,00</td><td data-label="Motivo">Reposición de cocina</td></tr>
-        <tr><td data-label="Hora">09:05</td><td data-label="Ítem"><span><strong>Pistacho</strong> <span class="small texto-2 text-nowrap">G16</span></span></td><td data-label="Tipo"><span class="mov mov-entrada">Entrada</span></td><td data-label="Cantidad" class="num">+4,00</td><td data-label="Anterior" class="num">1,00</td><td data-label="Posterior" class="num">5,00</td><td data-label="Motivo">Reposición de cocina</td></tr>
+        <tr class="fila-dia"><td colspan="6"><span class="dia">Hoy</span></td></tr>
+        <tr data-m="1" data-d="1"><td class="solo-ancho">20:10</td><td><span class="t-fuerte">Pistacho</span><span class="sub d-md-none">20:10 · Venta</span></td><td class="solo-ancho">Venta</td><td class="num m-derecha">−3,00<span class="sub d-md-none">5,00 → 2,00</span></td><td class="num solo-ancho">5,00 → 2,00</td><td class="solo-ancho">Ventas del turno</td></tr>
+        <tr data-m="1" data-d="1"><td class="solo-ancho">20:10</td><td><span class="t-fuerte">Chunky</span><span class="sub d-md-none">20:10 · Venta</span></td><td class="solo-ancho">Venta</td><td class="num m-derecha">−9,00<span class="sub d-md-none">10,00 → 1,00</span></td><td class="num solo-ancho">10,00 → 1,00</td><td class="solo-ancho">Ventas del turno</td></tr>
+        <tr data-m="1" data-d="1"><td class="solo-ancho">20:10</td><td><span class="t-fuerte">Limón</span><span class="sub d-md-none">20:10 · Venta</span></td><td class="solo-ancho">Venta</td><td class="num m-derecha">−4,00<span class="sub d-md-none">4,00 → 0,00</span></td><td class="num solo-ancho">4,00 → 0,00</td><td class="solo-ancho">Ventas del turno</td></tr>
+        <tr data-m="1" data-d="1"><td class="solo-ancho">15:30</td><td><span class="t-fuerte">Mantequilla</span><span class="sub d-md-none">15:30 · Ajuste</span></td><td class="solo-ancho">Ajuste</td><td class="num m-derecha">−0,25<span class="sub d-md-none">2,75 → 2,50</span></td><td class="num solo-ancho">2,75 → 2,50</td><td class="solo-ancho">Conteo físico semanal</td></tr>
+        <tr data-m="1" data-d="1"><td class="solo-ancho">11:20</td><td><span class="t-fuerte">Harina de trigo</span><span class="sub d-md-none">11:20 · Salida</span></td><td class="solo-ancho">Salida</td><td class="num m-derecha">−4,50<span class="sub d-md-none">22,50 → 18,00</span></td><td class="num solo-ancho">22,50 → 18,00</td><td class="solo-ancho">Producción lote Clásico</td></tr>
+        <tr data-m="1" data-d="1"><td class="solo-ancho">10:45</td><td><span class="t-fuerte">Queso crema</span><span class="sub d-md-none">10:45 · Merma</span></td><td class="solo-ancho">Merma</td><td class="num m-derecha">−0,20<span class="sub d-md-none">1,00 → 0,80</span></td><td class="num solo-ancho">1,00 → 0,80</td><td class="solo-ancho">Envase abierto vencido</td></tr>
+        <tr data-m="2" data-d="1"><td class="solo-ancho">09:05</td><td><span class="t-fuerte">Chunky</span><span class="sub d-md-none">09:05 · Entrada</span></td><td class="solo-ancho">Entrada</td><td class="num m-derecha">+6,00<span class="sub d-md-none">4,00 → 10,00</span></td><td class="num solo-ancho">4,00 → 10,00</td><td class="solo-ancho">Reposición de cocina</td></tr>
+        <tr data-m="2" data-d="1"><td class="solo-ancho">09:05</td><td><span class="t-fuerte">Pistacho</span><span class="sub d-md-none">09:05 · Entrada</span></td><td class="solo-ancho">Entrada</td><td class="num m-derecha">+4,00<span class="sub d-md-none">1,00 → 5,00</span></td><td class="num solo-ancho">1,00 → 5,00</td><td class="solo-ancho">Reposición de cocina</td></tr>
+        <tr data-m="2" data-d="2"><td class="solo-ancho">09:05</td><td><span class="t-fuerte">Nutella</span><span class="sub d-md-none">09:05 · Entrada</span></td><td class="solo-ancho">Entrada</td><td class="num m-derecha">+5,00<span class="sub d-md-none">3,00 → 8,00</span></td><td class="num solo-ancho">3,00 → 8,00</td><td class="solo-ancho">Reposición de cocina</td></tr>
+        <tr data-m="2" data-d="2"><td class="solo-ancho">09:05</td><td><span class="t-fuerte">Red Velvet</span><span class="sub d-md-none">09:05 · Entrada</span></td><td class="solo-ancho">Entrada</td><td class="num m-derecha">+7,00<span class="sub d-md-none">1,00 → 8,00</span></td><td class="num solo-ancho">1,00 → 8,00</td><td class="solo-ancho">Reposición de cocina</td></tr>
+        <tr data-m="2" data-d="2"><td class="solo-ancho">09:05</td><td><span class="t-fuerte">Chin Chin</span><span class="sub d-md-none">09:05 · Entrada</span></td><td class="solo-ancho">Entrada</td><td class="num m-derecha">+6,00<span class="sub d-md-none">0,00 → 6,00</span></td><td class="num solo-ancho">0,00 → 6,00</td><td class="solo-ancho">Reposición de cocina</td></tr>
+        <tr data-m="2" data-d="2"><td class="solo-ancho">09:05</td><td><span class="t-fuerte">Chispas</span><span class="sub d-md-none">09:05 · Entrada</span></td><td class="solo-ancho">Entrada</td><td class="num m-derecha">+5,00<span class="sub d-md-none">5,00 → 10,00</span></td><td class="num solo-ancho">5,00 → 10,00</td><td class="solo-ancho">Reposición de cocina</td></tr>
+        <tr data-m="3" data-d="2"><td class="solo-ancho">08:30</td><td><span class="t-fuerte">Harina de trigo</span><span class="sub d-md-none">08:30 · Entrada</span></td><td class="solo-ancho">Entrada</td><td class="num m-derecha">+10,00<span class="sub d-md-none">12,50 → 22,50</span></td><td class="num solo-ancho">12,50 → 22,50</td><td class="solo-ancho">Compra a proveedor</td></tr>
       </tbody>
     </table>
-    </div>
-  </div></section>
+    <nav class="paginas solo-m" aria-label="Páginas">
+      <span class="rango t-2" data-rango="1">1–6 de 13</span><span class="rango t-2" data-rango="2">7–12 de 13</span><span class="rango t-2" data-rango="3">13 de 13</span>
+      <a class="pagina" data-p="1" href="?pagina=1">1</a><a class="pagina" data-p="2" href="?pagina=2">2</a><a class="pagina" data-p="3" href="?pagina=3">3</a>
+    </nav>
+    <nav class="paginas solo-d" aria-label="Páginas">
+      <span class="rango t-2" data-rango="1">1–8 de 13</span><span class="rango t-2" data-rango="2">9–13 de 13</span>
+      <a class="pagina" data-p="1" href="?pagina=1">1</a><a class="pagina" data-p="2" href="?pagina=2">2</a>
+    </nav>
+  </section>
 
-  <section class="dp-estados" aria-label="Estados de la pantalla">
-    <h2 class="h3">Estados de esta pantalla</h2>
-    <div class="row g-3">
-      <div class="col-md-4"><div class="dp-vacio h-100"><img src="../assets/chef-galleta.png" alt=""><p class="fw-bold mb-1">Sin movimientos para este filtro</p><p class="texto-2 mb-0">Prueba con otras fechas o con «Todos».</p></div></div>
-      <div class="col-md-4"><div class="alert alert-danger mb-0" role="alert">La fecha inicial no puede ser posterior a la fecha final.</div></div>
-      <div class="col-md-4"><div class="alert alert-success mb-0" role="status">Movimiento registrado: Chispas (G01), stock 5,00 → 10,00.</div></div>
+  <section class="superficie d-flex flex-column flex-fill" aria-label="Sin movimientos" data-ver="vacio">
+    <div class="vacio">
+      <img src="../assets/chef-galleta.png" alt="">
+      <h2>Sin movimientos con este filtro</h2>
+      <a class="btn-secundario" href="kardex.html"><span class="ico ico-x" aria-hidden="true"></span>Quitar filtro</a>
     </div>
-    <p class="lienzo-nota mt-3 mb-0">Lienzo de diseño APF2. Saldos de sabores coherentes con la hoja «Control Diario» de Plaza Mayor (stock inicial + reposición − vendidas = final); los movimientos de insumos son de ejemplo.</p>
   </section>
 </main>
 
-<footer class="dp-footer"><div class="container-xl d-flex flex-wrap justify-content-between gap-2"><span>D'PAO COOKIES · Más cookies, más momentos</span><span>Lienzo 5 de 6 · Kardex</span></div></footer>
-<script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<nav aria-label="Secciones"><ul class="barra-secciones">
+  <li><a href="tablero.html" aria-label="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+  <li><a href="inventario.html" aria-label="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+  <li><a href="productos.html" aria-label="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+  <li><a href="kardex.html" aria-current="page" aria-label="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+  <li><a href="cierre-caja.html" aria-label="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+</ul></nav>
+
+<div class="velo velo-hoja" data-ver="hoja error" role="dialog" aria-modal="true" aria-labelledby="h-titulo">
+  <form class="hoja" novalidate>
+    <div class="hoja-cabecera"><h2 id="h-titulo">Nuevo movimiento</h2><a class="btn-icono" href="kardex.html" aria-label="Cerrar"><span class="ico ico-x" aria-hidden="true"></span></a></div>
+    <div class="campo">
+      <label class="form-label" for="item">Ítem</label>
+      <select class="form-select" id="item">
+        <optgroup label="Sabores"><option>Arándano · 1 en vitrina</option><option>Chispas · 6 en vitrina</option><option>Pistacho · 2 en vitrina</option></optgroup>
+        <optgroup label="Insumos"><option>Harina de trigo · 18,00 kg</option><option>Mantequilla · 2,50 kg</option></optgroup>
+      </select>
+    </div>
+    <div class="campo">
+      <label class="form-label" for="tipo">Movimiento</label>
+      <select class="form-select" id="tipo"><option>Entrada</option><option>Salida</option><option selected>Venta</option><option>Merma</option><option>Ajuste</option></select>
+    </div>
+    <div class="campo">
+      <label class="form-label" for="cantidad">Cantidad</label>
+      <input class="form-control" id="cantidad" inputmode="decimal" value="2,00" aria-describedby="cantidad-error" data-invalido="error">
+      <p class="error-campo" id="cantidad-error" data-ver="error">Stock insuficiente: hay 1,00 de Arándano.</p>
+    </div>
+    <div class="campo"><label class="form-label" for="motivo">Motivo</label><input class="form-control" id="motivo" value="Venta en vitrina"></div>
+    <div class="hoja-pie"><button class="btn-principal" type="submit">Registrar</button></div>
+  </form>
+</div>
+
+<div class="aviso-flotante" data-ver="exito" role="status"><span>Venta registrada<span class="d-none d-md-inline"> · Pistacho 5,00 → 2,00</span></span><button class="btn-texto" type="button"><span class="ico ico-undo-2 ico-16" aria-hidden="true"></span> Deshacer</button></div>
+
+<div class="velo velo-centro" data-ver="primera" role="dialog" aria-modal="true" aria-labelledby="o-titulo">
+  <div class="ventana">
+    <img class="ilustracion" src="../assets/chef-galleta.png" alt="">
+    <div class="puntos-paso" aria-hidden="true"><span aria-current="step"></span><span></span></div>
+    <p class="visually-hidden">Paso 1 de 2</p>
+    <h2 id="o-titulo" class="text-center">Todo lo que entra y sale</h2>
+    <p class="text-center">Cada movimiento guarda el stock de antes y de después. Para corregir un conteo, elige «Ajuste» y escribe lo que contaste.</p>
+    <div class="acciones"><button class="btn-principal" type="button">Siguiente</button></div>
+  </div>
+</div>
+
+<script src="js/lienzo.js"></script>
 </body>
 </html>
