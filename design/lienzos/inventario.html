@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Insumos | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body>
+<header class="dp-header">
+  <nav class="navbar navbar-expand-lg" aria-label="Navegación principal">
+    <div class="container-xl">
+      <a class="navbar-brand" href="tablero.html"><img src="../assets/03_logo.jpg" alt=""><span>D'PAO COOKIES<small>Gestión de tiendas</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-lg-4 me-auto gap-1 py-2 py-lg-0">
+          <li class="nav-item"><a class="nav-link" href="tablero.html">Tablero</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="inventario.html">Insumos</a></li>
+          <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="kardex.html">Kardex</a></li>
+          <li class="nav-item"><a class="nav-link" href="cierre-caja.html">Cierre de caja</a></li>
+        </ul>
+        <div class="d-flex flex-wrap align-items-center gap-3 dp-usuario pb-3 pb-lg-0">
+          <span>Tienda: <strong>Plaza Mayor</strong></span>
+          <a class="btn btn-dp-mostaza btn-sm" href="acceso.html">Cerrar sesión</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="dp-page container-xl">
+  <div class="dp-titulo-pagina">
+    <div>
+      <h1>Insumos de cocina</h1>
+      <p>Existencias de los insumos críticos. Se marca <strong>Reponer</strong> cuando el stock es menor o igual al mínimo.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <span class="cat cat-clasico">9 insumos</span>
+      <span class="cat cat-premium">4 por reponer</span>
+    </div>
+  </div>
+
+  <div class="alert alert-success" role="status">Insumo «Queso crema» registrado correctamente.</div>
+
+  <div class="row g-3">
+    <section class="col-lg-4 order-lg-2">
+      <div class="dp-card dp-card-crema"><div class="card-body">
+        <h2 class="mb-3">Registrar insumo</h2>
+        <form novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="codigo">Código</label>
+            <input class="form-control is-invalid" id="codigo" value="INS-001" aria-describedby="codigo-error">
+            <div class="invalid-feedback" id="codigo-error">El código ya existe.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="nombre">Nombre</label>
+            <input class="form-control" id="nombre" placeholder="Ej.: Azúcar blanca">
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label" for="unidad">Unidad</label>
+              <select class="form-select" id="unidad"><option>kg</option><option>litro</option><option>unidad</option></select>
+            </div>
+            <div class="col-6">
+              <label class="form-label" for="categoria">Categoría</label>
+              <select class="form-select" id="categoria"><option>Secos</option><option>Lácteos</option><option>Chocolates y rellenos</option></select>
+            </div>
+          </div>
+          <div class="row g-2 mb-4">
+            <div class="col-4"><label class="form-label" for="stock">Stock</label><input class="form-control" id="stock" inputmode="decimal" placeholder="0,00"></div>
+            <div class="col-4"><label class="form-label" for="minimo">Mínimo</label><input class="form-control" id="minimo" inputmode="decimal" placeholder="0,00"></div>
+            <div class="col-4"><label class="form-label" for="costo">Costo S/</label><input class="form-control" id="costo" inputmode="decimal" placeholder="0,00"></div>
+          </div>
+          <button class="btn btn-dp w-100" type="submit">Registrar insumo</button>
+        </form>
+      </div></div>
+    </section>
+
+    <section class="col-lg-8 order-lg-1">
+      <div class="dp-card"><div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <h2 class="mb-0">Existencias</h2>
+          <label class="visually-hidden" for="buscar">Buscar insumo</label>
+          <input class="form-control" id="buscar" style="max-width: 260px" placeholder="Buscar insumo…">
+        </div>
+        <div class="table-responsive">
+        <table class="table tabla-dp tabla-apilada">
+          <thead><tr><th scope="col">Insumo</th><th scope="col">Categoría</th><th scope="col" class="num">Stock</th><th scope="col" class="num">Mínimo</th><th scope="col" class="num">Costo</th><th scope="col">Estado</th></tr></thead>
+          <tbody>
+            <tr class="fila-alerta"><td data-label="Insumo"><div><strong>Queso crema</strong><br><span class="small texto-2 text-nowrap">INS-009 · kg</span></div></td><td data-label="Categoría">Lácteos</td><td data-label="Stock" class="num">0,80</td><td data-label="Mínimo" class="num">1,50</td><td data-label="Costo" class="num">S/&#160;30,00</td><td data-label="Estado"><span class="mov mov-salida">Reponer</span></td></tr>
+            <tr class="fila-alerta"><td data-label="Insumo"><div><strong>Mantequilla</strong><br><span class="small texto-2 text-nowrap">INS-004 · kg</span></div></td><td data-label="Categoría">Lácteos</td><td data-label="Stock" class="num">2,50</td><td data-label="Mínimo" class="num">3,00</td><td data-label="Costo" class="num">S/&#160;32,00</td><td data-label="Estado"><span class="mov mov-salida">Reponer</span></td></tr>
+            <tr class="fila-alerta"><td data-label="Insumo"><div><strong>Cobertura de chocolate</strong><br><span class="small texto-2 text-nowrap">INS-006 · kg</span></div></td><td data-label="Categoría">Chocolates y rellenos</td><td data-label="Stock" class="num">1,80</td><td data-label="Mínimo" class="num">2,00</td><td data-label="Costo" class="num">S/&#160;42,00</td><td data-label="Estado"><span class="mov mov-salida">Reponer</span></td></tr>
+            <tr class="fila-alerta"><td data-label="Insumo"><div><strong>Azúcar rubia</strong><br><span class="small texto-2 text-nowrap">INS-002 · kg</span></div></td><td data-label="Categoría">Secos</td><td data-label="Stock" class="num">4,50</td><td data-label="Mínimo" class="num">5,00</td><td data-label="Costo" class="num">S/&#160;4,20</td><td data-label="Estado"><span class="mov mov-salida">Reponer</span></td></tr>
+            <tr><td data-label="Insumo"><div><strong>Harina de trigo</strong><br><span class="small texto-2 text-nowrap">INS-001 · kg</span></div></td><td data-label="Categoría">Secos</td><td data-label="Stock" class="num">18,00</td><td data-label="Mínimo" class="num">10,00</td><td data-label="Costo" class="num">S/&#160;3,80</td><td data-label="Estado"><span class="mov mov-entrada">Óptimo</span></td></tr>
+            <tr><td data-label="Insumo"><div><strong>Azúcar blanca</strong><br><span class="small texto-2 text-nowrap">INS-003 · kg</span></div></td><td data-label="Categoría">Secos</td><td data-label="Stock" class="num">6,00</td><td data-label="Mínimo" class="num">4,00</td><td data-label="Costo" class="num">S/&#160;4,50</td><td data-label="Estado"><span class="mov mov-entrada">Óptimo</span></td></tr>
+            <tr><td data-label="Insumo"><div><strong>Chispas de chocolate</strong><br><span class="small texto-2 text-nowrap">INS-005 · kg</span></div></td><td data-label="Categoría">Chocolates y rellenos</td><td data-label="Stock" class="num">3,20</td><td data-label="Mínimo" class="num">2,00</td><td data-label="Costo" class="num">S/&#160;38,00</td><td data-label="Estado"><span class="mov mov-entrada">Óptimo</span></td></tr>
+            <tr><td data-label="Insumo"><div><strong>Manjar</strong><br><span class="small texto-2 text-nowrap">INS-007 · kg</span></div></td><td data-label="Categoría">Chocolates y rellenos</td><td data-label="Stock" class="num">4,00</td><td data-label="Mínimo" class="num">2,00</td><td data-label="Costo" class="num">S/&#160;14,00</td><td data-label="Estado"><span class="mov mov-entrada">Óptimo</span></td></tr>
+            <tr><td data-label="Insumo"><div><strong>Maicena</strong><br><span class="small texto-2 text-nowrap">INS-008 · kg</span></div></td><td data-label="Categoría">Secos</td><td data-label="Stock" class="num">1,20</td><td data-label="Mínimo" class="num">1,00</td><td data-label="Costo" class="num">S/&#160;9,00</td><td data-label="Estado"><span class="mov mov-entrada">Óptimo</span></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="small texto-2 mt-3 mb-0">Para corregir un stock tras el conteo físico, registra un <a href="kardex.html">ajuste en el Kardex</a>: quedará la diferencia con su saldo anterior y posterior.</p>
+      </div></div>
+    </section>
+  </div>
+
+  <section class="dp-estados" aria-label="Estados de la pantalla">
+    <h2 class="h3">Estados de esta pantalla</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="dp-vacio h-100"><img src="../assets/chef-galleta.png" alt=""><p class="fw-bold mb-1">Todavía no hay insumos</p><p class="texto-2 mb-0">Registra la harina, el azúcar y la mantequilla para empezar.</p></div></div>
+      <div class="col-md-4"><div class="alert alert-danger mb-0" role="alert">Stock: valor entre 0 y 99 999 999,99, con máximo dos decimales.</div></div>
+      <div class="col-md-4"><div class="alert alert-success mb-0" role="status">Stock actualizado de 2,75 a 2,50; ajuste registrado en Kardex.</div></div>
+    </div>
+    <p class="lienzo-nota mt-3 mb-0">Lienzo de diseño APF2. Insumos críticos entregados por el dueño; cantidades, mínimos y costos son valores de ejemplo.</p>
+  </section>
+</main>
+
+<footer class="dp-footer"><div class="container-xl d-flex flex-wrap justify-content-between gap-2"><span>D'PAO COOKIES · Más cookies, más momentos</span><span>Lienzo 3 de 6 · Insumos</span></div></footer>
+<script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acceso | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body>
+<main class="dp-acceso">
+  <div class="tarjeta">
+    <div class="lado-marca">
+      <img src="../assets/03_logo.jpg" alt="D'PAO COOKIES: galleta chef con gorro levantando el pulgar">
+    </div>
+    <div class="lado-form">
+      <p class="dp-etiqueta-seccion mb-2">Gestión de tiendas</p>
+      <h1 class="mb-1">¡Hola de nuevo!</h1>
+      <p class="texto-2 mb-4">Ingresa para registrar ventas, stock y el cierre de caja de tu tienda.</p>
+
+      <div class="alert alert-danger" role="alert">Usuario o contraseña incorrectos. Revisa los datos e inténtalo otra vez.</div>
+
+      <form novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="usuario">Usuario</label>
+          <input class="form-control" id="usuario" name="usuario" autocomplete="username" value="plazamayor">
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="clave">Contraseña</label>
+          <input class="form-control is-invalid" id="clave" name="clave" type="password" autocomplete="current-password" aria-describedby="clave-error">
+          <div class="invalid-feedback" id="clave-error">Ingresa tu contraseña.</div>
+        </div>
+        <div class="mb-4">
+          <label class="form-label" for="tienda">Punto de venta</label>
+          <select class="form-select" id="tienda" name="tienda">
+            <option selected>Plaza Mayor</option>
+            <option>Delivery</option>
+          </select>
+        </div>
+        <button class="btn btn-dp w-100" type="submit">Ingresar</button>
+      </form>
+      <p class="texto-2 small mt-4 mb-0">¿Olvidaste tu contraseña? Pídela al administrador de D'PAO.</p>
+    </div>
+  </div>
+</main>
+
+<div class="container-xl">
+  <section class="dp-estados" aria-label="Estados de la pantalla">
+    <h2 class="h3">Estados de esta pantalla</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="alert alert-success mb-0" role="status">Cerraste sesión correctamente. ¡Hasta mañana!</div></div>
+      <div class="col-md-4"><div class="alert alert-warning mb-0" role="status">Tu sesión expiró por inactividad. Vuelve a ingresar.</div></div>
+      <div class="col-md-4"><div class="alert alert-danger mb-0" role="alert">Usuario o contraseña incorrectos.</div></div>
+    </div>
+    <p class="lienzo-nota mt-3 mb-4">Lienzo de diseño APF2. La pantalla muestra el estado de error de validación; las credenciales se configuran fuera del código.</p>
+  </section>
+</div>
+<script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>

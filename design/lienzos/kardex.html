@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kardex | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body>
+<header class="dp-header">
+  <nav class="navbar navbar-expand-lg" aria-label="Navegación principal">
+    <div class="container-xl">
+      <a class="navbar-brand" href="tablero.html"><img src="../assets/03_logo.jpg" alt=""><span>D'PAO COOKIES<small>Gestión de tiendas</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-lg-4 me-auto gap-1 py-2 py-lg-0">
+          <li class="nav-item"><a class="nav-link" href="tablero.html">Tablero</a></li>
+          <li class="nav-item"><a class="nav-link" href="inventario.html">Insumos</a></li>
+          <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="kardex.html">Kardex</a></li>
+          <li class="nav-item"><a class="nav-link" href="cierre-caja.html">Cierre de caja</a></li>
+        </ul>
+        <div class="d-flex flex-wrap align-items-center gap-3 dp-usuario pb-3 pb-lg-0">
+          <span>Tienda: <strong>Plaza Mayor</strong></span>
+          <a class="btn btn-dp-mostaza btn-sm" href="acceso.html">Cerrar sesión</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="dp-page container-xl">
+  <div class="dp-titulo-pagina">
+    <div>
+      <h1>Kardex de movimientos</h1>
+      <p>Cada movimiento guarda el saldo anterior y el posterior. Ninguna salida puede dejar el stock en negativo.</p>
+    </div>
+  </div>
+
+  <div class="alert alert-danger" role="alert"><strong>No se registró la venta.</strong> Stock insuficiente: disponible 1,00, solicitado 2,00 (Arándano).</div>
+
+  <section class="dp-card dp-card-crema mb-4"><div class="card-body">
+    <h2 class="mb-3">Registrar movimiento</h2>
+    <form class="row g-3" novalidate>
+      <div class="col-md-6 col-lg-4">
+        <label class="form-label" for="item">Ítem</label>
+        <select class="form-select" id="item">
+          <optgroup label="Sabores">
+            <option>G01 · Chispas (vitrina 6)</option>
+            <option>G02 · Chunky (vitrina 1)</option>
+            <option selected>G11 · Arándano (vitrina 1)</option>
+            <option>G16 · Pistacho (vitrina 2)</option>
+          </optgroup>
+          <optgroup label="Insumos">
+            <option>INS-001 · Harina de trigo (18,00 kg)</option>
+            <option>INS-004 · Mantequilla (2,50 kg)</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <label class="form-label" for="tipo">Tipo</label>
+        <select class="form-select" id="tipo"><option>Entrada</option><option>Salida</option><option selected>Venta</option><option>Merma</option><option>Ajuste por conteo</option></select>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <label class="form-label" for="cantidad">Cantidad</label>
+        <input class="form-control is-invalid" id="cantidad" inputmode="decimal" value="2,00" aria-describedby="cantidad-error">
+        <div class="invalid-feedback" id="cantidad-error">Supera el stock.</div>
+      </div>
+      <div class="col-md-8 col-lg-4">
+        <label class="form-label" for="motivo">Motivo</label>
+        <input class="form-control" id="motivo" value="Venta en vitrina">
+      </div>
+      <div class="col-md-4 col-lg-12 d-flex align-items-end justify-content-lg-end">
+        <button class="btn btn-dp btn-bloque-movil" type="submit">Registrar movimiento</button>
+      </div>
+      <p class="form-text col-12 mb-0">En un ajuste por conteo, la cantidad es el stock físico contado; el sistema registra la diferencia.</p>
+    </form>
+  </div></section>
+
+  <section class="dp-card"><div class="card-body">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+      <h2 class="mb-0">Historial</h2>
+      <form class="d-flex flex-wrap gap-2 align-items-end" aria-label="Filtros del historial">
+        <div><label class="form-label small mb-1" for="f-tipo">Tipo</label><select class="form-select" id="f-tipo"><option>Todos</option><option>Entrada</option><option>Salida</option><option>Venta</option><option>Merma</option><option>Ajuste</option></select></div>
+        <div><label class="form-label small mb-1" for="f-desde">Desde</label><input class="form-control" id="f-desde" type="date"></div>
+        <div><label class="form-label small mb-1" for="f-hasta">Hasta</label><input class="form-control" id="f-hasta" type="date"></div>
+        <button class="btn btn-outline-dp" type="submit">Filtrar</button>
+      </form>
+    </div>
+    <div class="table-responsive">
+    <table class="table tabla-dp tabla-apilada">
+      <thead><tr><th scope="col">Hora</th><th scope="col">Ítem</th><th scope="col">Tipo</th><th scope="col" class="num">Cantidad</th><th scope="col" class="num">Anterior</th><th scope="col" class="num">Posterior</th><th scope="col">Motivo</th></tr></thead>
+      <tbody>
+        <tr><td data-label="Hora">20:10</td><td data-label="Ítem"><span><strong>Pistacho</strong> <span class="small texto-2 text-nowrap">G16</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Venta</span></td><td data-label="Cantidad" class="num">−3,00</td><td data-label="Anterior" class="num">5,00</td><td data-label="Posterior" class="num">2,00</td><td data-label="Motivo">Ventas del turno</td></tr>
+        <tr><td data-label="Hora">20:10</td><td data-label="Ítem"><span><strong>Chunky</strong> <span class="small texto-2 text-nowrap">G02</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Venta</span></td><td data-label="Cantidad" class="num">−9,00</td><td data-label="Anterior" class="num">10,00</td><td data-label="Posterior" class="num">1,00</td><td data-label="Motivo">Ventas del turno</td></tr>
+        <tr><td data-label="Hora">20:10</td><td data-label="Ítem"><span><strong>Limón</strong> <span class="small texto-2 text-nowrap">G12</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Venta</span></td><td data-label="Cantidad" class="num">−4,00</td><td data-label="Anterior" class="num">4,00</td><td data-label="Posterior" class="num">0,00</td><td data-label="Motivo">Ventas del turno</td></tr>
+        <tr><td data-label="Hora">15:30</td><td data-label="Ítem"><span><strong>Mantequilla</strong> <span class="small texto-2 text-nowrap">INS-004</span></span></td><td data-label="Tipo"><span class="mov mov-ajuste">Ajuste</span></td><td data-label="Cantidad" class="num">−0,25</td><td data-label="Anterior" class="num">2,75</td><td data-label="Posterior" class="num">2,50</td><td data-label="Motivo">Conteo físico semanal</td></tr>
+        <tr><td data-label="Hora">11:20</td><td data-label="Ítem"><span><strong>Harina de trigo</strong> <span class="small texto-2 text-nowrap">INS-001</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Salida</span></td><td data-label="Cantidad" class="num">−4,50</td><td data-label="Anterior" class="num">22,50</td><td data-label="Posterior" class="num">18,00</td><td data-label="Motivo">Producción lote Clásico</td></tr>
+        <tr><td data-label="Hora">10:45</td><td data-label="Ítem"><span><strong>Queso crema</strong> <span class="small texto-2 text-nowrap">INS-009</span></span></td><td data-label="Tipo"><span class="mov mov-salida">Merma</span></td><td data-label="Cantidad" class="num">−0,20</td><td data-label="Anterior" class="num">1,00</td><td data-label="Posterior" class="num">0,80</td><td data-label="Motivo">Envase abierto vencido</td></tr>
+        <tr><td data-label="Hora">09:05</td><td data-label="Ítem"><span><strong>Chunky</strong> <span class="small texto-2 text-nowrap">G02</span></span></td><td data-label="Tipo"><span class="mov mov-entrada">Entrada</span></td><td data-label="Cantidad" class="num">+6,00</td><td data-label="Anterior" class="num">4,00</td><td data-label="Posterior" class="num">10,00</td><td data-label="Motivo">Reposición de cocina</td></tr>
+        <tr><td data-label="Hora">09:05</td><td data-label="Ítem"><span><strong>Pistacho</strong> <span class="small texto-2 text-nowrap">G16</span></span></td><td data-label="Tipo"><span class="mov mov-entrada">Entrada</span></td><td data-label="Cantidad" class="num">+4,00</td><td data-label="Anterior" class="num">1,00</td><td data-label="Posterior" class="num">5,00</td><td data-label="Motivo">Reposición de cocina</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div></section>
+
+  <section class="dp-estados" aria-label="Estados de la pantalla">
+    <h2 class="h3">Estados de esta pantalla</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="dp-vacio h-100"><img src="../assets/chef-galleta.png" alt=""><p class="fw-bold mb-1">Sin movimientos para este filtro</p><p class="texto-2 mb-0">Prueba con otras fechas o con «Todos».</p></div></div>
+      <div class="col-md-4"><div class="alert alert-danger mb-0" role="alert">La fecha inicial no puede ser posterior a la fecha final.</div></div>
+      <div class="col-md-4"><div class="alert alert-success mb-0" role="status">Movimiento registrado: Chispas (G01), stock 5,00 → 10,00.</div></div>
+    </div>
+    <p class="lienzo-nota mt-3 mb-0">Lienzo de diseño APF2. Saldos de sabores coherentes con la hoja «Control Diario» de Plaza Mayor (stock inicial + reposición − vendidas = final); los movimientos de insumos son de ejemplo.</p>
+  </section>
+</main>
+
+<footer class="dp-footer"><div class="container-xl d-flex flex-wrap justify-content-between gap-2"><span>D'PAO COOKIES · Más cookies, más momentos</span><span>Lienzo 5 de 6 · Kardex</span></div></footer>
+<script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>

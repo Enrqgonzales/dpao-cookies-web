@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tablero | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body>
+<header class="dp-header">
+  <nav class="navbar navbar-expand-lg" aria-label="Navegación principal">
+    <div class="container-xl">
+      <a class="navbar-brand" href="tablero.html"><img src="../assets/03_logo.jpg" alt=""><span>D'PAO COOKIES<small>Gestión de tiendas</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-lg-4 me-auto gap-1 py-2 py-lg-0">
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="tablero.html">Tablero</a></li>
+          <li class="nav-item"><a class="nav-link" href="inventario.html">Insumos</a></li>
+          <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="kardex.html">Kardex</a></li>
+          <li class="nav-item"><a class="nav-link" href="cierre-caja.html">Cierre de caja</a></li>
+        </ul>
+        <div class="d-flex flex-wrap align-items-center gap-3 dp-usuario pb-3 pb-lg-0">
+          <span>Tienda: <strong>Plaza Mayor</strong></span>
+          <a class="btn btn-dp-mostaza btn-sm" href="acceso.html">Cerrar sesión</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="dp-page container-xl">
+  <div class="dp-titulo-pagina">
+    <div>
+      <h1>Hola, así va <span class="dp-etiqueta-seccion">Plaza Mayor</span></h1>
+      <p>Resumen del día según la hoja de control diario (agosto).</p>
+    </div>
+    <a class="btn btn-dp" href="cierre-caja.html">Revisar cierre de caja</a>
+  </div>
+
+  <div class="alert alert-warning d-flex flex-wrap align-items-center gap-2" role="status">
+    <strong>Cierre pendiente:</strong> la caja de Plaza Mayor tiene una diferencia de S/&#160;17,00 sin justificar.
+    <a class="ms-auto fw-bold" href="cierre-caja.html">Justificar ahora</a>
+  </div>
+
+  <section class="row g-3 mb-4" aria-label="Indicadores del día">
+    <div class="col-sm-6 col-lg-3">
+      <div class="dp-card dp-card-chocolate kpi"><div class="card-body">
+        <p class="kpi-titulo">Vendido hoy</p>
+        <p class="kpi-valor">S/&#160;373,50</p>
+        <p class="kpi-detalle mb-0">43 galletas</p>
+      </div></div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="dp-card kpi"><div class="card-body">
+        <p class="kpi-titulo">Dinero recibido</p>
+        <p class="kpi-valor">S/&#160;356,50</p>
+        <p class="kpi-detalle texto-2 mb-0">Yape S/&#160;315,00 · Efectivo S/&#160;41,50</p>
+      </div></div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="dp-card kpi" style="border-color: var(--dp-error);"><div class="card-body">
+        <p class="kpi-titulo">Diferencia de caja</p>
+        <p class="kpi-valor estado-alerta">−S/&#160;17,00</p>
+        <p class="kpi-detalle texto-2 mb-0">Efectivo y un código inválido</p>
+      </div></div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="dp-card dp-card-mostaza kpi"><div class="card-body">
+        <p class="kpi-titulo">Insumos por reponer</p>
+        <p class="kpi-valor">4</p>
+        <p class="kpi-detalle mb-0">de 9 insumos críticos</p>
+      </div></div>
+    </div>
+  </section>
+
+  <div class="row g-3">
+    <section class="col-lg-7">
+      <div class="dp-card h-100"><div class="card-body">
+        <h2 class="mb-3">Sabores que más venden</h2>
+        <ul class="list-unstyled mb-0 d-grid gap-3">
+          <li><div class="d-flex justify-content-between gap-2"><span><strong>Chunky</strong> <span class="cat cat-clasico">Clásico</span></span><span class="num">9 und. · S/&#160;63,00</span></div><div class="barra mt-1" aria-hidden="true"><span style="width:100%"></span></div></li>
+          <li><div class="d-flex justify-content-between gap-2"><span><strong>Pistacho</strong> <span class="cat cat-premium">Premium</span></span><span class="num">3 und. · S/&#160;45,00</span></div><div class="barra mt-1" aria-hidden="true"><span style="width:71%"></span></div></li>
+          <li><div class="d-flex justify-content-between gap-2"><span><strong>Limón</strong> <span class="cat cat-edicion">Edición</span></span><span class="num">4 und. · S/&#160;36,00</span></div><div class="barra mt-1" aria-hidden="true"><span style="width:57%"></span></div></li>
+          <li><div class="d-flex justify-content-between gap-2"><span><strong>Nutella</strong> <span class="cat cat-premium">Premium</span></span><span class="num">3 und. · S/&#160;33,00</span></div><div class="barra mt-1" aria-hidden="true"><span style="width:52%"></span></div></li>
+          <li><div class="d-flex justify-content-between gap-2"><span><strong>Chispas</strong> <span class="cat cat-clasico">Clásico</span></span><span class="num">4 und. · S/&#160;28,00</span></div><div class="barra mt-1" aria-hidden="true"><span style="width:44%"></span></div></li>
+        </ul>
+      </div></div>
+    </section>
+
+    <section class="col-lg-5">
+      <div class="dp-card h-100"><div class="card-body">
+        <h2 class="mb-3">Ventas por medio de pago</h2>
+        <table class="table tabla-dp tabla-apilada">
+          <thead><tr><th scope="col">Medio</th><th scope="col" class="num">Esperado</th><th scope="col" class="num">%</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Medio"><span class="medio"><span class="ico" aria-hidden="true">Y</span>Yape</span></td><td data-label="Esperado" class="num">S/&#160;315,00</td><td data-label="%" class="num">84 %</td></tr>
+            <tr><td data-label="Medio"><span class="medio"><span class="ico" aria-hidden="true">E</span>Efectivo</span></td><td data-label="Esperado" class="num">S/&#160;49,50</td><td data-label="%" class="num">13 %</td></tr>
+            <tr><td data-label="Medio"><span class="medio"><span class="ico" aria-hidden="true">P</span>Plin</span></td><td data-label="Esperado" class="num">S/&#160;0,00</td><td data-label="%" class="num">0 %</td></tr>
+            <tr><td data-label="Medio"><span class="medio"><span class="ico" aria-hidden="true">T</span>Transferencia</span></td><td data-label="Esperado" class="num">S/&#160;0,00</td><td data-label="%" class="num">0 %</td></tr>
+            <tr class="fila-alerta"><td data-label="Medio"><span class="medio"><span class="ico" aria-hidden="true">?</span>Código inválido «R»</span></td><td data-label="Esperado" class="num">S/&#160;9,00</td><td data-label="%" class="num">3 %</td></tr>
+          </tbody>
+          <tfoot><tr><td data-label="Medio">Total vendido</td><td data-label="Esperado" class="num">S/&#160;373,50</td><td data-label="%" class="num">100 %</td></tr></tfoot>
+        </table>
+      </div></div>
+    </section>
+
+    <section class="col-md-6">
+      <div class="dp-card h-100"><div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-baseline gap-2 mb-3">
+          <h2 class="mb-0">Insumos por reponer</h2>
+          <a href="inventario.html" class="fw-bold">Ver insumos</a>
+        </div>
+        <ul class="list-unstyled d-grid gap-2 mb-0">
+          <li class="d-flex justify-content-between gap-2"><span><strong>Queso crema</strong></span><span class="num estado-alerta">0,80 / mín. 1,50 kg</span></li>
+          <li class="d-flex justify-content-between gap-2"><span><strong>Mantequilla</strong></span><span class="num estado-alerta">2,50 / mín. 3,00 kg</span></li>
+          <li class="d-flex justify-content-between gap-2"><span><strong>Cobertura de chocolate</strong></span><span class="num estado-alerta">1,80 / mín. 2,00 kg</span></li>
+          <li class="d-flex justify-content-between gap-2"><span><strong>Azúcar rubia</strong></span><span class="num estado-alerta">4,50 / mín. 5,00 kg</span></li>
+        </ul>
+      </div></div>
+    </section>
+
+    <section class="col-md-6">
+      <div class="dp-card dp-card-crema h-100"><div class="card-body">
+        <h2 class="mb-3">Vitrina sin stock</h2>
+        <p class="texto-2">Sabores con stock final 0 en Plaza Mayor:</p>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="cat cat-edicion">Limón</span>
+          <span class="cat cat-edicion">Cinnamon Roll</span>
+          <span class="cat cat-premium">Snicker</span>
+        </div>
+        <p class="mt-3 mb-0"><a href="kardex.html" class="fw-bold">Registrar reposición en Kardex</a></p>
+      </div></div>
+    </section>
+  </div>
+
+  <section class="dp-estados" aria-label="Estados de la pantalla">
+    <h2 class="h3">Estados de esta pantalla</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="dp-vacio h-100"><img src="../assets/chef-galleta.png" alt=""><p class="fw-bold mb-1">Aún no hay ventas hoy</p><p class="texto-2 mb-0">Cuando se registre la primera venta verás los indicadores aquí.</p></div></div>
+      <div class="col-md-4"><div class="alert alert-danger mb-0" role="alert">No se pudo consultar la información. Intente nuevamente.</div></div>
+      <div class="col-md-4"><div class="alert alert-success mb-0" role="status">Caja de Plaza Mayor cerrada sin diferencias.</div></div>
+    </div>
+    <p class="lienzo-nota mt-3 mb-0">Lienzo de diseño APF2. Ventas, stock y dinero tomados de la hoja «Control Diario» de Plaza Mayor (agosto); los insumos usan cantidades de ejemplo.</p>
+  </section>
+</main>
+
+<footer class="dp-footer"><div class="container-xl d-flex flex-wrap justify-content-between gap-2"><span>D'PAO COOKIES · Más cookies, más momentos</span><span>Lienzo 2 de 6 · Tablero</span></div></footer>
+<script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>

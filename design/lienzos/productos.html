@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Productos | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/dpao.css">
+  <style>
+    .pack { border: 3px solid var(--dp-chocolate); border-radius: var(--dp-radio); padding: 1.1rem; height: 100%; }
+    .pack h3 { font-size: 1.45rem; margin-bottom: .1rem; }
+    .pack ul { padding-left: 1.1rem; margin: .5rem 0 0; }
+    .pack-clasico { background: var(--dp-crema); }
+    .pack-edicion { background: var(--dp-mostaza); }
+    .pack-premium { background: var(--dp-chocolate); color: var(--dp-crema-clara); }
+    .pack-premium h3 { color: var(--dp-mostaza); }
+    .pack-premium .pildora-precio { background: transparent; border: 2px solid var(--dp-mostaza); }
+    .pack .precios { display: grid; justify-items: start; gap: .4rem; margin: .75rem 0; }
+    .filtros .nav-link { border-radius: 999px; border: 2px solid var(--dp-chocolate); color: var(--dp-chocolate); font-weight: 800; padding: .35rem .9rem; }
+    .filtros .nav-link.active { background: var(--dp-chocolate); color: var(--dp-mostaza); }
+  </style>
+</head>
+<body>
+<header class="dp-header">
+  <nav class="navbar navbar-expand-lg" aria-label="Navegación principal">
+    <div class="container-xl">
+      <a class="navbar-brand" href="tablero.html"><img src="../assets/03_logo.jpg" alt=""><span>D'PAO COOKIES<small>Gestión de tiendas</small></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Abrir menú"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-lg-4 me-auto gap-1 py-2 py-lg-0">
+          <li class="nav-item"><a class="nav-link" href="tablero.html">Tablero</a></li>
+          <li class="nav-item"><a class="nav-link" href="inventario.html">Insumos</a></li>
+          <li class="nav-item"><a class="nav-link active" aria-current="page" href="productos.html">Productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="kardex.html">Kardex</a></li>
+          <li class="nav-item"><a class="nav-link" href="cierre-caja.html">Cierre de caja</a></li>
+        </ul>
+        <div class="d-flex flex-wrap align-items-center gap-3 dp-usuario pb-3 pb-lg-0">
+          <span>Tienda: <strong>Plaza Mayor</strong></span>
+          <a class="btn btn-dp-mostaza btn-sm" href="acceso.html">Cerrar sesión</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="dp-page container-xl">
+  <div class="dp-titulo-pagina">
+    <div>
+      <h1>Sabores y packs</h1>
+      <p>16 sabores en tres categorías. El stock de vitrina cambia solo con movimientos del Kardex.</p>
+    </div>
+    <a class="btn btn-dp" href="#nuevo">Nuevo sabor</a>
+  </div>
+
+  <section class="mb-4" aria-labelledby="titulo-packs">
+    <h2 id="titulo-packs" class="mb-3">Packs por delivery</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="pack pack-clasico">
+        <h3>Pack Clásico</h3><p class="mb-0">4 sabores infaltables · S/&#160;6 c/u</p>
+        <div class="precios"><span class="pildora-precio grande">2 × <span class="moneda">S/</span><span class="monto">12</span></span><span class="pildora-precio grande">4 × <span class="moneda">S/</span><span class="monto">22</span></span><span class="pildora-precio grande">6 × <span class="moneda">S/</span><span class="monto">30</span></span></div>
+        <ul><li>Chin Chin, Chispas, Chunky, Chocolate</li></ul>
+      </div></div>
+      <div class="col-md-4"><div class="pack pack-edicion">
+        <h3>Pack Edición</h3><p class="mb-0">Sabores únicos · S/&#160;8 c/u</p>
+        <div class="precios"><span class="pildora-precio grande">2 × <span class="moneda">S/</span><span class="monto">16</span></span><span class="pildora-precio grande">4 × <span class="moneda">S/</span><span class="monto">30</span></span><span class="pildora-precio grande">6 × <span class="moneda">S/</span><span class="monto">42</span></span></div>
+        <ul><li>Red Velvet, Monster, Oreo, Bom o Bom, Limón, Arándano, Cinnamon Roll, Maracuyá, Marshmallow</li></ul>
+      </div></div>
+      <div class="col-md-4"><div class="pack pack-premium">
+        <h3>Pack Premium</h3><p class="mb-0">La experiencia más top · S/&#160;10 c/u</p>
+        <div class="precios"><span class="pildora-precio grande">2 × <span class="moneda">S/</span><span class="monto">20</span></span><span class="pildora-precio grande">4 × <span class="moneda">S/</span><span class="monto">40</span></span><span class="pildora-precio grande">6 × <span class="moneda">S/</span><span class="monto">58</span></span></div>
+        <ul><li>Nutella, Snicker, Pistacho</li></ul>
+      </div></div>
+    </div>
+    <p class="small texto-2 mt-2 mb-0">Solo delivery. Se combinan sabores de la misma categoría.</p>
+  </section>
+
+  <div class="row g-3">
+    <section class="col-lg-8">
+      <div class="dp-card"><div class="card-body">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+          <h2 class="mb-0">Catálogo en tienda</h2>
+          <ul class="nav filtros gap-2" aria-label="Filtrar por categoría">
+            <li class="nav-item"><a class="nav-link active" aria-current="true" href="#">Todos (16)</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Clásico (4)</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Edición (9)</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Premium (3)</a></li>
+          </ul>
+        </div>
+        <div class="table-responsive">
+        <table class="table tabla-dp tabla-apilada">
+          <thead><tr><th scope="col">Código</th><th scope="col">Sabor</th><th scope="col">Categoría</th><th scope="col" class="num">Precio</th><th scope="col" class="num">Vitrina</th><th scope="col"><span class="visually-hidden">Acciones</span></th></tr></thead>
+          <tbody>
+            <tr><td data-label="Código">G01</td><td data-label="Sabor"><strong>Chispas</strong></td><td data-label="Categoría"><span class="cat cat-clasico">Clásico</span></td><td data-label="Precio" class="num">S/&#160;7,00</td><td data-label="Vitrina" class="num">6</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G02</td><td data-label="Sabor"><strong>Chunky</strong></td><td data-label="Categoría"><span class="cat cat-clasico">Clásico</span></td><td data-label="Precio" class="num">S/&#160;7,00</td><td data-label="Vitrina" class="num">1</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G03</td><td data-label="Sabor"><strong>Chin Chin</strong></td><td data-label="Categoría"><span class="cat cat-clasico">Clásico</span></td><td data-label="Precio" class="num">S/&#160;7,00</td><td data-label="Vitrina" class="num">3</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G04</td><td data-label="Sabor"><strong>Chocolate</strong></td><td data-label="Categoría"><span class="cat cat-clasico">Clásico</span></td><td data-label="Precio" class="num">S/&#160;8,00</td><td data-label="Vitrina" class="num">4</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G05</td><td data-label="Sabor"><strong>Red Velvet</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;8,50</td><td data-label="Vitrina" class="num">5</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G06</td><td data-label="Sabor"><strong>Monster</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;8,50</td><td data-label="Vitrina" class="num">4</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G07</td><td data-label="Sabor"><strong>Oreo</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;8,50</td><td data-label="Vitrina" class="num">5</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G08</td><td data-label="Sabor"><strong>Marshmallow</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;8,50</td><td data-label="Vitrina" class="num">3</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G09</td><td data-label="Sabor"><strong>Bom o Bom</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;8,50</td><td data-label="Vitrina" class="num">3</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr class="fila-alerta"><td data-label="Código">G10</td><td data-label="Sabor"><strong>Cinnamon Roll</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;9,00</td><td data-label="Vitrina" class="num estado-alerta">0 · agotado</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G11</td><td data-label="Sabor"><strong>Arándano</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;9,00</td><td data-label="Vitrina" class="num">1</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr class="fila-alerta"><td data-label="Código">G12</td><td data-label="Sabor"><strong>Limón</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;9,00</td><td data-label="Vitrina" class="num estado-alerta">0 · agotado</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G13</td><td data-label="Sabor"><strong>Maracuyá</strong></td><td data-label="Categoría"><span class="cat cat-edicion">Edición</span></td><td data-label="Precio" class="num">S/&#160;9,00</td><td data-label="Vitrina" class="num">1</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G14</td><td data-label="Sabor"><strong>Nutella</strong></td><td data-label="Categoría"><span class="cat cat-premium">Premium</span></td><td data-label="Precio" class="num">S/&#160;11,00</td><td data-label="Vitrina" class="num">5</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr class="fila-alerta"><td data-label="Código">G15</td><td data-label="Sabor"><strong>Snicker</strong></td><td data-label="Categoría"><span class="cat cat-premium">Premium</span></td><td data-label="Precio" class="num">S/&#160;11,00</td><td data-label="Vitrina" class="num estado-alerta">0 · agotado</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+            <tr><td data-label="Código">G16</td><td data-label="Sabor"><strong>Pistacho</strong></td><td data-label="Categoría"><span class="cat cat-premium">Premium</span></td><td data-label="Precio" class="num">S/&#160;15,00</td><td data-label="Vitrina" class="num">2</td><td data-label="Acciones"><a href="#nuevo">Editar</a></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div></div>
+    </section>
+
+    <section class="col-lg-4" id="nuevo">
+      <div class="dp-card dp-card-crema"><div class="card-body">
+        <h2 class="mb-3">Nuevo sabor</h2>
+        <form novalidate>
+          <div class="mb-3"><label class="form-label" for="codigo">Código</label><input class="form-control" id="codigo" placeholder="G17"></div>
+          <div class="mb-3"><label class="form-label" for="nombre">Nombre</label><input class="form-control is-invalid" id="nombre" aria-describedby="nombre-error"><div class="invalid-feedback" id="nombre-error">Nombre: obligatorio, máximo 100 caracteres.</div></div>
+          <div class="mb-3"><label class="form-label" for="categoria">Categoría</label><select class="form-select" id="categoria"><option>Clásico</option><option selected>Edición</option><option>Premium</option></select></div>
+          <div class="mb-4"><label class="form-label" for="precio">Precio unitario (S/)</label><input class="form-control" id="precio" inputmode="decimal" placeholder="8,50"><div class="form-text">El stock inicial es 0; registra el horneado como ENTRADA en el Kardex.</div></div>
+          <button class="btn btn-dp w-100" type="submit">Guardar sabor</button>
+        </form>
+        <hr class="my-4">
+        <div class="d-flex align-items-center gap-3">
+          <img class="dp-chef-mini" src="../assets/chef-galleta.png" alt="">
+          <p class="mb-0 small">Los packs se calculan con el precio de su categoría, no con el precio unitario.</p>
+        </div>
+      </div></div>
+    </section>
+  </div>
+
+  <section class="dp-estados" aria-label="Estados de la pantalla">
+    <h2 class="h3">Estados de esta pantalla</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="dp-vacio h-100"><img src="../assets/chef-galleta.png" alt=""><p class="fw-bold mb-1">No hay sabores Premium</p><p class="texto-2 mb-0">Registra Nutella, Snicker o Pistacho para verlos aquí.</p></div></div>
+      <div class="col-md-4"><div class="alert alert-danger mb-0" role="alert">El código ya existe.</div></div>
+      <div class="col-md-4"><div class="alert alert-success mb-0" role="status">Sabor «Maracuyá» actualizado correctamente.</div></div>
+    </div>
+    <p class="lienzo-nota mt-3 mb-0">Lienzo de diseño APF2. Catálogo, categorías y precios entregados por el dueño (9 oct 2026); vitrina = stock final de Plaza Mayor en la hoja de control.</p>
+  </section>
+</main>
+
+<footer class="dp-footer"><div class="container-xl d-flex flex-wrap justify-content-between gap-2"><span>D'PAO COOKIES · Más cookies, más momentos</span><span>Lienzo 4 de 6 · Productos</span></div></footer>
+<script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
+</body>
+</html>
