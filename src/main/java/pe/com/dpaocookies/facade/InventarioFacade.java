@@ -1,8 +1,13 @@
 package pe.com.dpaocookies.facade;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,13 +17,17 @@ import java.util.stream.Collectors;
 import pe.com.dpaocookies.dao.CategoriaDAO;
 import pe.com.dpaocookies.dao.InsumoDAO;
 import pe.com.dpaocookies.dao.KardexDAO;
+import pe.com.dpaocookies.dao.PackDAO;
 import pe.com.dpaocookies.dao.ProductoDAO;
 import pe.com.dpaocookies.dto.CategoriaDTO;
 import pe.com.dpaocookies.dto.InsumoDTO;
 import pe.com.dpaocookies.dto.MovimientoDTO;
+import pe.com.dpaocookies.dto.PackDTO;
 import pe.com.dpaocookies.dto.ProductoDTO;
 import pe.com.dpaocookies.dto.ResumenTableroDTO;
 import pe.com.dpaocookies.dto.SolicitudMovimientoDTO;
+import pe.com.dpaocookies.dto.VentaSaborDTO;
+import pe.com.dpaocookies.model.PackPrecio;
 import pe.com.dpaocookies.exception.NegocioException;
 import pe.com.dpaocookies.exception.ServicioException;
 import pe.com.dpaocookies.model.Categoria;
@@ -38,23 +47,34 @@ public class InventarioFacade {
 
     private static final Logger LOGGER = Logger.getLogger(InventarioFacade.class.getName());
     private static final int MOVIMIENTOS_TABLERO = 5;
+    private static final int MAS_VENDIDOS = 7;
+    private static final int TABLA_NO_EXISTE = 1146;
+    /** El negocio opera en Lima: "hoy" es el día de Lima, no el del servidor. */
+    public static final ZoneId ZONA = ZoneId.of("America/Lima");
     static final String MOTIVO_AJUSTE_INVENTARIO = "Ajuste desde inventario";
 
     private final InsumoDAO insumoDAO;
     private final ProductoDAO productoDAO;
     private final CategoriaDAO categoriaDAO;
     private final KardexDAO kardexDAO;
+    private final PackDAO packDAO;
 
     public InventarioFacade() {
-        this(new InsumoDAO(), new ProductoDAO(), new CategoriaDAO(), new KardexDAO());
+        this(new InsumoDAO(), new ProductoDAO(), new CategoriaDAO(), new KardexDAO(), new PackDAO());
     }
 
     public InventarioFacade(InsumoDAO insumoDAO, ProductoDAO productoDAO,
             CategoriaDAO categoriaDAO, KardexDAO kardexDAO) {
+        this(insumoDAO, productoDAO, categoriaDAO, kardexDAO, new PackDAO());
+    }
+
+    public InventarioFacade(InsumoDAO insumoDAO, ProductoDAO productoDAO,
+            CategoriaDAO categoriaDAO, KardexDAO kardexDAO, PackDAO packDAO) {
         this.insumoDAO = insumoDAO;
         this.productoDAO = productoDAO;
         this.categoriaDAO = categoriaDAO;
         this.kardexDAO = kardexDAO;
+        this.packDAO = packDAO;
     }
 
     // ---------------------------------------------------------------- Consultas
@@ -87,19 +107,104 @@ public class InventarioFacade {
         if (desde != null && hasta != null && desde.isAfter(hasta)) {
             throw new NegocioException("La fecha inicial no puede ser posterior a la fecha final.");
         }
+        return consultarKardex(tipo, desde, hasta, 0);
+    }
+
+    /** Igual que {@link #consultarKardex(String, LocalDate, LocalDate)}, con un máximo de filas (0 = todas). */
+    public List<MovimientoDTO> consultarKardex(String tipo, LocalDate desde, LocalDate hasta, int limite) {
+        TipoMovimiento filtro = tipo == null || tipo.isBlank() ? null : TipoMovimiento.desde(tipo);
+        if (desde != null && hasta != null && desde.isAfter(hasta)) {
+            throw new NegocioException("La fecha inicial no puede ser posterior a la fecha final.");
+        }
         return consultar("consultar Kardex",
-                () -> MapeadorDTO.movimientos(kardexDAO.listar(filtro, desde, hasta, 0)));
+                () -> MapeadorDTO.movimientos(kardexDAO.listar(filtro, desde, hasta, limite)));
     }
 
     public ResumenTableroDTO obtenerResumen() {
+        return obtenerResumen(LocalDate.now(ZONA));
+    }
+
+    /**
+     * Resumen del tablero para un día: existencias, alertas y lo vendido ese día según los
+     * movimientos VENTA del Kardex, valorizado al precio de venta actual de cada sabor.
+     */
+    public ResumenTableroDTO obtenerResumen(LocalDate dia) {
         return consultar("obtener resumen del tablero", () -> {
             List<InsumoDTO> insumos = insumoDAO.listar().stream()
                     .map(i -> MapeadorDTO.insumo(i, Map.of())).toList();
             List<InsumoDTO> alertas = insumos.stream().filter(InsumoDTO::isBajoStock).toList();
-            int productos = productoDAO.listar().size();
+            List<Producto> productos = productoDAO.listar();
+            Map<Integer, Producto> porId = productos.stream()
+                    .collect(Collectors.toMap(Producto::getIdProducto, p -> p));
+
+            Map<Integer, BigDecimal> unidadesPorSabor = new LinkedHashMap<>();
+            for (MovimientoKardex venta : kardexDAO.listar(TipoMovimiento.VENTA, dia, dia, 0)) {
+                if (venta.getClaseItem() == ClaseItem.PRODUCTO) {
+                    unidadesPorSabor.merge(venta.getIdItem(), venta.getCantidad().negate(), BigDecimal::add);
+                }
+            }
+            BigDecimal unidades = BigDecimal.ZERO;
+            BigDecimal monto = BigDecimal.ZERO.setScale(2);
+            List<VentaSaborDTO> ventas = new ArrayList<>();
+            for (Map.Entry<Integer, BigDecimal> e : unidadesPorSabor.entrySet()) {
+                Producto p = porId.get(e.getKey());
+                if (p == null) {
+                    continue;
+                }
+                BigDecimal importe = e.getValue().multiply(p.getPrecioVenta()).setScale(2, RoundingMode.HALF_UP);
+                unidades = unidades.add(e.getValue());
+                monto = monto.add(importe);
+                ventas.add(new VentaSaborDTO(p.getCodigo(), p.getNombre(), e.getValue(), importe, 0));
+            }
+            ventas.sort(Comparator.comparing(VentaSaborDTO::getMonto).reversed()
+                    .thenComparing(VentaSaborDTO::getNombre));
+            BigDecimal mayor = ventas.isEmpty() ? BigDecimal.ONE : ventas.get(0).getMonto();
+            List<VentaSaborDTO> masVendidos = ventas.stream().limit(MAS_VENDIDOS)
+                    .map(v -> new VentaSaborDTO(v.getCodigo(), v.getNombre(), v.getUnidades(), v.getMonto(),
+                            mayor.signum() == 0 ? 0 : v.getMonto().multiply(BigDecimal.valueOf(100))
+                                    .divide(mayor, 0, RoundingMode.HALF_UP).intValue()))
+                    .toList();
+            List<ProductoDTO> agotados = productos.stream()
+                    .filter(p -> p.getStockActual() != null && p.getStockActual().signum() == 0)
+                    .map(p -> MapeadorDTO.producto(p, Map.of())).toList();
             List<MovimientoDTO> recientes = MapeadorDTO.movimientos(
                     kardexDAO.listar(null, null, null, MOVIMIENTOS_TABLERO));
-            return new ResumenTableroDTO(insumos.size(), productos, alertas, recientes);
+            return new ResumenTableroDTO(insumos.size(), productos.size(), alertas, recientes,
+                    unidades, monto, masVendidos, agotados);
+        });
+    }
+
+    /**
+     * Packs de delivery por categoría, con sus sabores. Si la base aún no tiene la tabla
+     * {@code pack_precio} (no se cargó {@code sql/catalogo-dpao.sql}), no hay packs que mostrar.
+     */
+    public List<PackDTO> listarPacks() {
+        return consultar("listar packs", () -> {
+            List<PackPrecio> filas;
+            try {
+                filas = packDAO.listar();
+            } catch (SQLException exception) {
+                if (exception.getErrorCode() != TABLA_NO_EXISTE) {
+                    throw exception;
+                }
+                LOGGER.info("La tabla pack_precio no existe; se muestra la lista de packs vacía.");
+                return List.of();
+            }
+            List<Producto> productos = productoDAO.listar();
+            Map<Integer, List<PackDTO.Precio>> precios = new LinkedHashMap<>();
+            Map<Integer, String> nombres = new LinkedHashMap<>();
+            for (PackPrecio fila : filas) {
+                precios.computeIfAbsent(fila.getIdCategoria(), k -> new ArrayList<>())
+                        .add(new PackDTO.Precio(fila.getUnidades(), fila.getPrecio()));
+                nombres.put(fila.getIdCategoria(), fila.getNombreCategoria());
+            }
+            List<PackDTO> packs = new ArrayList<>();
+            for (Map.Entry<Integer, List<PackDTO.Precio>> e : precios.entrySet()) {
+                List<String> sabores = productos.stream().filter(p -> p.getIdCategoria() == e.getKey())
+                        .map(Producto::getNombre).toList();
+                packs.add(new PackDTO(e.getKey(), nombres.get(e.getKey()), sabores, e.getValue()));
+            }
+            return packs;
         });
     }
 
