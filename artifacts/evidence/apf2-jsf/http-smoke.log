@@ -1,0 +1,11 @@
+ingreso 302 http://localhost:8080/dpao-cookies-web/app/tablero.xhtml
+tablero.xhtml 200 11617
+insumos.xhtml 200 10766
+productos.xhtml 200 12276
+productos.xhtml?pestana=packs 200 8341
+kardex.xhtml 200 25309
+insumos.xhtml?hoja=nuevo 200 14218
+insumos.xhtml?hoja=ajuste&id=4 200 12225
+productos.xhtml?hoja=editar&id=1 200 14540
+kardex.xhtml?hoja=nuevo 200 29361
+kardex.xhtml?hoja=filtro 200 27544
