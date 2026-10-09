@@ -25,13 +25,42 @@ Navegador ─► SeguridadFilter ─► Servlet (controller) ─► InventarioFa
 
 **Vistas.** `web.xml` declara `<scripting-invalid>true</scripting-invalid>`: Jasper rechaza cualquier scriptlet o expresión Java. Listas, condiciones y formatos usan `c:forEach`, `c:if`, `c:choose`, `fmt:formatNumber`, `fmt:formatDate` y EL, con locale `es_PE` y zona `America/Lima`.
 
+## Interfaz JSF (APF2)
+
+La interfaz principal está en JavaServer Faces 2.3 (Mojarra `org.glassfish:javax.faces:2.3.9`, espacio de nombres `javax.faces`) sobre Tomcat 9. Las vistas JSP anteriores siguen disponibles en `/acceso`, `/tablero`, etc.
+
+```
+Navegador ─► SeguridadFilter ─► FacesServlet (*.xhtml) ─► Managed Bean (bean) ─► InventarioFacade ─► DAO ─► MySQL
+                                       │                       │  DTO ▲
+                                       ▼                       ▼      │
+                         Facelets: plantilla ui:composition, h:form, h:dataTable, h:messages
+```
+
+| Pieza | Dónde | Qué hace |
+|---|---|---|
+| Configuración | `WEB-INF/web.xml`, `WEB-INF/faces-config.xml` | `FacesServlet` para `*.xhtml`, `PROJECT_STAGE=Production`, estado de vista en el servidor, mensajes en castellano (`mensajes.properties`), página de error sin trazas. |
+| Plantilla | `WEB-INF/plantillas/app.xhtml` | `ui:composition` común: cabecera, secciones, cápsula «local · por atender», salir (POST), barra del celular, avisos `h:messages`. |
+| Vistas | `app/acceso.xhtml`, `tablero`, `insumos`, `productos`, `kardex` | `h:form`, `h:inputText`, `h:selectOneMenu`, `h:commandButton`, `h:message` por campo y `h:dataTable` de insumos con datos de MySQL. Hojas laterales abiertas por `f:viewParam` (`?hoja=nuevo`). |
+| Managed beans | `pe.com.dpaocookies.bean` | `AccesoBean` (request), `TableroBean`, `InsumosBean`, `ProductosBean`, `KardexBean` (view) y `FormatoBean` (application). Llaman **solo** a `InventarioFacade` y trabajan con DTO; no importan DAO, JDBC ni entidades. Las reglas (validación, saldos, rango de fechas) las decide la fachada: el bean muestra su mensaje junto al campo o en la hoja. |
+| Navegación | acciones del bean | Implícita: cada acción devuelve `pagina?faces-redirect=true` (Post/Redirect/Get); el éxito viaja en el Flash. |
+| Recursos | `assets/` | Bootstrap 5.3.3, Baloo 2 y Nunito, íconos Lucide y el tema de los lienzos aprobados (`design/`), todo local. `assets/js/dpao.js` pagina tablas y mosaicos según el equipo y muestra la orientación de primera visita. |
+
+**Por qué `@ManagedBean` y esquemas 3.1/2.2.** Tomcat 9 no trae CDI. Mojarra 2.3 activa su modo CDI si `web.xml` declara 4.0 o `faces-config.xml` declara 2.3, y entonces exige un `BeanManager`. Por eso `web.xml` usa el esquema 3.1 y `faces-config.xml` el 2.2: la implementación sigue siendo JSF 2.3. El POM incluye solo la API de CDI (la necesita `h:dataTable`) y la API de JAXB (el Flash cifra su cookie con ella y Java 11+ ya no la trae).
+
+**Seguridad.** Igual que en las vistas JSP: sesión obligatoria para `/app/*` salvo `/app/acceso.xhtml`, cambio de id de sesión al ingresar, sesión de 30 minutos, cabeceras `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy` y `Cache-Control: no-store`, UTF-8 y salida escapada por Facelets. Cada `h:form` envía el token CSRF de la sesión además del `ViewState` de JSF; un POST sin token correcto recibe 403. La cuenta se lee de `DPAO_APP_USER`/`DPAO_APP_PASSWORD`; no hay credenciales en el código.
+
+**Catálogo real.** `sql/catalogo-dpao.sql` carga los 16 sabores del dueño (Clásico, Edición y Premium) y la tabla `pack_precio` con los packs de delivery de 2, 4 y 6 galletas; se puede ejecutar más de una vez. `sql/demo-insumos-dpao.sql` agrega nueve insumos de cocina de ejemplo. Ninguno borra `schema.sql` ni `seed.sql`.
+
+**Pendiente.** La pantalla de cierre de caja de los lienzos no está implementada: el modelo actual no guarda el medio de pago de cada venta ni los cierres. Tampoco hay «Deshacer», porque el Kardex no anula movimientos.
+
 ## Acceso para revisión del docente
 
 Cuenta pública de demostración local:
 
 - **Usuario:** `demo`
 - **Contraseña:** `Demo-local-APF1`
-- **Dirección:** http://localhost:8080/dpao-cookies-web/acceso
+- **Dirección (JSF):** http://localhost:8080/dpao-cookies-web/ (lleva a `/app/acceso.xhtml`)
+- **Dirección (JSP del APF1):** http://localhost:8080/dpao-cookies-web/acceso
 
 Antes de arrancar Tomcat, configurar esta cuenta en la misma terminal:
 
@@ -46,7 +75,7 @@ Esta cuenta es exclusivamente de demostración; no es la cuenta de MySQL ni de G
 
 ## Entorno comprobado
 
-Windows 11, Eclipse Temurin JDK **17.0.20.1+1**, Maven **3.9.16**, Tomcat **9.0.115**, MySQL Community **8.4.9**, Connector/J **8.2.0**. `javax.servlet-api:4.0.1`, `javax.servlet.jsp-api:2.3.3` (provided) y JSTL 1.2. Tomcat 10 requiere migración a `jakarta` y no es el destino de este WAR.
+Windows 11, Eclipse Temurin JDK **17.0.20.1+1**, Maven **3.9.16**, Tomcat **9.0.115**, MySQL Community **8.4.9**, Connector/J **8.2.0**. `javax.servlet-api:4.0.1`, `javax.servlet.jsp-api:2.3.3` (provided), JSTL 1.2, Mojarra **2.3.9** (`javax.faces`), `cdi-api` 2.0.SP1 y `jakarta.xml.bind-api` 2.3.3 (solo API). Tomcat 10 requiere migración a `jakarta` y no es el destino de este WAR.
 
 Las salidas auténticas están en [artifacts/evidence](artifacts/evidence). Las fechas de ejecución y hashes se obtienen de los registros y de `git log`, no de un historial reconstruido.
 
@@ -61,6 +90,8 @@ CREATE DATABASE db_dpao_cookies CHARACTER SET utf8mb4;
 USE db_dpao_cookies;
 SOURCE C:/ruta/dpao-cookies-web/sql/schema.sql;
 SOURCE C:/ruta/dpao-cookies-web/sql/seed.sql;
+-- Catálogo real de D'PAO (16 sabores y packs de delivery), opcional:
+SOURCE C:/ruta/dpao-cookies-web/sql/catalogo-dpao.sql;
 ```
 
 `schema.sql` crea tablas, claves, CHECK, índices y FK sin DROP. `seed.sql` contiene datos ficticios y se aplica una sola vez sobre tablas nuevas. Para una instalación real, omitir los datos de demostración y cargar categorías autorizadas. Crear una cuenta de aplicación con permisos SELECT, INSERT y UPDATE sobre esta base; no necesita DROP, CREATE ni DELETE. La migración de datos de un esquema anterior requiere un plan separado y respaldo.
@@ -94,10 +125,12 @@ Configurar el conector de `conf/server.xml` y verificar que 8080 esté libre ant
 
 ```powershell
 Get-NetTCPConnection -LocalPort 8080 -State Listen -ErrorAction SilentlyContinue
-Invoke-WebRequest http://localhost:8080/dpao-cookies-web/acceso
+Invoke-WebRequest http://localhost:8080/dpao-cookies-web/app/acceso.xhtml
 ```
 
-Abrir `http://localhost:8080/dpao-cookies-web/acceso`. El filtro establece UTF-8 antes de leer parámetros. JSP y fragmentos usan UTF-8; las tablas usan utf8mb4. Las vistas están bajo `WEB-INF/views`. Las operaciones POST usan token CSRF, sesión y redirección GET; los mensajes se consumen una vez. Los detalles SQL se registran en el servidor, no en la página.
+Para la demostración JSF con el catálogo real, crear una base nueva y cargar, en este orden, `sql/schema.sql`, `sql/catalogo-dpao.sql` y `sql/demo-insumos-dpao.sql`. Los sabores empiezan con cero en vitrina: las entradas, ventas y mermas se registran desde **Kardex → Nuevo movimiento** (o desde el tablero, **Registrar movimiento**). En Windows PowerShell una variable de entorno no puede quedar vacía; si la cuenta MySQL de pruebas no tiene clave, se pasa como propiedad JVM: `$env:CATALINA_OPTS='-DDPAO_DB_PASSWORD='`.
+
+Abrir `http://localhost:8080/dpao-cookies-web/` (interfaz JSF) o `http://localhost:8080/dpao-cookies-web/acceso` (vistas JSP). El filtro establece UTF-8 antes de leer parámetros. JSP y fragmentos usan UTF-8; las tablas usan utf8mb4. Las vistas están bajo `WEB-INF/views`. Las operaciones POST usan token CSRF, sesión y redirección GET; los mensajes se consumen una vez. Los detalles SQL se registran en el servidor, no en la página.
 
 ## Funciones demostrables
 
@@ -123,7 +156,7 @@ En este equipo, con MySQL disponible en 3307 y el Tomcat anterior detenido, `scr
 
 `http_smoke.py` ahora comprueba que el servidor declare conexión a la base aislada `dpao_test` antes de enviar cualquier formulario. Se detiene si se ejecuta contra la demostración, aunque se haya definido `DPAO_HTTP_TEST=true`.
 
-Unitarias, sin MySQL: `mvn -B test` (29 pruebas). `KardexDAOTransaccionTest` usa un JDBC simulado con `java.lang.reflect.Proxy` (`support/JdbcFalso`) para comprobar `setAutoCommit(false)`, el orden bloqueo → UPDATE → INSERT, `commit()` y `rollback()` ante fallo del INSERT, stock insuficiente e ítem inexistente. `InventarioFacadeTest` verifica validación, mapeo a DTO, traducción de errores y una llamada de la fachada con rollback. Los tests JDBC aparecen **omitidos** si no se habilitan; esto no demuestra integración.
+Unitarias, sin MySQL: `mvn -B clean test` (89 pruebas; las 14 de integración JDBC aparecen omitidas). Incluyen los managed beans (`bean/*Test`), probados con una fachada falsa y una `Vista` falsa, sin servidor ni `FacesContext`: ingreso válido e inválido, resumen del tablero, alta y ajuste de insumos, alta y edición de sabores, filtro y registro de movimientos, y cada mensaje de error en su campo o en su hoja. `KardexDAOTransaccionTest` usa un JDBC simulado con `java.lang.reflect.Proxy` (`support/JdbcFalso`) para comprobar `setAutoCommit(false)`, el orden bloqueo → UPDATE → INSERT, `commit()` y `rollback()` ante fallo del INSERT, stock insuficiente e ítem inexistente. `InventarioFacadeTest` verifica validación, mapeo a DTO, traducción de errores y una llamada de la fachada con rollback. Los tests JDBC aparecen **omitidos** si no se habilitan; esto no demuestra integración.
 
 Para la suite completa, iniciar una instancia MySQL **exclusiva de pruebas** en `127.0.0.1:3307`, con un directorio de datos nuevo separado de cualquier instalación real. Crear `dpao_test`. La cuenta de pruebas necesita CREATE DATABASE, tablas y triggers, además de DML; no usar estos permisos para la aplicación real.
 
@@ -152,6 +185,7 @@ Este script agrega registros ficticios identificados por fecha de ejecución. Ve
 
 Informe final: [APF1 en Word](docs/APF1_DesarrolloWebIntegrado_Casas_Anderson.docx), 21 páginas, índice actualizado con Word y revisión visual de cada página. La sección 18 contiene la matriz de los seis criterios y sus límites.
 
+- `artifacts/evidence/apf2-jsf/`: interfaz JSF. Capturas `01` (web.xml y paquetes), `02` (interfaz con Bootstrap, computadora y celular), `03` (formulario JSF con datos y el resultado tras guardar), `04` (`h:dataTable` con datos de MySQL y la misma consulta en MySQL) y `05` (historial de commits); `maven-test.log` (89 pruebas, 14 omitidas sin MySQL), `maven-test-jdbc.log` (89 pruebas, 0 omitidas, MySQL 8.4.9), `http-smoke.log` y `medicion-vistas.log` (19 estados × 3 equipos: sin scroll, en la retícula de 4 y sin fallas axe AA, medidos con `design/herramientas/medir-jsf.js`).
 - `artifacts/evidence/apf2-20261008/`: APF2, `mvn test` completo con MySQL 8.4.9 real (41 pruebas, 0 omitidas) y prueba HTTP sobre Tomcat 9.0.115.
 - `artifacts/evidence/jdbc-tests.log`: suite completa con MySQL real (APF1).
 - `artifacts/evidence/http-tests.log`: estados HTTP y aserciones del flujo.
