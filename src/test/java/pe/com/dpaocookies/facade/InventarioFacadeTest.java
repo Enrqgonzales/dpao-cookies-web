@@ -18,6 +18,9 @@ import org.junit.jupiter.api.Test;
 import pe.com.dpaocookies.dao.CategoriaDAO;
 import pe.com.dpaocookies.dao.InsumoDAO;
 import pe.com.dpaocookies.dao.KardexDAO;
+import pe.com.dpaocookies.dao.PackDAO;
+import pe.com.dpaocookies.dto.PackDTO;
+import pe.com.dpaocookies.model.PackPrecio;
 import pe.com.dpaocookies.dao.ProductoDAO;
 import pe.com.dpaocookies.dto.InsumoDTO;
 import pe.com.dpaocookies.dto.MovimientoDTO;
@@ -46,6 +49,7 @@ class InventarioFacadeTest {
     private InsumoFalso insumos;
     private ProductoFalso productos;
     private KardexFalso kardex;
+    private PackFalso packs;
     private InventarioFacade facade;
 
     @BeforeEach
@@ -53,7 +57,8 @@ class InventarioFacadeTest {
         insumos = new InsumoFalso();
         productos = new ProductoFalso();
         kardex = new KardexFalso();
-        facade = new InventarioFacade(insumos, productos, new CategoriaFalsa(), kardex);
+        packs = new PackFalso();
+        facade = new InventarioFacade(insumos, productos, new CategoriaFalsa(), kardex, packs);
     }
 
     // ------------------------------------------------------------ Consultas
@@ -86,6 +91,60 @@ class InventarioFacadeTest {
         assertEquals("HAR-001", resumen.getAlertas().get(0).getCodigo());
         assertEquals(1, resumen.getUltimosMovimientos().size());
         assertEquals(5, kardex.limitePedido);
+    }
+
+    @Test
+    void resumenDelDiaValorizaLasVentasYOrdenaLosMasVendidos() {
+        productos.lista.add(new Producto(1, "G01", "Chispas", new BigDecimal("7.00"), new BigDecimal("6.00"), 2));
+        productos.lista.add(new Producto(16, "G16", "Pistacho", new BigDecimal("15.00"), new BigDecimal("2.00"), 2));
+        productos.lista.add(new Producto(15, "G15", "Snicker", new BigDecimal("11.00"), new BigDecimal("0.00"), 2));
+        kardex.historial = List.of(venta(1, "-2.00"), venta(16, "-1.00"), venta(1, "-1.00"));
+
+        ResumenTableroDTO resumen = facade.obtenerResumen(LocalDate.of(2026, 8, 15));
+
+        assertEquals(TipoMovimiento.VENTA, kardex.primerFiltroTipo, "lee solo las ventas del día");
+        assertEquals(LocalDate.of(2026, 8, 15), kardex.primerDesde);
+        assertEquals(0, new BigDecimal("4").compareTo(resumen.getUnidadesVendidasHoy()));
+        assertEquals(new BigDecimal("36.00"), resumen.getMontoVendidoHoy());
+        assertEquals("Chispas", resumen.getMasVendidos().get(0).getNombre(), "3 × 7.00 = 21.00 supera a 15.00");
+        assertEquals(100, resumen.getMasVendidos().get(0).getPorcentaje());
+        assertEquals(71, resumen.getMasVendidos().get(1).getPorcentaje());
+        assertEquals(1, resumen.getAgotados().size());
+        assertEquals("Snicker", resumen.getAgotados().get(0).getNombre());
+        assertEquals(1, resumen.getCantidadAtencion());
+    }
+
+    @Test
+    void listarPacksAgrupaPreciosYSaboresPorCategoria() {
+        productos.lista.add(new Producto(1, "G01", "Chispas", BigDecimal.ONE, BigDecimal.ONE, 3));
+        productos.lista.add(new Producto(14, "G14", "Nutella", BigDecimal.ONE, BigDecimal.ONE, 5));
+        packs.filas = List.of(
+                new PackPrecio(3, "Clásico", 2, new BigDecimal("12.00")),
+                new PackPrecio(3, "Clásico", 4, new BigDecimal("22.00")),
+                new PackPrecio(5, "Premium", 2, new BigDecimal("20.00")));
+
+        List<PackDTO> resultado = facade.listarPacks();
+
+        assertEquals(2, resultado.size());
+        assertEquals("Clásico", resultado.get(0).getCategoria());
+        assertEquals(List.of("Chispas"), resultado.get(0).getSabores());
+        assertEquals(2, resultado.get(0).getPrecios().size());
+        assertEquals(new BigDecimal("22.00"), resultado.get(0).getPrecios().get(1).getPrecio());
+        assertEquals(List.of("Nutella"), resultado.get(1).getSabores());
+    }
+
+    @Test
+    void sinTablaDePacksNoHayPacksQueMostrar() {
+        packs.error = new SQLException("Table 'pack_precio' doesn't exist", "42S02", 1146);
+        assertTrue(facade.listarPacks().isEmpty());
+        packs.error = new SQLException("Communications link failure", "08S01", 0);
+        assertThrows(ServicioException.class, facade::listarPacks);
+    }
+
+    @Test
+    void consultarKardexConLimiteLoPasaAlDAO() {
+        facade.consultarKardex("", null, null, 120);
+        assertEquals(120, kardex.limitePedido);
     }
 
     @Test
@@ -279,6 +338,29 @@ class InventarioFacadeTest {
         return m;
     }
 
+    private static MovimientoKardex venta(int idProducto, String cantidad) {
+        MovimientoKardex m = movimiento(TipoMovimiento.VENTA, cantidad);
+        m.setIdItem(idProducto);
+        return m;
+    }
+
+    private static final class PackFalso extends PackDAO {
+        List<PackPrecio> filas = List.of();
+        SQLException error;
+
+        PackFalso() {
+            super(SIN_CONEXION);
+        }
+
+        @Override
+        public List<PackPrecio> listar() throws SQLException {
+            if (error != null) {
+                throw error;
+            }
+            return filas;
+        }
+    }
+
     private static final class CategoriaFalsa extends CategoriaDAO {
         CategoriaFalsa() {
             super(SIN_CONEXION);
@@ -355,6 +437,9 @@ class InventarioFacadeTest {
         RuntimeException errorNegocio;
         List<MovimientoKardex> historial = List.of();
         TipoMovimiento filtroTipo;
+        TipoMovimiento primerFiltroTipo;
+        LocalDate primerDesde;
+        boolean consultado;
         int limitePedido = -1;
 
         KardexFalso() {
@@ -377,6 +462,11 @@ class InventarioFacadeTest {
 
         @Override
         public List<MovimientoKardex> listar(TipoMovimiento tipo, LocalDate desde, LocalDate hasta, int limite) {
+            if (!consultado) {
+                consultado = true;
+                primerFiltroTipo = tipo;
+                primerDesde = desde;
+            }
             filtroTipo = tipo;
             limitePedido = limite;
             return historial;

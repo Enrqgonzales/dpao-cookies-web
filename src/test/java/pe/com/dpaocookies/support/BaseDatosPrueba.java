@@ -33,20 +33,26 @@ public final class BaseDatosPrueba {
             s.execute("CREATE DATABASE " + nuevo + " CHARACTER SET utf8mb4");
         }
         System.setProperty("DPAO_DB_URL", url.replace("/dpao_test?", "/" + nuevo + "?"));
-        try (Connection c = ConexionBD.getConnection(); Statement s = c.createStatement()) {
-            for (String archivo : new String[]{"sql/schema.sql", "sql/seed.sql"}) {
-                String sql = Files.readString(Path.of(archivo)).replaceAll("(?m)^--.*$", "");
-                for (String comando : sql.split(";")) {
-                    if (!comando.isBlank()) {
-                        s.execute(comando);
-                    }
-                }
-            }
+        ejecutarScript("sql/schema.sql");
+        ejecutarScript("sql/seed.sql");
+        try (Connection c = ConexionBD.getConnection()) {
             System.out.println("Motor real: " + c.getMetaData().getDatabaseProductName() + " "
                     + c.getMetaData().getDatabaseProductVersion() + "; esquema aislado: " + nuevo);
         }
         esquema = nuevo;
         return esquema;
+    }
+
+    /** Ejecuta un script del repositorio, sentencia por sentencia, sobre el esquema de pruebas. */
+    public static void ejecutarScript(String archivo) throws Exception {
+        String sql = Files.readString(Path.of(archivo)).replaceAll("(?m)^--.*$", "");
+        try (Connection c = ConexionBD.getConnection(); Statement s = c.createStatement()) {
+            for (String comando : sql.split(";")) {
+                if (!comando.isBlank()) {
+                    s.execute(comando);
+                }
+            }
+        }
     }
 
     /** Ejecuta una consulta escalar sobre el esquema de pruebas. */
