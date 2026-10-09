@@ -1,0 +1,153 @@
+<ui:composition template="/WEB-INF/plantillas/app.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:param name="seccion" value="productos"/>
+    <ui:define name="metadatos">
+        <f:metadata>
+            <f:viewParam name="pestana" value="#{productos.pestana}"/>
+            <f:viewParam name="categoria" value="#{productos.categoria}"/>
+            <f:viewParam name="hoja" value="#{productos.hoja}"/>
+            <f:viewParam name="id" value="#{productos.id}"/>
+            <f:viewAction action="#{productos.preparar}"/>
+        </f:metadata>
+    </ui:define>
+    <ui:define name="titulo">Productos</ui:define>
+
+    <ui:define name="contenido">
+        <div class="titulo-fila">
+            <h1>Productos</h1>
+            <nav class="pestanas" aria-label="Pestañas de productos">
+                <h:link outcome="productos" value="Sabores" p:aria-current="#{productos.pestanaPacks ? null : 'page'}"/>
+                <h:link outcome="productos" value="Packs" p:aria-current="#{productos.pestanaPacks ? 'page' : null}">
+                    <f:param name="pestana" value="packs"/>
+                </h:link>
+            </nav>
+            <!-- En Packs el lugar de la acción principal queda reservado: nada se corre. -->
+            <div class="derecha accion-principal #{productos.pestanaPacks ? 'reservado' : ''}">
+                <h:link outcome="productos" styleClass="btn-principal">
+                    <f:param name="hoja" value="nuevo"/>
+                    <f:param name="categoria" value="#{productos.categoria}" disable="#{productos.categoria eq 0}"/>
+                    <span class="ico ico-plus" aria-hidden="true"></span>Nuevo sabor
+                </h:link>
+            </div>
+        </div>
+
+        <!-- Pestaña Sabores -->
+        <ui:fragment rendered="#{not productos.pestanaPacks}">
+            <div class="d-flex flex-column gap-3 flex-fill">
+                <div class="d-flex align-items-center gap-3">
+                    <ul class="chips" aria-label="Categoría">
+                        <li><h:link outcome="productos" styleClass="chip" p:aria-current="#{productos.categoria eq 0 ? 'true' : null}">Todos <span class="cuenta">#{productos.lista.size()}</span></h:link></li>
+                        <ui:repeat value="#{productos.categoriasConSabores}" var="c">
+                            <li><h:link outcome="productos" styleClass="chip" p:aria-current="#{productos.categoria eq c.categoria.idCategoria ? 'true' : null}">
+                                <f:param name="categoria" value="#{c.categoria.idCategoria}"/>#{c.categoria.nombre} <span class="cuenta">#{c.sabores}</span>
+                            </h:link></li>
+                        </ui:repeat>
+                    </ul>
+                    <span class="ms-auto t-etiqueta d-none d-md-inline">Unidades en vitrina</span>
+                </div>
+
+                <ui:fragment rendered="#{not empty productos.sabores}">
+                    <div class="sabores" data-paginar="8 16 16">
+                        <ui:repeat value="#{productos.sabores}" var="s">
+                            <h:link outcome="productos" styleClass="sabor" p:title="Editar #{s.nombre}">
+                                <f:param name="hoja" value="editar"/>
+                                <f:param name="id" value="#{s.idProducto}"/>
+                                <f:param name="categoria" value="#{productos.categoria}" disable="#{productos.categoria eq 0}"/>
+                                <span class="nombre">#{s.nombre}</span>
+                                <span class="precio dinero"><span class="soles">S/</span>#{formato.entero(s.precioVenta)}<span class="dec">#{formato.decimales(s.precioVenta)}</span></span>
+                                <h:outputText rendered="#{s.stockActual.signum() eq 0}" styleClass="vitrina estado-alerta" value="Agotado"/>
+                                <h:outputText rendered="#{s.stockActual.signum() ne 0}" styleClass="vitrina t-subtitulo" value="#{formato.unidades(s.stockActual)}"/>
+                            </h:link>
+                        </ui:repeat>
+                    </div>
+                </ui:fragment>
+
+                <ui:fragment rendered="#{empty productos.sabores}">
+                    <section class="superficie d-flex flex-column flex-fill" aria-label="Sin sabores">
+                        <div class="vacio"><img src="#{request.contextPath}/assets/img/chef-galleta.png" alt=""/>
+                            <h2>#{productos.categoria eq 0 ? 'Aún no hay sabores' : 'No hay sabores '.concat(productos.nombreCategoria)}</h2></div>
+                    </section>
+                </ui:fragment>
+            </div>
+        </ui:fragment>
+
+        <!-- Pestaña Packs: solo delivery, combinan sabores de la misma categoría. -->
+        <ui:fragment rendered="#{productos.pestanaPacks}">
+            <ui:fragment rendered="#{not empty productos.packs}">
+                <div class="packs">
+                    <ui:repeat value="#{productos.packs}" var="k" varStatus="st">
+                        <section class="superficie pack" aria-labelledby="pack-#{st.index}">
+                            <div class="pack-cabecera"><h2 id="pack-#{st.index}">Pack #{k.categoria}</h2><span class="t-2 d-md-none">#{k.sabores.size()} sabores</span></div>
+                            <div class="precios-pack">
+                                <ui:repeat value="#{k.precios}" var="pp">
+                                    <div class="precio-pack"><span class="cantidad">#{pp.unidades} galletas</span><span class="monto">S/&#160;#{formato.unidades(pp.precio)}</span></div>
+                                </ui:repeat>
+                            </div>
+                            <p class="t-2 d-none d-md-block">#{formato.enumerar(k.sabores)}</p>
+                        </section>
+                    </ui:repeat>
+                </div>
+            </ui:fragment>
+            <ui:fragment rendered="#{empty productos.packs}">
+                <section class="superficie d-flex flex-column flex-fill" aria-label="Sin packs">
+                    <div class="vacio"><img src="#{request.contextPath}/assets/img/chef-galleta.png" alt=""/><h2>Aún no hay packs</h2></div>
+                </section>
+            </ui:fragment>
+        </ui:fragment>
+    </ui:define>
+
+    <ui:define name="capas">
+        <!-- Hoja: nuevo sabor o edición -->
+        <ui:fragment rendered="#{productos.hojaAbierta}">
+            <div class="velo velo-hoja" role="dialog" aria-modal="true" aria-labelledby="h-sabor">
+                <h:form id="formulario" styleClass="hoja" p:novalidate="novalidate">
+                    <input type="hidden" name="csrf" value="#{sessionScope.csrf}"/>
+                    <div class="hoja-cabecera">
+                        <h2 id="h-sabor">#{productos.editando ? 'Editar sabor' : 'Nuevo sabor'}</h2>
+                        <h:link outcome="productos" styleClass="btn-icono hoja-cerrar" p:aria-label="Cerrar">
+                            <f:param name="categoria" value="#{productos.categoria}" disable="#{productos.categoria eq 0}"/>
+                            <span class="ico ico-x" aria-hidden="true"></span>
+                        </h:link>
+                    </div>
+                    <h:messages for="formulario" styleClass="mensajes-hoja"/>
+                    <div class="campo">
+                        <h:outputLabel for="codigo" styleClass="form-label" value="Código"/>
+                        <h:inputText id="codigo" value="#{productos.sabor.codigo}" p:autocomplete="off" styleClass="form-control"/>
+                    </div>
+                    <div class="campo">
+                        <h:outputLabel for="nombre" styleClass="form-label" value="Nombre"/>
+                        <h:inputText id="nombre" value="#{productos.sabor.nombre}" p:autocomplete="off" styleClass="form-control"/>
+                    </div>
+                    <div class="campo">
+                        <h:outputLabel for="categoria" styleClass="form-label" value="Categoría"/>
+                        <h:selectOneMenu id="categoria" value="#{productos.sabor.idCategoria}" styleClass="form-select">
+                            <f:selectItems value="#{productos.categoriasDeSabor}" var="c" itemValue="#{c.idCategoria}" itemLabel="#{c.nombre}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="campo">
+                        <h:outputLabel for="precio" styleClass="form-label" value="Precio (S/)"/>
+                        <h:inputText id="precio" value="#{productos.sabor.precioVenta}" p:inputmode="decimal"
+                                     styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                     p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        <h:message for="precio" styleClass="error-campo"/>
+                    </div>
+                    <div class="hoja-pie">
+                        <h:commandButton value="Guardar sabor" action="#{productos.guardar}" styleClass="btn-principal"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:fragment>
+
+        <ui:include src="/WEB-INF/plantillas/orientacion.xhtml">
+            <ui:param name="clave" value="productos"/>
+            <ui:param name="titulo1" value="Tus sabores"/>
+            <ui:param name="texto1" value="Cada sabor muestra su precio y cuántas galletas quedan en vitrina. Tócalo para editarlo."/>
+            <ui:param name="titulo2" value="Packs de delivery"/>
+            <ui:param name="texto2" value="Combinan sabores de la misma categoría: 2, 4 o 6 galletas."/>
+        </ui:include>
+    </ui:define>
+</ui:composition>

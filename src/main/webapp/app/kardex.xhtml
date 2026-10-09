@@ -1,0 +1,172 @@
+<ui:composition template="/WEB-INF/plantillas/app.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:param name="seccion" value="kardex"/>
+    <ui:define name="metadatos">
+        <f:metadata>
+            <f:viewParam name="hoja" value="#{kardex.hoja}"/>
+            <f:viewParam name="tipo" value="#{kardex.tipo}"/>
+            <f:viewParam name="desde" value="#{kardex.desde}"><f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/></f:viewParam>
+            <f:viewParam name="hasta" value="#{kardex.hasta}"><f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/></f:viewParam>
+        </f:metadata>
+    </ui:define>
+    <ui:define name="titulo">Kardex</ui:define>
+
+    <ui:define name="contenido">
+        <div class="titulo-fila">
+            <h1>Kardex</h1>
+            <div class="derecha">
+                <ui:fragment rendered="#{kardex.filtrado}">
+                    <h:link outcome="kardex" styleClass="btn-texto d-none d-md-inline-flex align-items-center" value="Quitar filtro"/>
+                </ui:fragment>
+                <h:link outcome="kardex" includeViewParams="true" styleClass="btn-icono" p:title="Filtrar movimientos"
+                        p:aria-label="#{kardex.filtrado ? 'Filtrar movimientos (filtro activo)' : 'Filtrar movimientos'}">
+                    <f:param name="hoja" value="filtro"/>
+                    <span class="ico ico-sliders-horizontal" aria-hidden="true"></span>
+                </h:link>
+                <div class="accion-principal">
+                    <h:link outcome="kardex" styleClass="btn-principal">
+                        <f:param name="hoja" value="nuevo"/>
+                        <span class="ico ico-plus" aria-hidden="true"></span>Nuevo movimiento
+                    </h:link>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movimientos desde MySQL, agrupados por día de Lima (KardexBean → MovimientoDTO). -->
+        <ui:fragment rendered="#{kardex.totalFilas gt 0}">
+            <section class="superficie" aria-label="Movimientos">
+                <table class="tabla tabla-movil" data-paginar="6 8 8">
+                    <thead><tr><th scope="col">Hora</th><th scope="col">Ítem</th><th scope="col">Movimiento</th><th scope="col" class="num">Cantidad</th><th scope="col" class="num">Saldo</th><th scope="col">Motivo</th></tr></thead>
+                    <tbody>
+                        <ui:repeat value="#{kardex.dias}" var="d">
+                            <tr class="fila-dia"><td colspan="6"><span class="dia">#{d.nombre}</span></td></tr>
+                            <ui:repeat value="#{d.movimientos}" var="m">
+                                <tr>
+                                    <td class="solo-ancho"><h:outputText value="#{m.fechaRegistro}"><f:convertDateTime pattern="HH:mm" timeZone="America/Lima"/></h:outputText></td>
+                                    <td><span class="t-fuerte">#{m.nombreItem}</span>
+                                        <span class="sub d-md-none"><h:outputText value="#{m.fechaRegistro}"><f:convertDateTime pattern="HH:mm" timeZone="America/Lima"/></h:outputText> · #{kardex.etiqueta(m.tipoMovimiento)}</span></td>
+                                    <td class="solo-ancho">#{kardex.etiqueta(m.tipoMovimiento)}</td>
+                                    <td class="num m-derecha">#{formato.conSigno(m.cantidad)}<span class="sub d-md-none">#{formato.monto(m.stockAnterior)} → #{formato.monto(m.stockPosterior)}</span></td>
+                                    <td class="num solo-ancho">#{formato.monto(m.stockAnterior)} → #{formato.monto(m.stockPosterior)}</td>
+                                    <td class="solo-ancho">#{m.observacion}</td>
+                                </tr>
+                            </ui:repeat>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </section>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{kardex.totalFilas eq 0}">
+            <section class="superficie d-flex flex-column flex-fill" aria-label="Sin movimientos">
+                <div class="vacio">
+                    <img src="#{request.contextPath}/assets/img/chef-galleta.png" alt=""/>
+                    <h2>#{kardex.filtrado ? 'Sin movimientos con este filtro' : 'Aún no hay movimientos'}</h2>
+                    <ui:fragment rendered="#{kardex.filtrado}">
+                        <h:link outcome="kardex" styleClass="btn-secundario"><span class="ico ico-x" aria-hidden="true"></span>Quitar filtro</h:link>
+                    </ui:fragment>
+                </div>
+            </section>
+        </ui:fragment>
+    </ui:define>
+
+    <ui:define name="capas">
+        <!-- Hoja: nuevo movimiento (transacción con saldo anterior y posterior). -->
+        <ui:fragment rendered="#{kardex.hojaNuevo}">
+            <div class="velo velo-hoja" role="dialog" aria-modal="true" aria-labelledby="h-movimiento">
+                <h:form id="formulario" styleClass="hoja" p:novalidate="novalidate">
+                    <input type="hidden" name="csrf" value="#{sessionScope.csrf}"/>
+                    <div class="hoja-cabecera">
+                        <h2 id="h-movimiento">Nuevo movimiento</h2>
+                        <h:link outcome="kardex" styleClass="btn-icono hoja-cerrar" p:aria-label="Cerrar"><span class="ico ico-x" aria-hidden="true"></span></h:link>
+                    </div>
+                    <h:messages for="formulario" styleClass="mensajes-hoja"/>
+                    <div class="campo">
+                        <h:outputLabel for="item" styleClass="form-label" value="Ítem"/>
+                        <h:selectOneMenu id="item" value="#{kardex.item}" styleClass="form-select">
+                            <f:selectItems value="#{kardex.items}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="campo">
+                        <h:outputLabel for="tipo" styleClass="form-label" value="Movimiento"/>
+                        <h:selectOneMenu id="tipo" value="#{kardex.tipoNuevo}" styleClass="form-select">
+                            <f:selectItems value="#{kardex.tipos}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="campo">
+                        <h:outputLabel for="cantidad" styleClass="form-label" value="Cantidad"/>
+                        <h:inputText id="cantidad" value="#{kardex.cantidad}" p:inputmode="decimal" p:aria-describedby="formulario:cantidad-ayuda"
+                                     styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                     p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        <h:message for="cantidad" styleClass="error-campo"/>
+                        <p class="sub mt-2" id="formulario:cantidad-ayuda">En «Ajuste», escribe lo que contaste.</p>
+                    </div>
+                    <div class="campo">
+                        <h:outputLabel for="motivo" styleClass="form-label" value="Motivo"/>
+                        <h:inputText id="motivo" value="#{kardex.motivo}" p:autocomplete="off" p:maxlength="255" styleClass="form-control"/>
+                    </div>
+                    <div class="hoja-pie">
+                        <h:commandButton value="Registrar" action="#{kardex.registrar}" styleClass="btn-principal"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:fragment>
+
+        <!-- Hoja: filtro por tipo y fechas (queda en la dirección para recargar o compartir). -->
+        <ui:fragment rendered="#{kardex.hojaFiltro}">
+            <div class="velo velo-hoja" role="dialog" aria-modal="true" aria-labelledby="h-filtro">
+                <h:form id="filtro" styleClass="hoja" p:novalidate="novalidate">
+                    <input type="hidden" name="csrf" value="#{sessionScope.csrf}"/>
+                    <div class="hoja-cabecera">
+                        <h2 id="h-filtro">Filtrar movimientos</h2>
+                        <h:link outcome="kardex" includeViewParams="true" styleClass="btn-icono hoja-cerrar" p:aria-label="Cerrar"><span class="ico ico-x" aria-hidden="true"></span></h:link>
+                    </div>
+                    <h:messages for="filtro" styleClass="mensajes-hoja"/>
+                    <div class="campo">
+                        <h:outputLabel for="tipoFiltro" styleClass="form-label" value="Movimiento"/>
+                        <h:selectOneMenu id="tipoFiltro" value="#{kardex.tipo}" styleClass="form-select">
+                            <f:selectItem itemValue="#{null}" itemLabel="Todos" noSelectionOption="true"/>
+                            <f:selectItems value="#{kardex.tipos}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <div class="campo row g-2">
+                        <div class="col-6">
+                            <h:outputLabel for="desde" styleClass="form-label" value="Desde"/>
+                            <h:inputText id="desde" value="#{kardex.desde}" p:type="date"
+                                         styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}">
+                                <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+                            </h:inputText>
+                        </div>
+                        <div class="col-6">
+                            <h:outputLabel for="hasta" styleClass="form-label" value="Hasta"/>
+                            <h:inputText id="hasta" value="#{kardex.hasta}" p:type="date"
+                                         styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}">
+                                <f:convertDateTime type="localDate" pattern="yyyy-MM-dd"/>
+                            </h:inputText>
+                        </div>
+                        <div class="col-12">
+                            <h:message for="desde" styleClass="error-campo"/>
+                            <h:message for="hasta" styleClass="error-campo"/>
+                        </div>
+                    </div>
+                    <div class="hoja-pie">
+                        <h:link outcome="kardex" styleClass="btn-secundario" value="Quitar"/>
+                        <h:commandButton value="Aplicar filtro" action="#{kardex.filtrar}" styleClass="btn-principal"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:fragment>
+
+        <ui:include src="/WEB-INF/plantillas/orientacion.xhtml">
+            <ui:param name="clave" value="kardex"/>
+            <ui:param name="titulo1" value="Todo lo que entra y sale"/>
+            <ui:param name="texto1" value="Cada movimiento guarda el stock de antes y de después."/>
+            <ui:param name="titulo2" value="¿Contaste distinto?"/>
+            <ui:param name="texto2" value="Elige «Ajuste» y escribe lo que contaste: el sistema registra la diferencia."/>
+        </ui:include>
+    </ui:define>
+</ui:composition>

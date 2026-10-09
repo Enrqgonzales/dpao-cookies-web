@@ -1,0 +1,22 @@
+<!-- Primera visita de una pantalla: dos pasos, se cierra para siempre con «Entendido» (assets/js/dpao.js).
+     Parámetros: clave, titulo1, texto1, titulo2, texto2. -->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <div class="velo velo-centro orientacion" data-orientacion="#{clave}" role="dialog" aria-modal="true"
+         aria-labelledby="o-titulo-1" hidden="hidden">
+        <div class="ventana">
+            <img class="ilustracion" src="#{request.contextPath}/assets/img/chef-galleta.png" alt=""/>
+            <div class="puntos-paso" aria-hidden="true"><span aria-current="step"></span><span></span></div>
+            <p class="visually-hidden contador-paso">Paso 1 de 2</p>
+            <div class="paso">
+                <h2 id="o-titulo-1" class="text-center">#{titulo1}</h2>
+                <p class="text-center">#{texto1}</p>
+            </div>
+            <div class="paso" hidden="hidden">
+                <h2 class="text-center">#{titulo2}</h2>
+                <p class="text-center">#{texto2}</p>
+            </div>
+            <div class="acciones"><button class="btn-principal siguiente" type="button">Siguiente</button></div>
+        </div>
+    </div>
+</ui:composition>
