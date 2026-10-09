@@ -40,6 +40,36 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        <!-- JSF 2.3 (Mojarra, espacio de nombres javax.faces): Tomcat 9 no trae implementación propia. -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.faces</artifactId>
+            <version>2.3.9</version>
+        </dependency>
+        <!-- Solo la API de CDI (sin implementación): h:dataTable de Mojarra 2.3 enlaza sus clases.
+             Sin BeanManager, JSF sigue en modo @ManagedBean. Se excluye el EL que ya trae Tomcat. -->
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>2.0.SP1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.el</groupId>
+                    <artifactId>javax.el-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.interceptor</groupId>
+                    <artifactId>javax.interceptor-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- API de JAXB (javax.xml.bind): el Flash de Mojarra 2.3 la usa para cifrar su cookie y
+             desde Java 11 ya no viene en el JDK. -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.3</version>
+        </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>

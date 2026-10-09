@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Implementación: Mojarra 2.3.9 (JSF 2.3, javax.faces). Se declara el esquema 2.2 a propósito:
+     con version="2.3" Mojarra activa su modo CDI y exige un BeanManager que Tomcat 9 no trae.
+     Por eso los beans usan @ManagedBean y la navegación es implícita (cada acción devuelve
+     el nombre de la página con faces-redirect=true). -->
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+              version="2.2">
+    <application>
+        <locale-config>
+            <default-locale>es_PE</default-locale>
+        </locale-config>
+        <message-bundle>pe.com.dpaocookies.mensajes</message-bundle>
+    </application>
+</faces-config>
