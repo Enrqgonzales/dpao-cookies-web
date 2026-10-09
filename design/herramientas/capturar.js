@@ -102,8 +102,30 @@ function medir() {
     return r;
 }
 
+// Edge actual entrega el control a otro proceso al arrancar, y el lanzamiento por tubería de Playwright
+// lo da por cerrado. Se arranca un Edge propio con puerto de depuración y Playwright se conecta por CDP.
+const { spawn, execSync } = require('child_process');
+const os = require('os');
+const EDGE = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';
+async function abrirEdge() {
+    const puerto = 9400 + Math.floor(Math.random() * 400);
+    const perfil = fs.mkdtempSync(path.join(os.tmpdir(), 'lienzos-edge-'));
+    spawn(EDGE, ['--headless=new', `--remote-debugging-port=${puerto}`, `--user-data-dir=${perfil}`, '--no-first-run',
+        '--disable-extensions', '--hide-scrollbars', 'about:blank'], { detached: true, stdio: 'ignore' }).unref();
+    for (let i = 0; i < 60; i++) {
+        try { await (await fetch(`http://127.0.0.1:${puerto}/json/version`)).json(); break; }
+        catch { await new Promise(r => setTimeout(r, 250)); }
+    }
+    const browser = await chromium.connectOverCDP(`http://127.0.0.1:${puerto}`);
+    const cerrar = async () => {
+        await browser.close().catch(() => {});
+        try { execSync(`powershell -NoProfile -Command "Get-CimInstance Win32_Process -Filter \\"Name='msedge.exe'\\" | Where-Object CommandLine -like '*${path.basename(perfil)}*' | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"`, { stdio: 'ignore' }); } catch {}
+    };
+    return { browser, cerrar };
+}
+
 (async () => {
-    const browser = await chromium.launch({ channel: 'msedge', headless: false, args: ['--headless=new'] });
+    const { browser, cerrar } = await abrirEdge();
     let observaciones = 0;
     const tamanosGlobal = {}, radiosGlobal = {};
     const solo = process.env.SOLO ? process.env.SOLO.split(',') : null;   // SOLO=tablero,kardex para medir algunos
@@ -140,7 +162,7 @@ function medir() {
             await context.close();
         }
     }
-    await browser.close();
+    await cerrar();
     console.log('Tamaños de letra usados (px: elementos):', JSON.stringify(tamanosGlobal));
     console.log('Radios usados:', JSON.stringify(radiosGlobal));
     console.log(observaciones ? `Con observaciones: ${observaciones}` : 'Sin observaciones');

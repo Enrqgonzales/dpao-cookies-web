@@ -100,6 +100,7 @@ h2, .t-subtitulo { font: 700 var(--t-subtitulo)/var(--l-subtitulo) var(--f-titul
 .capsula { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: var(--r-pildora); border: 1px solid rgba(255, 244, 221, .32); color: var(--dp-crema-clara); white-space: nowrap; font-weight: 600; }
 .capsula .sep { opacity: .48; }
 .capsula .estado-alerta { color: var(--dp-alerta-sobre-oscuro); }
+.capsula .estado-ok { color: var(--dp-crema-clara); }
 .app-cabecera .capsula { margin-left: auto; }
 @media (min-width: 768px) { .app-cabecera .capsula { margin-left: 0; } }
 @media (max-width: 1199.98px) { .capsula .local, .capsula .sep { display: none; } }
@@ -178,7 +179,11 @@ h2, .t-subtitulo { font: 700 var(--t-subtitulo)/var(--l-subtitulo) var(--f-titul
   .tabla-movil tbody tr.fila-dia { min-height: 0; padding-block: 8px 4px; display: block; }
   .tabla-movil td { display: block; height: auto; padding: 0; border: 0; }
   .tabla-movil td.m-derecha { text-align: right; }
+  .tabla-movil tfoot { display: none; }
 }
+/* Monto declarado dentro de una fila: alineado a la derecha, como las cifras. */
+.campo-monto { width: 144px; margin-left: auto; font-variant-numeric: tabular-nums; }
+@media (max-width: 767.98px) { .campo-monto { width: 128px; } }
 
 /* ---------- Estados con punto y palabra ---------- */
 .estado-alerta, .estado-aviso, .estado-ok { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; white-space: nowrap; }
@@ -217,7 +222,7 @@ textarea.form-control { height: auto; }
 .error-campo { display: flex; align-items: center; gap: 8px; margin-top: 8px; color: var(--dp-alerta); font-weight: 700; font-size: var(--t-etiqueta); line-height: var(--l-etiqueta); }
 .campo + .campo { margin-top: 16px; }
 .form-check { display: flex; align-items: center; gap: 12px; min-height: var(--alto-toque); padding: 0; margin: 0; }
-.form-check-input { width: 24px; height: 24px; margin: 0; float: none; border: 2px solid var(--dp-campo); border-radius: 8px; }
+.form-check .form-check-input { width: 24px; height: 24px; margin: 0; float: none; flex: none; border: 2px solid var(--dp-campo); border-radius: 8px; }
 .form-check-input:checked { background-color: var(--dp-chocolate); border-color: var(--dp-chocolate); }
 
 /* ---------- Capas flotantes: hoja, orientación, diálogo y aviso ---------- */
@@ -303,7 +308,8 @@ textarea.form-control { height: auto; }
 }
 
 /* ---------- Rejilla de dos superficies ---------- */
-.dos-columnas { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); flex: 1; min-height: 0; align-content: start; }
+/* Cada tarjeta mide lo que su contenido: nada de media tarjeta vacía. */
+.dos-columnas { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); flex: 1; min-height: 0; align-content: start; align-items: start; }
 @media (min-width: 768px) { .dos-columnas.iguales { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 992px) { .dos-columnas { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } .dos-columnas.iguales { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .barra-progreso { height: 8px; border-radius: var(--r-pildora); background: var(--dp-crema); overflow: hidden; margin-top: 4px; }

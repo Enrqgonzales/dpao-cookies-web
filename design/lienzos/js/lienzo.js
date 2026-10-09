@@ -24,6 +24,7 @@
   document.querySelectorAll('[data-pestana]').forEach(el => { if (!lista(el.dataset.pestana).includes(pestana)) el.hidden = true; });
   // Una pestaña sin acción principal deja su lugar reservado: nada se corre.
   document.querySelectorAll('[data-reservar]').forEach(el => { el.classList.toggle('reservado', lista(el.dataset.reservar).includes(pestana)); });
+  document.querySelectorAll('[data-reservar-paso]').forEach(el => { el.classList.toggle('reservado', lista(el.dataset.reservarPaso).includes(paso)); });
   document.querySelectorAll('[data-pestana-enlace]').forEach(el => {
     if (el.dataset.pestanaEnlace === pestana) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current');
   });

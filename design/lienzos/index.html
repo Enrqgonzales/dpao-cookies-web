@@ -5,30 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Lienzos APF2 | D'PAO COOKIES</title>
   <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iconos.css">
   <link rel="stylesheet" href="css/dpao.css">
+  <style>
+    .indice { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
+    .indice .chips { margin-top: 12px; }
+    .indice .chip { height: 40px; }
+  </style>
 </head>
 <body>
-<header class="dp-header">
-  <div class="container-xl py-3 d-flex align-items-center gap-3">
-    <img class="dp-chef-mini" src="../assets/03_logo.jpg" alt="">
-    <div>
-      <p class="titulo-marca mb-0" style="color: var(--dp-mostaza); font-size: 1.4rem;">D'PAO COOKIES</p>
-      <p class="mb-0" style="color: var(--dp-crema);">Lienzos de diseño · APF2</p>
-    </div>
-  </div>
+<header class="app-cabecera">
+  <div class="contenedor"><a class="marca" href="index.html"><img src="../assets/03_logo.jpg" alt="D'PAO COOKIES"><span class="nombre">D'PAO COOKIES</span></a><span class="capsula">Lienzos APF2</span></div>
 </header>
-<main class="dp-page container-xl">
-  <h1 class="mb-2">Lienzos para aprobar</h1>
-  <p class="texto-2 mb-4">HTML y CSS estáticos con Bootstrap 5.3 local. Paleta, tipografía y recursos en <code>design/marca.md</code>.</p>
-  <div class="row g-3">
-    <div class="col-sm-6 col-lg-4"><a class="dp-card d-block h-100 text-decoration-none" href="acceso.html"><div class="card-body"><h2 class="h3">1 · Acceso</h2><p class="texto-2 mb-0">Logo real, validación y estados de sesión.</p></div></a></div>
-    <div class="col-sm-6 col-lg-4"><a class="dp-card d-block h-100 text-decoration-none" href="tablero.html"><div class="card-body"><h2 class="h3">2 · Tablero</h2><p class="texto-2 mb-0">Ventas, dinero, diferencia de caja y alertas.</p></div></a></div>
-    <div class="col-sm-6 col-lg-4"><a class="dp-card d-block h-100 text-decoration-none" href="inventario.html"><div class="card-body"><h2 class="h3">3 · Insumos</h2><p class="texto-2 mb-0">Los 9 insumos críticos y su reposición.</p></div></a></div>
-    <div class="col-sm-6 col-lg-4"><a class="dp-card d-block h-100 text-decoration-none" href="productos.html"><div class="card-body"><h2 class="h3">4 · Productos</h2><p class="texto-2 mb-0">16 sabores, 3 categorías y packs de delivery.</p></div></a></div>
-    <div class="col-sm-6 col-lg-4"><a class="dp-card d-block h-100 text-decoration-none" href="kardex.html"><div class="card-body"><h2 class="h3">5 · Kardex</h2><p class="texto-2 mb-0">Movimientos con saldo anterior y posterior.</p></div></a></div>
-    <div class="col-sm-6 col-lg-4"><a class="dp-card dp-card-mostaza d-block h-100 text-decoration-none" href="cierre-caja.html"><div class="card-body"><h2 class="h3">6 · Cierre de caja <span class="cat cat-premium align-middle">Nuevo</span></h2><p class="mb-0">Plaza Mayor: esperado vs. declarado y justificación.</p></div></a></div>
+<main class="contenedor py-4">
+  <div class="titulo-fila mb-3"><h1>Lienzos</h1></div>
+  <div class="indice">
+    <section class="superficie"><h2><a href="acceso.html">Acceso</a></h2><ul class="chips"><li><a class="chip" href="acceso.html?estado=error">Error</a></li></ul></section>
+    <section class="superficie"><h2><a href="tablero.html">Tablero</a></h2><ul class="chips"><li><a class="chip" href="tablero.html?estado=cargando">Cargando</a></li><li><a class="chip" href="tablero.html?estado=primera">Primera visita</a></li></ul></section>
+    <section class="superficie"><h2><a href="inventario.html">Insumos</a></h2><ul class="chips"><li><a class="chip" href="inventario.html?estado=hoja">Nuevo</a></li><li><a class="chip" href="inventario.html?estado=error">Error</a></li><li><a class="chip" href="inventario.html?estado=exito">Deshacer</a></li><li><a class="chip" href="inventario.html?estado=vacio">Vacío</a></li><li><a class="chip" href="inventario.html?estado=primera">Primera visita</a></li></ul></section>
+    <section class="superficie"><h2><a href="productos.html">Productos</a></h2><ul class="chips"><li><a class="chip" href="productos.html?pestana=packs">Packs</a></li><li><a class="chip" href="productos.html?estado=hoja">Nuevo</a></li><li><a class="chip" href="productos.html?estado=vacio">Vacío</a></li><li><a class="chip" href="productos.html?estado=primera">Primera visita</a></li></ul></section>
+    <section class="superficie"><h2><a href="kardex.html">Kardex</a></h2><ul class="chips"><li><a class="chip" href="kardex.html?pagina=2">Página 2</a></li><li><a class="chip" href="kardex.html?estado=error">Sin stock</a></li><li><a class="chip" href="kardex.html?estado=exito">Deshacer</a></li><li><a class="chip" href="kardex.html?estado=vacio">Vacío</a></li></ul></section>
+    <section class="superficie"><h2><a href="cierre-caja.html">Caja</a></h2><ul class="chips"><li><a class="chip" href="cierre-caja.html?paso=1">Stock</a></li><li><a class="chip" href="cierre-caja.html?paso=2">Dinero</a></li><li><a class="chip" href="cierre-caja.html?estado=error">Error</a></li><li><a class="chip" href="cierre-caja.html?estado=confirmar">Confirmar</a></li><li><a class="chip" href="cierre-caja.html?estado=exito">Cerrada</a></li><li><a class="chip" href="cierre-caja.html?estado=primera">Primera visita</a></li></ul></section>
   </div>
 </main>
-<script src="../vendor/bootstrap/bootstrap.bundle.min.js"></script>
 </body>
 </html>
