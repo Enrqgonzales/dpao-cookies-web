@@ -6,7 +6,7 @@ Fecha: 9 de octubre de 2026. Rama `apf2-frontend`. Entorno: JDK 17.0.20.1+1, Mav
 
 | Archivo | Qué muestra |
 |---|---|
-| `01-webxml-estructura-paquetes.png` | `web.xml` con `FacesServlet` (`*.xhtml`) resaltado, paquetes Java (`bean`, `controller`, `dao`, `dto`, `exception`, `facade`, `model`, `util`) y vistas Facelets con `faces-config.xml`. Generada a partir de los archivos del repositorio. |
+| `01-webxml-estructura-paquetes.png` | `web.xml` con `FacesServlet` (`*.xhtml`) resaltado, paquetes Java (`bean`, `controller`, `dao`, `dto`, `exception`, `facade`, `model`, `util`) , vistas Facelets y `faces-config.xml` con sus reglas de navegación resaltadas. Generada a partir de los archivos del repositorio. |
 | `02-interfaz-bootstrap-tablero.png`, `02b-interfaz-bootstrap-celular.png` | Interfaz principal con Bootstrap 5 local (1366×768 y 390×844). |
 | `03-formulario-jsf-nuevo-insumo.png` | `h:form` con `h:inputText` y `h:selectOneMenu` con datos escritos, antes de `h:commandButton`. |
 | `03b-formulario-jsf-guardado.png` | Resultado tras guardar: redirección (Post/Redirect/Get), aviso `h:messages` y la fila nueva en la tabla. |
@@ -16,8 +16,8 @@ Fecha: 9 de octubre de 2026. Rama `apf2-frontend`. Entorno: JDK 17.0.20.1+1, Mav
 
 ## Registros
 
-- `maven-test.log`: `mvn -o clean test` sin MySQL: 89 pruebas, 0 fallas, 14 omitidas (integración JDBC).
-- `maven-test-jdbc.log`: `mvn -o test` con `DPAO_JDBC_TEST=true` contra MySQL 8.4.9: 89 pruebas, 0 fallas, 0 omitidas.
+- `maven-test.log`: `mvn -o clean test` sin MySQL: 92 pruebas, 0 fallas, 14 omitidas (integración JDBC).
+- `maven-test-jdbc.log`: `mvn -o test` con `DPAO_JDBC_TEST=true` contra MySQL 8.4.9: 92 pruebas, 0 fallas, 0 omitidas.
 - `http-smoke.log`: ingreso por el formulario JSF (302 a `tablero.xhtml`) y carga de cada pantalla y hoja (200).
 - `medicion-vistas.log`: 19 estados de las cinco pantallas en celular, tablet y computadora (57 mediciones) con `design/herramientas/medir-jsf.js`: sin scroll, escala tipográfica de cinco tamaños, retícula de 4 px, nada escondido bajo la barra o el botón fijos y sin fallas axe-core WCAG 2 A/AA.
 - `git-commit.log`: autor y committer de los últimos commits.
