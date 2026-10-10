@@ -28,7 +28,6 @@ final class Dobles {
         final List<String> errores = new ArrayList<>();
         final List<String> erroresEn = new ArrayList<>();
         String usuario;
-        String local;
         boolean sesionCerrada;
 
         @Override
@@ -47,9 +46,8 @@ final class Dobles {
         }
 
         @Override
-        public void iniciarSesion(String usuario, String local) {
+        public void iniciarSesion(String usuario) {
             this.usuario = usuario;
-            this.local = local;
         }
 
         @Override
@@ -58,10 +56,6 @@ final class Dobles {
             usuario = null;
         }
 
-        @Override
-        public String usuarioActual() {
-            return usuario;
-        }
     }
 
     /**

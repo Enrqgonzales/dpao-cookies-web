@@ -21,49 +21,53 @@ import pe.com.dpaocookies.util.Autenticacion;
 class AccesoYTableroBeanTest {
 
     private final VistaFalsa vista = new VistaFalsa();
+    private final SesionBean sesion = new SesionBean();
     private final Autenticacion cuenta = new Autenticacion(
             Map.of("DPAO_APP_USER", "demo", "DPAO_APP_PASSWORD", "clave-de-prueba")::get);
 
     @Test
-    void ingresoValidoAbreSesionConElLocalYVaAlTablero() {
-        AccesoBean bean = new AccesoBean(cuenta, vista);
+    void ingresoValidoAbreSesionConElLocalYDevuelveElResultadoDeIngreso() {
+        AccesoBean bean = new AccesoBean(cuenta, vista, sesion);
         bean.setUsuario(" demo ");
         bean.setClave("clave-de-prueba");
         bean.setLocal("Delivery");
 
-        assertEquals("tablero?faces-redirect=true", bean.ingresar());
-        assertEquals("demo", vista.usuario);
-        assertEquals("Delivery", vista.local);
+        assertEquals("ingreso", bean.ingresar());
+        assertEquals("demo", vista.usuario, "la sesión queda marcada para SeguridadFilter");
+        assertEquals("demo", sesion.getUsuario());
+        assertEquals("Delivery", sesion.getLocal());
+        assertTrue(sesion.isIngresado());
         assertTrue(vista.erroresEn.isEmpty());
     }
 
     @Test
     void ingresoInvalidoMarcaLaClaveYNoAbreSesion() {
-        AccesoBean bean = new AccesoBean(cuenta, vista);
+        AccesoBean bean = new AccesoBean(cuenta, vista, sesion);
         bean.setUsuario("demo");
         bean.setClave("otra");
 
         assertNull(bean.ingresar());
         assertNull(vista.usuario);
+        assertFalse(sesion.isIngresado());
         assertNull(bean.getClave(), "la contraseña no se vuelve a pintar");
         assertEquals(List.of("acceso:clave|Usuario o contraseña incorrectos."), vista.erroresEn);
     }
 
     @Test
     void localDesconocidoSeReemplazaPorElPrimero() {
-        AccesoBean bean = new AccesoBean(cuenta, vista);
+        AccesoBean bean = new AccesoBean(cuenta, vista, sesion);
         bean.setUsuario("demo");
         bean.setClave("clave-de-prueba");
         bean.setLocal("<script>");
 
         bean.ingresar();
-        assertEquals("Plaza Mayor", vista.local);
+        assertEquals("Plaza Mayor", sesion.getLocal());
     }
 
     @Test
     void salirCierraLaSesion() {
-        AccesoBean bean = new AccesoBean(cuenta, vista);
-        assertEquals("acceso?faces-redirect=true", bean.salir());
+        AccesoBean bean = new AccesoBean(cuenta, vista, sesion);
+        assertEquals("salida", bean.salir());
         assertTrue(vista.sesionCerrada);
     }
 
