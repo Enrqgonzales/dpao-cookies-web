@@ -1,7 +1,6 @@
 package pe.com.dpaocookies.bean;
 
 import java.io.Serializable;
-import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -35,24 +34,16 @@ public class VistaJsf implements Vista, Serializable {
     }
 
     @Override
-    public void iniciarSesion(String usuario, String local) {
+    public void iniciarSesion(String usuario) {
         ExternalContext externo = contexto().getExternalContext();
         HttpServletRequest peticion = (HttpServletRequest) externo.getRequest();
         peticion.changeSessionId();   // evita la fijación de sesión
-        Map<String, Object> sesion = externo.getSessionMap();
-        sesion.put("usuario", usuario);
-        sesion.put("local", local);
+        externo.getSessionMap().put("usuario", usuario);   // lo que exige SeguridadFilter
         peticion.getSession().setMaxInactiveInterval(MINUTOS_SESION * 60);
     }
 
     @Override
     public void cerrarSesion() {
         contexto().getExternalContext().invalidateSession();
-    }
-
-    @Override
-    public String usuarioActual() {
-        Object usuario = contexto().getExternalContext().getSessionMap().get("usuario");
-        return usuario == null ? null : usuario.toString();
     }
 }

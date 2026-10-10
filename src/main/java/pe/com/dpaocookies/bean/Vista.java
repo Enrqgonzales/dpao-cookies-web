@@ -15,11 +15,8 @@ public interface Vista {
     /** Error asociado a un componente (id de cliente, por ejemplo {@code formulario:cantidad}). */
     void errorEn(String idCliente, String mensaje);
 
-    /** Renueva el id de sesión y guarda quién ingresó y en qué local. */
-    void iniciarSesion(String usuario, String local);
+    /** Renueva el id de sesión y la marca como autenticada para {@code SeguridadFilter}. */
+    void iniciarSesion(String usuario);
 
     void cerrarSesion();
-
-    /** Usuario de la sesión actual, o {@code null}. */
-    String usuarioActual();
 }

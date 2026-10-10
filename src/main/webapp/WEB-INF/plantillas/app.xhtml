@@ -34,7 +34,7 @@
                 </nav>
                 <!-- La cápsula: local · lo que pide atención hoy. -->
                 <span class="capsula">
-                    <span class="local">#{sessionScope.local}</span><span class="sep">·</span>
+                    <span class="local">#{sesion.local}</span><span class="sep">·</span>
                     <h:outputText styleClass="estado-alerta" rendered="#{tablero.resumen.cantidadAtencion gt 0}"
                                   value="#{tablero.resumen.cantidadAtencion} por atender"/>
                     <h:outputText styleClass="estado-ok" rendered="#{tablero.resumen.cantidadAtencion eq 0}" value="Todo en orden"/>
