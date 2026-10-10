@@ -6,13 +6,13 @@ Fecha: 9 de octubre de 2026. Rama `apf2-frontend`. Entorno: JDK 17.0.20.1+1, Mav
 
 | Archivo | Qué muestra |
 |---|---|
-| `01-webxml-estructura-paquetes.png` | `web.xml` con `FacesServlet` (`*.xhtml`) resaltado, paquetes Java (`bean`, `controller`, `dao`, `dto`, `exception`, `facade`, `model`, `util`) , vistas Facelets y `faces-config.xml` con sus reglas de navegación resaltadas. Generada a partir de los archivos del repositorio. |
+| `01-webxml-estructura-paquetes.png` | `web.xml` con `FacesServlet` (`*.xhtml`) resaltado, paquetes Java (`bean`, `controller`, `dao`, `dto`, `exception`, `facade`, `model`, `util`), vistas Facelets y `faces-config.xml` con sus reglas de navegación resaltadas. Generada a partir de los archivos del repositorio. |
 | `02-interfaz-bootstrap-tablero.png`, `02b-interfaz-bootstrap-celular.png` | Interfaz principal con Bootstrap 5 local (1366×768 y 390×844). |
 | `03-formulario-jsf-nuevo-insumo.png` | `h:form` con `h:inputText` y `h:selectOneMenu` con datos escritos, antes de `h:commandButton`. |
 | `03b-formulario-jsf-guardado.png` | Resultado tras guardar: redirección (Post/Redirect/Get), aviso `h:messages` y la fila nueva en la tabla. |
 | `04-datatable-insumos-mysql.png` | `h:dataTable` de insumos alimentado por `InventarioFacade.listarInsumos()` desde MySQL. |
 | `04b-mismos-insumos-en-mysql.png` | La misma información consultada directamente en MySQL (`dpao_demo`). |
-| `05-historial-commits.png` | Historial de commits de la rama, autor y correo de cada uno. |
+| `05-historial-commits.png` | Página de commits de la rama `apf2-frontend` en GitHub: todos los commits de Enrqgonzales, con los de managed beans y vistas JSF. |
 
 ## Registros
 

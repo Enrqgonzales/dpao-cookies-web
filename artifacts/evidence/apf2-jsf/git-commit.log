@@ -1,3 +1,8 @@
+9c39191 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | docs(apf2): documentar la navegación del acceso y el bean de sesión
+b840f77 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | test(apf2): fotografiar también páginas web públicas en medir-jsf
+5cf8bd6 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | test(apf2): probar las reglas de navegación y el bean de sesión
+e3ba15f Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | feat(apf2): reglas de navegación del acceso y bean de sesión
+31fd00c Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | docs(apf2): evidencias de la interfaz JSF desplegada en Tomcat 9
 e97749f Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | docs(apf2): documentar la interfaz JSF, su despliegue y sus pruebas
 b5e8cf8 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | test(apf2): medir las vistas JSF desplegadas con las reglas de diseño
 ad96004 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | test(apf2): probar los managed beans, el formato y el filtro
@@ -17,6 +22,3 @@ d5c343d Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzale
 ebaef75 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | docs(apf2): agregar guía de marca y recursos de diseño
 3c51cfa Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | docs(apf2): agregar informe APA y evidencias de despliegue
 3a13408 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | feat(apf2): integrar DTO, InventarioFacade y Kardex transaccional
-575c632 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | docs: indicar acceso de demostracion para el docente
-868954a Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | fix: unify Avance 1 layout and responsive forms
-a5fe386 Enrqgonzales <juniorgonzales140@gmail.com> | Enrqgonzales <juniorgonzales140@gmail.com> | fix: separar demostracion de pruebas y aclarar alertas y Kardex
