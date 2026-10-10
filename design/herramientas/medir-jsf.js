@@ -4,7 +4,7 @@
 // Uso:
 //   node medir-jsf.js medir <carpeta-capturas>            mide todas las pantallas y estados
 //   node medir-jsf.js evidencia <carpeta-evidencia>       capturas de la entrega (interfaz, formulario, h:dataTable)
-//   node medir-jsf.js pagina <archivo.html> <salida.png>  fotografía una página local (estructura, historial)
+//   node medir-jsf.js pagina <archivo.html|URL> <salida.png>  fotografía una página local o pública (estructura, historial)
 // Variable opcional: DPAO_URL (por defecto http://localhost:8080/dpao-cookies-web)
 const path = require('path');
 const fs = require('fs');
@@ -146,7 +146,8 @@ async function fotografiarPagina(archivo, salida) {
     const { browser, cerrar } = await abrirEdge();
     const context = await browser.newContext({ viewport: { width: 1366, height: 768 }, deviceScaleFactor: 1 });
     const page = await context.newPage();
-    await page.goto(pathToFileURL(path.resolve(archivo)).href);
+    await page.goto(/^https?:/.test(archivo) ? archivo : pathToFileURL(path.resolve(archivo)).href, { waitUntil: 'networkidle' });
+    if (/^https?:/.test(archivo)) await page.waitForTimeout(4000);   // GitHub completa fechas y avatares después de cargar
     await page.screenshot({ path: salida, fullPage: true });
     await cerrar();
 }
@@ -154,7 +155,7 @@ async function fotografiarPagina(archivo, salida) {
 const [modo, a, b] = process.argv.slice(2);
 const tareas = { medir: () => medirTodo(a), evidencia: () => evidencia(a), pagina: () => fotografiarPagina(a, b) };
 if (!tareas[modo]) {
-    console.error('Uso: node medir-jsf.js medir|evidencia <carpeta>  ·  node medir-jsf.js pagina <archivo.html> <salida.png>');
+    console.error('Uso: node medir-jsf.js medir|evidencia <carpeta>  ·  node medir-jsf.js pagina <archivo.html|URL> <salida.png>');
     process.exit(2);
 }
 tareas[modo]().catch(e => { console.error(e); process.exit(1); });
