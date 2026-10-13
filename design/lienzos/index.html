@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lienzos APF2 | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iconos.css">
+  <link rel="stylesheet" href="css/dpao.css">
+  <style>
+    .indice { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); }
+    .indice .chips { margin-top: 12px; }
+    .indice .chip { height: 40px; }
+  </style>
+</head>
+<body>
+<header class="app-cabecera">
+  <div class="contenedor"><a class="marca" href="index.html"><img src="../assets/03_logo.jpg" alt="D'PAO COOKIES"><span class="nombre">D'PAO COOKIES</span></a><span class="capsula">Lienzos APF2</span></div>
+</header>
+<main class="contenedor py-4">
+  <div class="titulo-fila mb-3"><h1>Lienzos</h1></div>
+  <div class="indice">
+    <section class="superficie"><h2><a href="acceso.html">Acceso</a></h2><ul class="chips"><li><a class="chip" href="acceso.html?estado=error">Error</a></li></ul></section>
+    <section class="superficie"><h2><a href="tablero.html">Tablero</a></h2><ul class="chips"><li><a class="chip" href="tablero.html?estado=cargando">Cargando</a></li><li><a class="chip" href="tablero.html?estado=primera">Primera visita</a></li></ul></section>
+    <section class="superficie"><h2><a href="inventario.html">Insumos</a></h2><ul class="chips"><li><a class="chip" href="inventario.html?estado=hoja">Nuevo</a></li><li><a class="chip" href="inventario.html?estado=error">Error</a></li><li><a class="chip" href="inventario.html?estado=exito">Deshacer</a></li><li><a class="chip" href="inventario.html?estado=vacio">Vacío</a></li><li><a class="chip" href="inventario.html?estado=primera">Primera visita</a></li></ul></section>
+    <section class="superficie"><h2><a href="productos.html">Productos</a></h2><ul class="chips"><li><a class="chip" href="productos.html?pestana=packs">Packs</a></li><li><a class="chip" href="productos.html?estado=hoja">Nuevo</a></li><li><a class="chip" href="productos.html?estado=vacio">Vacío</a></li><li><a class="chip" href="productos.html?estado=primera">Primera visita</a></li></ul></section>
+    <section class="superficie"><h2><a href="kardex.html">Kardex</a></h2><ul class="chips"><li><a class="chip" href="kardex.html?pagina=2">Página 2</a></li><li><a class="chip" href="kardex.html?estado=error">Sin stock</a></li><li><a class="chip" href="kardex.html?estado=exito">Deshacer</a></li><li><a class="chip" href="kardex.html?estado=vacio">Vacío</a></li></ul></section>
+    <section class="superficie"><h2><a href="cierre-caja.html">Caja</a></h2><ul class="chips"><li><a class="chip" href="cierre-caja.html?paso=1">Stock</a></li><li><a class="chip" href="cierre-caja.html?paso=2">Dinero</a></li><li><a class="chip" href="cierre-caja.html?estado=error">Error</a></li><li><a class="chip" href="cierre-caja.html?estado=confirmar">Confirmar</a></li><li><a class="chip" href="cierre-caja.html?estado=exito">Cerrada</a></li><li><a class="chip" href="cierre-caja.html?estado=primera">Primera visita</a></li></ul></section>
+  </div>
+</main>
+</body>
+</html>

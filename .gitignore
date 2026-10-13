@@ -2,3 +2,4 @@ target/
 .runtime/
 .env
 artifacts/qa/
+node_modules/

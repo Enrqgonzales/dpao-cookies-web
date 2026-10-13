@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Productos | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iconos.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body data-pestana-inicial="sabores">
+<header class="app-cabecera">
+  <div class="contenedor">
+    <a class="marca" href="tablero.html"><img src="../assets/03_logo.jpg" alt="D'PAO COOKIES"><span class="nombre">D'PAO COOKIES</span></a>
+    <nav aria-label="Secciones"><ul class="nav-secciones">
+      <li><a href="tablero.html" title="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+      <li><a href="inventario.html" title="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+      <li><a href="productos.html" aria-current="page" title="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+      <li><a href="kardex.html" title="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+      <li><a href="cierre-caja.html" title="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+    </ul></nav>
+    <span class="capsula"><span class="local">Plaza Mayor</span><span class="sep">·</span><span class="estado-alerta">Caja por cerrar</span></span>
+    <a class="btn-icono" href="acceso.html" aria-label="Cerrar sesión" title="Cerrar sesión"><span class="ico ico-log-out" aria-hidden="true"></span></a>
+  </div>
+</header>
+
+<main class="app-cuerpo contenedor">
+  <div class="titulo-fila">
+    <h1>Productos</h1>
+    <nav class="pestanas" aria-label="Pestañas de productos">
+      <a href="?pestana=sabores" data-pestana-enlace="sabores">Sabores</a>
+      <a href="?pestana=packs" data-pestana-enlace="packs">Packs</a>
+    </nav>
+    <div class="derecha accion-principal" data-reservar="packs">
+      <a class="btn-principal" href="?estado=hoja"><span class="ico ico-plus" aria-hidden="true"></span>Nuevo sabor</a>
+    </div>
+  </div>
+
+  <!-- Pestaña Sabores -->
+  <div class="d-flex flex-column gap-3 flex-fill" data-pestana="sabores">
+    <div class="d-flex align-items-center gap-3">
+      <ul class="chips" aria-label="Categoría" data-ocultar="vacio">
+        <li><a class="chip" href="#" aria-current="true">Todos <span class="cuenta">16</span></a></li>
+        <li><a class="chip" href="#">Clásico <span class="cuenta">4</span></a></li>
+        <li><a class="chip" href="#">Edición <span class="cuenta">9</span></a></li>
+        <li><a class="chip" href="#">Premium <span class="cuenta">3</span></a></li>
+      </ul>
+      <ul class="chips" aria-label="Categoría" data-ver="vacio">
+        <li><a class="chip" href="#">Todos <span class="cuenta">13</span></a></li>
+        <li><a class="chip" href="#">Clásico <span class="cuenta">4</span></a></li>
+        <li><a class="chip" href="#">Edición <span class="cuenta">9</span></a></li>
+        <li><a class="chip" href="#" aria-current="true">Premium <span class="cuenta">0</span></a></li>
+      </ul>
+      <span class="ms-auto t-etiqueta d-none d-md-inline">Unidades en vitrina</span>
+    </div>
+
+    <div class="sabores" data-ocultar="vacio">
+      <a class="sabor" href="?estado=hoja" data-m="1"><span class="nombre">Chin Chin</span><span class="precio dinero"><span class="soles">S/</span>7<span class="dec">.00</span></span><span class="vitrina t-subtitulo">3</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="1"><span class="nombre">Chispas</span><span class="precio dinero"><span class="soles">S/</span>7<span class="dec">.00</span></span><span class="vitrina t-subtitulo">6</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="1"><span class="nombre">Chunky</span><span class="precio dinero"><span class="soles">S/</span>7<span class="dec">.00</span></span><span class="vitrina t-subtitulo">1</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="1"><span class="nombre">Chocolate</span><span class="precio dinero"><span class="soles">S/</span>8<span class="dec">.00</span></span><span class="vitrina t-subtitulo">4</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="1"><span class="nombre">Red Velvet</span><span class="precio dinero"><span class="soles">S/</span>8<span class="dec">.50</span></span><span class="vitrina t-subtitulo">5</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="1"><span class="nombre">Monster</span><span class="precio dinero"><span class="soles">S/</span>8<span class="dec">.50</span></span><span class="vitrina t-subtitulo">4</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="1"><span class="nombre">Oreo</span><span class="precio dinero"><span class="soles">S/</span>8<span class="dec">.50</span></span><span class="vitrina t-subtitulo">5</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="1"><span class="nombre">Marshmallow</span><span class="precio dinero"><span class="soles">S/</span>8<span class="dec">.50</span></span><span class="vitrina t-subtitulo">3</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="2"><span class="nombre">Bom o Bom</span><span class="precio dinero"><span class="soles">S/</span>8<span class="dec">.50</span></span><span class="vitrina t-subtitulo">3</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="2"><span class="nombre">Cinnamon Roll</span><span class="precio dinero"><span class="soles">S/</span>9<span class="dec">.00</span></span><span class="vitrina estado-alerta">Agotado</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="2"><span class="nombre">Arándano</span><span class="precio dinero"><span class="soles">S/</span>9<span class="dec">.00</span></span><span class="vitrina t-subtitulo">1</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="2"><span class="nombre">Limón</span><span class="precio dinero"><span class="soles">S/</span>9<span class="dec">.00</span></span><span class="vitrina estado-alerta">Agotado</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="2"><span class="nombre">Maracuyá</span><span class="precio dinero"><span class="soles">S/</span>9<span class="dec">.00</span></span><span class="vitrina t-subtitulo">1</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="2"><span class="nombre">Nutella</span><span class="precio dinero"><span class="soles">S/</span>11<span class="dec">.00</span></span><span class="vitrina t-subtitulo">5</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="2"><span class="nombre">Snicker</span><span class="precio dinero"><span class="soles">S/</span>11<span class="dec">.00</span></span><span class="vitrina estado-alerta">Agotado</span></a>
+      <a class="sabor" href="?estado=hoja" data-m="2"><span class="nombre">Pistacho</span><span class="precio dinero"><span class="soles">S/</span>15<span class="dec">.00</span></span><span class="vitrina t-subtitulo">2</span></a>
+    </div>
+    <nav class="paginas solo-m mt-0" aria-label="Páginas" data-ocultar="vacio">
+      <span class="rango t-2" data-rango="1">1–8 de 16</span><span class="rango t-2" data-rango="2">9–16 de 16</span>
+      <a class="pagina" data-p="1" href="?pagina=1">1</a><a class="pagina" data-p="2" href="?pagina=2">2</a>
+    </nav>
+
+    <section class="superficie d-flex flex-column flex-fill" aria-label="Sin sabores" data-ver="vacio">
+      <div class="vacio"><img src="../assets/chef-galleta.png" alt=""><h2>No hay sabores Premium</h2></div>
+    </section>
+  </div>
+
+  <!-- Pestaña Packs -->
+  <div class="packs" data-pestana="packs">
+    <section class="superficie pack" aria-labelledby="p-clasico">
+      <div class="pack-cabecera"><h2 id="p-clasico">Pack Clásico</h2><span class="t-2 d-md-none">4 sabores</span></div>
+      <div class="precios-pack">
+        <div class="precio-pack"><span class="cantidad">2 galletas</span><span class="monto">S/&#160;12</span></div>
+        <div class="precio-pack"><span class="cantidad">4 galletas</span><span class="monto">S/&#160;22</span></div>
+        <div class="precio-pack"><span class="cantidad">6 galletas</span><span class="monto">S/&#160;30</span></div>
+      </div>
+      <p class="t-2 d-none d-md-block">Chin Chin, Chispas, Chunky y Chocolate</p>
+    </section>
+    <section class="superficie pack" aria-labelledby="p-edicion">
+      <div class="pack-cabecera"><h2 id="p-edicion">Pack Edición</h2><span class="t-2 d-md-none">9 sabores</span></div>
+      <div class="precios-pack">
+        <div class="precio-pack"><span class="cantidad">2 galletas</span><span class="monto">S/&#160;16</span></div>
+        <div class="precio-pack"><span class="cantidad">4 galletas</span><span class="monto">S/&#160;30</span></div>
+        <div class="precio-pack"><span class="cantidad">6 galletas</span><span class="monto">S/&#160;42</span></div>
+      </div>
+      <p class="t-2 d-none d-md-block">Red Velvet, Monster, Oreo, Bom o Bom, Limón, Arándano, Cinnamon Roll, Maracuyá y Marshmallow</p>
+    </section>
+    <section class="superficie pack" aria-labelledby="p-premium">
+      <div class="pack-cabecera"><h2 id="p-premium">Pack Premium</h2><span class="t-2 d-md-none">3 sabores</span></div>
+      <div class="precios-pack">
+        <div class="precio-pack"><span class="cantidad">2 galletas</span><span class="monto">S/&#160;20</span></div>
+        <div class="precio-pack"><span class="cantidad">4 galletas</span><span class="monto">S/&#160;40</span></div>
+        <div class="precio-pack"><span class="cantidad">6 galletas</span><span class="monto">S/&#160;58</span></div>
+      </div>
+      <p class="t-2 d-none d-md-block">Nutella, Snicker y Pistacho</p>
+    </section>
+  </div>
+</main>
+
+<nav aria-label="Secciones"><ul class="barra-secciones">
+  <li><a href="tablero.html" aria-label="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+  <li><a href="inventario.html" aria-label="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+  <li><a href="productos.html" aria-current="page" aria-label="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+  <li><a href="kardex.html" aria-label="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+  <li><a href="cierre-caja.html" aria-label="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+</ul></nav>
+
+<div class="velo velo-hoja" data-ver="hoja error" role="dialog" aria-modal="true" aria-labelledby="h-titulo">
+  <form class="hoja" novalidate>
+    <div class="hoja-cabecera"><h2 id="h-titulo">Nuevo sabor</h2><a class="btn-icono" href="productos.html" aria-label="Cerrar"><span class="ico ico-x" aria-hidden="true"></span></a></div>
+    <div class="campo"><label class="form-label" for="codigo">Código</label><input class="form-control" id="codigo" value="G17"></div>
+    <div class="campo"><label class="form-label" for="nombre">Nombre</label><input class="form-control" id="nombre" aria-describedby="nombre-error" data-invalido="error"><p class="error-campo" id="nombre-error" data-ver="error">Escribe el nombre del sabor.</p></div>
+    <div class="campo"><label class="form-label" for="categoria">Categoría</label><select class="form-select" id="categoria"><option>Clásico</option><option selected>Edición</option><option>Premium</option></select></div>
+    <div class="campo"><label class="form-label" for="precio">Precio (S/)</label><input class="form-control" id="precio" inputmode="decimal" value="8.50"></div>
+    <div class="hoja-pie"><button class="btn-principal" type="submit">Guardar sabor</button></div>
+  </form>
+</div>
+
+<div class="aviso-flotante" data-ver="exito" role="status"><span>Sabor guardado</span><button class="btn-texto" type="button"><span class="ico ico-undo-2 ico-16" aria-hidden="true"></span> Deshacer</button></div>
+
+<div class="velo velo-centro" data-ver="primera" role="dialog" aria-modal="true" aria-labelledby="o-titulo">
+  <div class="ventana">
+    <img class="ilustracion" src="../assets/chef-galleta.png" alt="">
+    <div class="puntos-paso" aria-hidden="true"><span aria-current="step"></span><span></span></div>
+    <p class="visually-hidden">Paso 1 de 2</p>
+    <h2 id="o-titulo" class="text-center">Tus sabores y packs</h2>
+    <p class="text-center">Cada sabor muestra su precio y cuántas galletas quedan en vitrina. Los packs son solo por delivery y combinan sabores de la misma categoría.</p>
+    <div class="acciones"><button class="btn-principal" type="button">Siguiente</button></div>
+  </div>
+</div>
+
+<script src="js/lienzo.js"></script>
+</body>
+</html>

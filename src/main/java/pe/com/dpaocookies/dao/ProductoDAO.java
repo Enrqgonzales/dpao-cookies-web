@@ -1,28 +1,83 @@
 package pe.com.dpaocookies.dao;
-import java.math.BigDecimal;
-import java.sql.*;
-import java.util.*;
-import pe.com.dpaocookies.util.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import pe.com.dpaocookies.model.Producto;
+import pe.com.dpaocookies.util.ConexionBD;
+import pe.com.dpaocookies.util.ProveedorConexion;
+
+/**
+ * Acceso a la tabla {@code producto}. El stock inicial es cero y solo cambia
+ * mediante {@link KardexDAO}.
+ */
 public class ProductoDAO {
-    public List<Map<String,Object>> listar() throws SQLException {
-        try(Connection c=ConexionBD.getConnection(); PreparedStatement s=c.prepareStatement("SELECT * FROM producto ORDER BY nombre"); ResultSet r=s.executeQuery()) {
-            return KardexDAO.filas(r);
+
+    private static final String SQL_LISTAR = "SELECT id_producto, codigo, nombre, precio_venta, "
+            + "stock_actual, id_categoria FROM producto ORDER BY nombre ASC";
+    private static final String SQL_REGISTRAR =
+            "INSERT INTO producto (codigo, nombre, precio_venta, id_categoria) VALUES (?, ?, ?, ?)";
+    private static final String SQL_ACTUALIZAR =
+            "UPDATE producto SET codigo = ?, nombre = ?, precio_venta = ?, id_categoria = ? WHERE id_producto = ?";
+
+    private final ProveedorConexion conexiones;
+
+    public ProductoDAO() {
+        this(ConexionBD::getConnection);
+    }
+
+    public ProductoDAO(ProveedorConexion conexiones) {
+        this.conexiones = conexiones;
+    }
+
+    public List<Producto> listar() throws SQLException {
+        List<Producto> productos = new ArrayList<>();
+        try (Connection connection = conexiones.obtener();
+                PreparedStatement statement = connection.prepareStatement(SQL_LISTAR);
+                ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                productos.add(new Producto(
+                        resultSet.getInt("id_producto"),
+                        resultSet.getString("codigo"),
+                        resultSet.getString("nombre"),
+                        resultSet.getBigDecimal("precio_venta"),
+                        resultSet.getBigDecimal("stock_actual"),
+                        resultSet.getInt("id_categoria")));
+            }
+        }
+        return productos;
+    }
+
+    /** Inserta un producto con stock cero y devuelve el identificador generado. */
+    public int registrar(Producto producto) throws SQLException {
+        try (Connection connection = conexiones.obtener();
+                PreparedStatement statement = connection.prepareStatement(SQL_REGISTRAR,
+                        Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, producto.getCodigo());
+            statement.setString(2, producto.getNombre());
+            statement.setBigDecimal(3, producto.getPrecioVenta());
+            statement.setInt(4, producto.getIdCategoria());
+            statement.executeUpdate();
+            try (ResultSet claves = statement.getGeneratedKeys()) {
+                return claves.next() ? claves.getInt(1) : 0;
+            }
         }
     }
-    public List<Map<String,Object>> categorias() throws SQLException {
-        try(Connection c=ConexionBD.getConnection(); PreparedStatement s=c.prepareStatement("SELECT * FROM categoria ORDER BY nombre"); ResultSet r=s.executeQuery()) {
-            return KardexDAO.filas(r);
-        }
-    }
-    public void guardar(int id, String codigo, String nombre, BigDecimal precio, int categoria) throws SQLException {
-        codigo=Validacion.texto(codigo,20,"Código"); nombre=Validacion.texto(nombre,100,"Nombre"); Validacion.decimal(precio);
-        if(categoria<=0 || id<0) throw new IllegalArgumentException("Identificador inválido.");
-        String sql=id==0 ? "INSERT INTO producto(codigo,nombre,precio_venta,id_categoria) VALUES(?,?,?,?)" : "UPDATE producto SET codigo=?,nombre=?,precio_venta=?,id_categoria=? WHERE id_producto=?";
-        try(Connection c=ConexionBD.getConnection(); PreparedStatement s=c.prepareStatement(sql)) {
-            s.setString(1,codigo); s.setString(2,nombre); s.setBigDecimal(3,precio); s.setInt(4,categoria);
-            if(id!=0) s.setInt(5,id);
-            if(s.executeUpdate()!=1) throw new IllegalArgumentException("El producto no existe.");
+
+    /** Actualiza los datos comerciales; devuelve {@code false} si el producto no existe. */
+    public boolean actualizar(Producto producto) throws SQLException {
+        try (Connection connection = conexiones.obtener();
+                PreparedStatement statement = connection.prepareStatement(SQL_ACTUALIZAR)) {
+            statement.setString(1, producto.getCodigo());
+            statement.setString(2, producto.getNombre());
+            statement.setBigDecimal(3, producto.getPrecioVenta());
+            statement.setInt(4, producto.getIdCategoria());
+            statement.setInt(5, producto.getIdProducto());
+            return statement.executeUpdate() == 1;
         }
     }
 }

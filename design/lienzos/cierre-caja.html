@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caja | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iconos.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body data-paso-inicial="3">
+<header class="app-cabecera">
+  <div class="contenedor">
+    <a class="marca" href="tablero.html"><img src="../assets/03_logo.jpg" alt="D'PAO COOKIES"><span class="nombre">D'PAO COOKIES</span></a>
+    <nav aria-label="Secciones"><ul class="nav-secciones">
+      <li><a href="tablero.html" title="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+      <li><a href="inventario.html" title="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+      <li><a href="productos.html" title="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+      <li><a href="kardex.html" title="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+      <li><a href="cierre-caja.html" aria-current="page" title="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+    </ul></nav>
+    <span class="capsula" data-ocultar="exito"><span class="local">Plaza Mayor</span><span class="sep">·</span><span class="estado-alerta">Caja por cerrar</span></span>
+    <span class="capsula" data-ver="exito"><span class="local">Plaza Mayor</span><span class="sep">·</span><span class="estado-ok"><span class="ico ico-check ico-16" aria-hidden="true"></span>Caja cerrada</span></span>
+    <a class="btn-icono" href="acceso.html" aria-label="Cerrar sesión" title="Cerrar sesión"><span class="ico ico-log-out" aria-hidden="true"></span></a>
+  </div>
+</header>
+
+<main class="app-cuerpo contenedor">
+  <div class="titulo-fila" data-ocultar="exito">
+    <a class="btn-icono" href="?paso=2" data-paso="3" aria-label="Paso anterior" title="Paso anterior"><span class="ico ico-chevron-left" aria-hidden="true"></span></a>
+    <a class="btn-icono" href="?paso=1" data-paso="2" aria-label="Paso anterior" title="Paso anterior"><span class="ico ico-chevron-left" aria-hidden="true"></span></a>
+    <span class="btn-icono reservado" data-paso="1" aria-hidden="true"></span>
+    <h1>Caja</h1>
+    <ol class="pasos" aria-label="Pasos del cierre">
+      <li data-n="1"><span class="n">1</span><span class="nombre">Stock</span></li>
+      <li data-n="2"><span class="n">2</span><span class="nombre">Dinero</span></li>
+      <li data-n="3"><span class="n">3</span><span class="nombre">Diferencia</span></li>
+    </ol>
+    <div class="derecha accion-principal">
+      <a class="btn-principal" href="?paso=2" data-paso="1">Siguiente<span class="ico ico-chevron-right" aria-hidden="true"></span></a>
+      <a class="btn-principal" href="?paso=3" data-paso="2">Siguiente<span class="ico ico-chevron-right" aria-hidden="true"></span></a>
+      <a class="btn-principal" href="?estado=confirmar" data-paso="3"><span class="ico ico-wallet" aria-hidden="true"></span>Cerrar caja</a>
+    </div>
+  </div>
+
+  <!-- Paso 1: stock por sabor -->
+  <section class="superficie" aria-labelledby="t-stock" data-paso="1" data-ocultar="exito">
+    <div class="superficie-encabezado"><h2 id="t-stock">Stock por sabor</h2><span class="derecha estado-ok"><span class="ico ico-check ico-16" aria-hidden="true"></span>Cuadra</span></div>
+    <div class="d-flex d-md-none t-etiqueta"><span>Sabor</span><span class="ms-auto">Final</span></div>
+    <table class="tabla tabla-movil">
+      <thead><tr><th scope="col">Sabor</th><th scope="col" class="num">Inicial</th><th scope="col" class="num">Reposición</th><th scope="col" class="num">Disponible</th><th scope="col" class="num">Vendidas</th><th scope="col" class="num">Final</th></tr></thead>
+      <tbody>
+          <tr data-m="1" data-t="1" data-d="1"><td><span class="t-fuerte">Chispas</span><span class="sub d-md-none">Disponible 10 · vendidas 4</span></td><td class="num solo-ancho">5</td><td class="num solo-ancho">5</td><td class="num solo-ancho">10</td><td class="num solo-ancho">4</td><td class="num m-derecha t-fuerte">6</td></tr>
+          <tr data-m="1" data-t="1" data-d="1"><td><span class="t-fuerte">Chin Chin</span><span class="sub d-md-none">Disponible 6 · vendidas 3</span></td><td class="num solo-ancho">0</td><td class="num solo-ancho">6</td><td class="num solo-ancho">6</td><td class="num solo-ancho">3</td><td class="num m-derecha t-fuerte">3</td></tr>
+          <tr data-m="1" data-t="1" data-d="1"><td><span class="t-fuerte">Chunky</span><span class="sub d-md-none">Disponible 10 · vendidas 9</span></td><td class="num solo-ancho">4</td><td class="num solo-ancho">6</td><td class="num solo-ancho">10</td><td class="num solo-ancho">9</td><td class="num m-derecha t-fuerte">1</td></tr>
+          <tr data-m="1" data-t="1" data-d="1"><td><span class="t-fuerte">Chocolate</span><span class="sub d-md-none">Disponible 5 · vendidas 1</span></td><td class="num solo-ancho">1</td><td class="num solo-ancho">4</td><td class="num solo-ancho">5</td><td class="num solo-ancho">1</td><td class="num m-derecha t-fuerte">4</td></tr>
+          <tr data-m="1" data-t="1" data-d="1"><td><span class="t-fuerte">Monster</span><span class="sub d-md-none">Disponible 6 · vendidas 2</span></td><td class="num solo-ancho">2</td><td class="num solo-ancho">4</td><td class="num solo-ancho">6</td><td class="num solo-ancho">2</td><td class="num m-derecha t-fuerte">4</td></tr>
+          <tr data-m="1" data-t="1" data-d="1"><td><span class="t-fuerte">Red Velvet</span><span class="sub d-md-none">Disponible 8 · vendidas 3</span></td><td class="num solo-ancho">1</td><td class="num solo-ancho">7</td><td class="num solo-ancho">8</td><td class="num solo-ancho">3</td><td class="num m-derecha t-fuerte">5</td></tr>
+          <tr data-m="2" data-t="1" data-d="1"><td><span class="t-fuerte">Oreo</span><span class="sub d-md-none">Disponible 7 · vendidas 2</span></td><td class="num solo-ancho">3</td><td class="num solo-ancho">4</td><td class="num solo-ancho">7</td><td class="num solo-ancho">2</td><td class="num m-derecha t-fuerte">5</td></tr>
+          <tr data-m="2" data-t="1" data-d="1"><td><span class="t-fuerte">Marshmallow</span><span class="sub d-md-none">Disponible 3 · vendidas 0</span></td><td class="num solo-ancho">3</td><td class="num solo-ancho">0</td><td class="num solo-ancho">3</td><td class="num solo-ancho">0</td><td class="num m-derecha t-fuerte">3</td></tr>
+          <tr data-m="2" data-t="2" data-d="2"><td><span class="t-fuerte">Bom o Bom</span><span class="sub d-md-none">Disponible 5 · vendidas 2</span></td><td class="num solo-ancho">5</td><td class="num solo-ancho">0</td><td class="num solo-ancho">5</td><td class="num solo-ancho">2</td><td class="num m-derecha t-fuerte">3</td></tr>
+          <tr data-m="2" data-t="2" data-d="2"><td><span class="t-fuerte">Limón</span><span class="sub d-md-none">Disponible 4 · vendidas 4</span></td><td class="num solo-ancho">4</td><td class="num solo-ancho">0</td><td class="num solo-ancho">4</td><td class="num solo-ancho">4</td><td class="num m-derecha t-fuerte">0</td></tr>
+          <tr data-m="2" data-t="2" data-d="2"><td><span class="t-fuerte">Maracuyá</span><span class="sub d-md-none">Disponible 3 · vendidas 2</span></td><td class="num solo-ancho">2</td><td class="num solo-ancho">1</td><td class="num solo-ancho">3</td><td class="num solo-ancho">2</td><td class="num m-derecha t-fuerte">1</td></tr>
+          <tr data-m="2" data-t="2" data-d="2"><td><span class="t-fuerte">Arándano</span><span class="sub d-md-none">Disponible 3 · vendidas 2</span></td><td class="num solo-ancho">3</td><td class="num solo-ancho">0</td><td class="num solo-ancho">3</td><td class="num solo-ancho">2</td><td class="num m-derecha t-fuerte">1</td></tr>
+          <tr data-m="3" data-t="2" data-d="2"><td><span class="t-fuerte">Cinnamon Roll</span><span class="sub d-md-none">Disponible 3 · vendidas 3</span></td><td class="num solo-ancho">3</td><td class="num solo-ancho">0</td><td class="num solo-ancho">3</td><td class="num solo-ancho">3</td><td class="num m-derecha t-fuerte">0</td></tr>
+          <tr data-m="3" data-t="2" data-d="2"><td><span class="t-fuerte">Nutella</span><span class="sub d-md-none">Disponible 8 · vendidas 3</span></td><td class="num solo-ancho">3</td><td class="num solo-ancho">5</td><td class="num solo-ancho">8</td><td class="num solo-ancho">3</td><td class="num m-derecha t-fuerte">5</td></tr>
+          <tr data-m="3" data-t="2" data-d="2"><td><span class="t-fuerte">Snicker</span><span class="sub d-md-none">Disponible 0 · vendidas 0</span></td><td class="num solo-ancho">0</td><td class="num solo-ancho">0</td><td class="num solo-ancho">0</td><td class="num solo-ancho">0</td><td class="num m-derecha t-fuerte">0</td></tr>
+          <tr data-m="3" data-t="2" data-d="2"><td><span class="t-fuerte">Pistacho</span><span class="sub d-md-none">Disponible 5 · vendidas 3</span></td><td class="num solo-ancho">1</td><td class="num solo-ancho">4</td><td class="num solo-ancho">5</td><td class="num solo-ancho">3</td><td class="num m-derecha t-fuerte">2</td></tr>
+      </tbody>
+    </table>
+    <nav class="paginas solo-m" aria-label="Páginas">
+      <span class="rango t-2" data-rango="1">1–6 de 16</span><span class="rango t-2" data-rango="2">7–12 de 16</span><span class="rango t-2" data-rango="3">13–16 de 16</span>
+      <a class="pagina" data-p="1" href="?paso=1&amp;pagina=1">1</a><a class="pagina" data-p="2" href="?paso=1&amp;pagina=2">2</a><a class="pagina" data-p="3" href="?paso=1&amp;pagina=3">3</a>
+    </nav>
+    <nav class="paginas d-none d-md-flex" aria-label="Páginas">
+      <span class="rango t-2" data-rango="1">1–8 de 16</span><span class="rango t-2" data-rango="2">9–16 de 16</span>
+      <a class="pagina" data-p="1" href="?paso=1&amp;pagina=1">1</a><a class="pagina" data-p="2" href="?paso=1&amp;pagina=2">2</a>
+    </nav>
+  </section>
+
+  <!-- Paso 2: dinero por medio de pago -->
+  <div class="dos-columnas" data-paso="2" data-ocultar="exito">
+    <section class="superficie" aria-labelledby="t-dinero">
+      <div class="superficie-encabezado"><h2 id="t-dinero">Dinero recibido</h2></div>
+      <table class="tabla tabla-movil">
+        <thead><tr><th scope="col">Medio</th><th scope="col" class="num">Ventas</th><th scope="col" class="num">Esperado (S/)</th><th scope="col" class="num">Declarado (S/)</th><th scope="col" class="num">Diferencia</th></tr></thead>
+        <tbody>
+          <tr><td><span class="t-fuerte">Efectivo</span><span class="sub d-md-none">Esperado 49.50 · <span class="estado-alerta">Falta 8.00</span></span></td><td class="num solo-ancho">6</td><td class="num solo-ancho">49.50</td><td class="num m-derecha"><input class="form-control text-end campo-monto" inputmode="decimal" value="41.50" aria-label="Efectivo declarado"></td><td class="num solo-ancho"><span class="estado-alerta">Falta 8.00</span></td></tr>
+          <tr><td><span class="t-fuerte">Yape</span><span class="sub d-md-none">Esperado 315.00 · <span class="estado-ok"><span class="ico ico-check ico-16" aria-hidden="true"></span>Cuadra</span></span></td><td class="num solo-ancho">36</td><td class="num solo-ancho">315.00</td><td class="num m-derecha"><input class="form-control text-end campo-monto" inputmode="decimal" value="315.00" aria-label="Yape declarado"></td><td class="num solo-ancho"><span class="estado-ok"><span class="ico ico-check ico-16" aria-hidden="true"></span>Cuadra</span></td></tr>
+          <tr><td><span class="t-fuerte">Plin</span><span class="sub d-md-none">Sin ventas</span></td><td class="num solo-ancho">0</td><td class="num solo-ancho">0.00</td><td class="num m-derecha"><input class="form-control text-end campo-monto" inputmode="decimal" value="0.00" aria-label="Plin declarado"></td><td class="num solo-ancho t-2">—</td></tr>
+          <tr><td><span class="t-fuerte">Transferencia</span><span class="sub d-md-none">Sin ventas</span></td><td class="num solo-ancho">0</td><td class="num solo-ancho">0.00</td><td class="num m-derecha"><input class="form-control text-end campo-monto" inputmode="decimal" value="0.00" aria-label="Transferencia declarada"></td><td class="num solo-ancho t-2">—</td></tr>
+        </tbody>
+        <tfoot class="solo-ancho-pie"><tr><td>Total</td><td class="num">42</td><td class="num">364.50</td><td class="num">356.50</td><td class="num"><span class="estado-alerta">Falta 8.00</span></td></tr></tfoot>
+      </table>
+    </section>
+    <section class="superficie" aria-labelledby="t-codigo">
+      <div class="superficie-encabezado"><h2 id="t-codigo">Venta sin medio válido</h2></div>
+      <p class="mb-3"><span class="t-fuerte">Arándano</span> · S/&#160;9.00 · anotada «R»</p>
+      <label class="form-label" for="medio-real">¿Cómo se cobró?</label>
+      <select class="form-select" id="medio-real"><option>Elige el medio</option><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Transferencia</option><option selected>No se cobró</option></select>
+    </section>
+  </div>
+
+  <!-- Paso 3: diferencia y justificación -->
+  <div class="dos-columnas" data-paso="3" data-ocultar="exito">
+    <section class="superficie d-none d-md-block" aria-labelledby="t-resumen">
+      <p class="t-etiqueta" id="t-resumen">Diferencia de caja</p>
+      <span class="t-cifra dinero d-block my-1">−<span class="soles">S/</span>17<span class="dec">.00</span></span>
+      <p class="estado-alerta mb-3">Por justificar</p>
+      <ul class="lista-simple">
+        <li><span>Efectivo</span><span class="derecha num">Falta 8.00</span></li>
+        <li><span>Arándano · no se cobró</span><span class="derecha num">Falta 9.00</span></li>
+        <li><span>Vendido</span><span class="derecha num">373.50</span></li>
+        <li><span>Recibido</span><span class="derecha num">356.50</span></li>
+      </ul>
+    </section>
+    <section class="superficie resumen-oscuro d-md-none" aria-label="Diferencia de caja">
+      <p class="t-etiqueta">Diferencia de caja</p>
+      <span class="t-cifra dinero d-block my-1">−<span class="soles">S/</span>17<span class="dec">.00</span></span>
+      <p class="t-2">Efectivo 8.00 · Arándano 9.00</p>
+    </section>
+    <section class="superficie" aria-labelledby="t-justificacion">
+      <div class="superficie-encabezado"><h2 id="t-justificacion">Qué pasó</h2></div>
+      <div class="campo">
+        <label class="form-label" for="motivo">Motivo</label>
+        <select class="form-select" id="motivo"><option>Vuelto entregado de más</option><option>Venta no registrada</option><option selected>Código de pago mal anotado</option><option>Otro</option></select>
+      </div>
+      <div class="campo">
+        <label class="form-label" for="detalle">Detalle</label>
+        <textarea class="form-control" id="detalle" rows="3" aria-describedby="detalle-error" data-invalido="error"></textarea>
+        <p class="error-campo" id="detalle-error" data-ver="error">Escribe qué pasó: falta S/&#160;17.00.</p>
+      </div>
+      <div class="form-check campo"><input class="form-check-input" type="checkbox" id="conteo"><label class="form-check-label" for="conteo">Conté el efectivo dos veces</label></div>
+    </section>
+  </div>
+
+  <!-- Caja cerrada -->
+  <section class="superficie d-flex flex-column flex-fill" aria-label="Caja cerrada" data-ver="exito">
+    <div class="vacio">
+      <img src="../assets/chef-galleta.png" alt="">
+      <h2>Caja cerrada</h2>
+      <p class="estado-ok"><span class="ico ico-check ico-16" aria-hidden="true"></span>Diferencia de S/&#160;17.00 justificada</p>
+      <a class="btn-secundario" href="tablero.html">Ir al tablero</a>
+    </div>
+  </section>
+</main>
+
+<nav aria-label="Secciones"><ul class="barra-secciones">
+  <li><a href="tablero.html" aria-label="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+  <li><a href="inventario.html" aria-label="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+  <li><a href="productos.html" aria-label="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+  <li><a href="kardex.html" aria-label="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+  <li><a href="cierre-caja.html" aria-current="page" aria-label="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+</ul></nav>
+
+<!-- Cerrar la caja no tiene vuelta: se confirma. -->
+<div class="velo velo-centro" data-ver="confirmar" role="dialog" aria-modal="true" aria-labelledby="c-titulo">
+  <div class="ventana">
+    <h2 id="c-titulo">¿Cerrar la caja con una diferencia de S/&#160;17.00?</h2>
+    <p>Después ya no se puede cambiar el dinero declarado.</p>
+    <div class="acciones"><a class="btn-secundario" href="cierre-caja.html">Volver</a><a class="btn-principal" href="?estado=exito"><span class="ico ico-wallet" aria-hidden="true"></span>Cerrar caja</a></div>
+  </div>
+</div>
+
+<div class="velo velo-centro" data-ver="primera" role="dialog" aria-modal="true" aria-labelledby="o-titulo">
+  <div class="ventana">
+    <img class="ilustracion" src="../assets/chef-galleta.png" alt="">
+    <div class="puntos-paso" aria-hidden="true"><span aria-current="step"></span><span></span><span></span></div>
+    <p class="visually-hidden">Paso 1 de 3</p>
+    <h2 id="o-titulo" class="text-center">Cierra tu caja en tres pasos</h2>
+    <p class="text-center">Cuenta lo que queda en vitrina, escribe el dinero de cada medio y explica cualquier diferencia.</p>
+    <div class="acciones"><button class="btn-principal" type="button">Siguiente</button></div>
+  </div>
+</div>
+
+<script src="js/lienzo.js"></script>
+</body>
+</html>

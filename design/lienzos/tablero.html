@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tablero | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iconos.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body data-pestana-inicial="vendidos">
+<header class="app-cabecera">
+  <div class="contenedor">
+    <a class="marca" href="tablero.html"><img src="../assets/03_logo.jpg" alt="D'PAO COOKIES"><span class="nombre">D'PAO COOKIES</span></a>
+    <nav aria-label="Secciones"><ul class="nav-secciones">
+      <li><a href="tablero.html" aria-current="page" title="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+      <li><a href="inventario.html" title="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+      <li><a href="productos.html" title="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+      <li><a href="kardex.html" title="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+      <li><a href="cierre-caja.html" title="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+    </ul></nav>
+    <span class="capsula"><span class="local">Plaza Mayor</span><span class="sep">·</span><span class="estado-alerta">Caja por cerrar</span></span>
+    <a class="btn-icono" href="acceso.html" aria-label="Cerrar sesión" title="Cerrar sesión"><span class="ico ico-log-out" aria-hidden="true"></span></a>
+  </div>
+</header>
+
+<main class="app-cuerpo contenedor">
+  <div class="titulo-fila">
+    <h1>Tablero</h1>
+    <div class="derecha accion-principal">
+      <a class="btn-principal" href="cierre-caja.html"><span class="ico ico-wallet" aria-hidden="true"></span>Cerrar caja</a>
+    </div>
+  </div>
+
+  <!-- Resumen: cuatro mosaicos iguales (tablet y computadora) -->
+  <section class="mosaicos d-none d-md-grid" aria-label="Resumen del día" data-ocultar="cargando">
+    <div class="superficie mosaico"><p class="t-etiqueta">Vendido hoy</p><span class="t-cifra dinero"><span class="soles">S/</span>373<span class="dec">.50</span></span><p class="t-2">43 galletas</p></div>
+    <div class="superficie mosaico"><p class="t-etiqueta">Recibido</p><span class="t-cifra dinero"><span class="soles">S/</span>356<span class="dec">.50</span></span><p class="t-2">Efectivo y Yape</p></div>
+    <div class="superficie mosaico"><p class="t-etiqueta">Diferencia de caja</p><span class="t-cifra dinero">−<span class="soles">S/</span>17<span class="dec">.00</span></span><p class="estado-alerta">Por justificar</p></div>
+    <div class="superficie mosaico"><p class="t-etiqueta">Insumos por reponer</p><span class="t-cifra">4</span><p class="t-2">de 9</p></div>
+  </section>
+  <section class="mosaicos d-none d-md-grid" aria-label="Cargando resumen" data-ver="cargando">
+    <div class="superficie mosaico"><span class="esqueleto" style="width:48%"></span><span class="esqueleto alto my-1"></span><span class="esqueleto" style="width:32%"></span></div>
+    <div class="superficie mosaico"><span class="esqueleto" style="width:48%"></span><span class="esqueleto alto my-1"></span><span class="esqueleto" style="width:32%"></span></div>
+    <div class="superficie mosaico"><span class="esqueleto" style="width:48%"></span><span class="esqueleto alto my-1"></span><span class="esqueleto" style="width:32%"></span></div>
+    <div class="superficie mosaico"><span class="esqueleto" style="width:48%"></span><span class="esqueleto alto my-1"></span><span class="esqueleto" style="width:32%"></span></div>
+  </section>
+
+  <!-- Resumen en el celular: una sola tarjeta oscura -->
+  <section class="superficie resumen-oscuro d-md-none" aria-label="Resumen del día">
+    <p class="t-etiqueta">Diferencia de caja</p>
+    <span class="t-cifra dinero d-block my-1">−<span class="soles">S/</span>17<span class="dec">.00</span></span>
+    <p class="t-2">Vendido S/&#160;373.50 · Recibido S/&#160;356.50</p>
+  </section>
+  <nav class="d-md-none" aria-label="Paneles del tablero">
+    <div class="pestanas w-100">
+      <a class="flex-fill justify-content-center" href="?pestana=vendidos" data-pestana-enlace="vendidos">Más vendidos</a>
+      <a class="flex-fill justify-content-center" href="?pestana=atencion" data-pestana-enlace="atencion">Atención · 7</a>
+    </div>
+  </nav>
+
+  <div class="dos-columnas iguales">
+    <section class="superficie panel-vendidos" aria-labelledby="t-vendidos" data-ocultar="cargando">
+      <div class="superficie-encabezado d-none d-md-flex"><h2 id="t-vendidos">Más vendidos</h2><span class="derecha t-etiqueta">Und. · S/</span></div>
+      <ul class="lista-simple">
+        <li><div class="flex-fill"><div class="d-flex"><span class="t-fuerte">Chunky</span><span class="ms-auto num">9 · 63.00</span></div><div class="barra-progreso"><span style="width:100%"></span></div></div></li>
+        <li><div class="flex-fill"><div class="d-flex"><span class="t-fuerte">Pistacho</span><span class="ms-auto num">3 · 45.00</span></div><div class="barra-progreso"><span style="width:71%"></span></div></div></li>
+        <li><div class="flex-fill"><div class="d-flex"><span class="t-fuerte">Limón</span><span class="ms-auto num">4 · 36.00</span></div><div class="barra-progreso"><span style="width:57%"></span></div></div></li>
+        <li><div class="flex-fill"><div class="d-flex"><span class="t-fuerte">Nutella</span><span class="ms-auto num">3 · 33.00</span></div><div class="barra-progreso"><span style="width:52%"></span></div></div></li>
+        <li><div class="flex-fill"><div class="d-flex"><span class="t-fuerte">Chispas</span><span class="ms-auto num">4 · 28.00</span></div><div class="barra-progreso"><span style="width:44%"></span></div></div></li>
+        <li class="d-none d-md-flex"><div class="flex-fill"><div class="d-flex"><span class="t-fuerte">Cinnamon Roll</span><span class="ms-auto num">3 · 27.00</span></div><div class="barra-progreso"><span style="width:43%"></span></div></div></li>
+        <li class="d-none d-md-flex"><div class="flex-fill"><div class="d-flex"><span class="t-fuerte">Red Velvet</span><span class="ms-auto num">3 · 25.50</span></div><div class="barra-progreso"><span style="width:40%"></span></div></div></li>
+      </ul>
+    </section>
+
+    <section class="superficie panel-atencion" aria-labelledby="t-atencion" data-ocultar="cargando">
+      <div class="superficie-encabezado d-none d-md-flex"><h2 id="t-atencion">Atención</h2><a class="derecha t-fuerte" href="inventario.html">Ver insumos</a></div>
+      <ul class="lista-simple">
+        <li><span class="t-fuerte">Queso crema</span><span class="derecha"><span class="num">0.80 de 1.50 kg</span></span></li>
+        <li><span class="t-fuerte">Mantequilla</span><span class="derecha"><span class="num">2.50 de 3.00 kg</span></span></li>
+        <li><span class="t-fuerte">Cobertura de chocolate</span><span class="derecha"><span class="num">1.80 de 2.00 kg</span></span></li>
+        <li><span class="t-fuerte">Azúcar rubia</span><span class="derecha"><span class="num">4.50 de 5.00 kg</span></span></li>
+        <li><span class="t-fuerte">Limón</span><span class="derecha estado-alerta">Agotado</span></li>
+        <li><span class="t-fuerte">Cinnamon Roll</span><span class="derecha estado-alerta">Agotado</span></li>
+        <li><span class="t-fuerte">Snicker</span><span class="derecha estado-alerta">Agotado</span></li>
+      </ul>
+    </section>
+
+    <section class="superficie" aria-label="Cargando" data-ver="cargando">
+      <span class="esqueleto mb-3" style="width:40%"></span>
+      <span class="esqueleto alto mb-2"></span><span class="esqueleto alto mb-2"></span><span class="esqueleto alto mb-2"></span><span class="esqueleto alto"></span>
+    </section>
+    <section class="superficie d-none d-md-block" aria-label="Cargando" data-ver="cargando">
+      <span class="esqueleto mb-3" style="width:40%"></span>
+      <span class="esqueleto alto mb-2"></span><span class="esqueleto alto mb-2"></span><span class="esqueleto alto mb-2"></span><span class="esqueleto alto"></span>
+    </section>
+  </div>
+</main>
+
+<nav aria-label="Secciones"><ul class="barra-secciones">
+  <li><a href="tablero.html" aria-current="page" aria-label="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+  <li><a href="inventario.html" aria-label="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+  <li><a href="productos.html" aria-label="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+  <li><a href="kardex.html" aria-label="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+  <li><a href="cierre-caja.html" aria-label="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+</ul></nav>
+
+<!-- Primera visita: protagonismo total, se cierra para siempre con "Entendido" -->
+<div class="velo velo-centro" data-ver="primera" role="dialog" aria-modal="true" aria-labelledby="o-titulo">
+  <div class="ventana">
+    <img class="ilustracion" src="../assets/chef-galleta.png" alt="">
+    <div class="puntos-paso" aria-hidden="true"><span aria-current="step"></span><span></span></div>
+    <p class="visually-hidden">Paso 1 de 2</p>
+    <h2 id="o-titulo" class="text-center">Tu día de un vistazo</h2>
+    <p class="text-center">Lo vendido, lo recibido y lo que necesita atención en tu tienda. Al terminar el turno, cierra la caja.</p>
+    <div class="acciones"><button class="btn-principal" type="button">Siguiente</button></div>
+  </div>
+</div>
+
+<script src="js/lienzo.js"></script>
+<script>
+  /* En el celular, los dos paneles se alternan con las pestañas. */
+  (function () {
+    const p = new URLSearchParams(location.search).get('pestana') || 'vendidos';
+    const movil = matchMedia('(max-width: 767.98px)');
+    const aplicar = () => {
+      document.querySelector('.panel-vendidos').classList.toggle('d-none', movil.matches && p !== 'vendidos');
+      document.querySelector('.panel-atencion').classList.toggle('d-none', movil.matches && p !== 'atencion');
+    };
+    aplicar(); movil.addEventListener('change', aplicar);
+  })();
+</script>
+</body>
+</html>

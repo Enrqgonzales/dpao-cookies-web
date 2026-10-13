@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Insumos | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iconos.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body>
+<header class="app-cabecera">
+  <div class="contenedor">
+    <a class="marca" href="tablero.html"><img src="../assets/03_logo.jpg" alt="D'PAO COOKIES"><span class="nombre">D'PAO COOKIES</span></a>
+    <nav aria-label="Secciones"><ul class="nav-secciones">
+      <li><a href="tablero.html" title="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+      <li><a href="inventario.html" aria-current="page" title="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+      <li><a href="productos.html" title="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+      <li><a href="kardex.html" title="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+      <li><a href="cierre-caja.html" title="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+    </ul></nav>
+    <span class="capsula"><span class="local">Plaza Mayor</span><span class="sep">·</span><span class="estado-alerta">Caja por cerrar</span></span>
+    <a class="btn-icono" href="acceso.html" aria-label="Cerrar sesión" title="Cerrar sesión"><span class="ico ico-log-out" aria-hidden="true"></span></a>
+  </div>
+</header>
+
+<main class="app-cuerpo contenedor">
+  <div class="titulo-fila">
+    <h1>Insumos</h1>
+    <div class="derecha">
+      <button class="btn-icono" type="button" aria-label="Buscar insumo" title="Buscar insumo"><span class="ico ico-search" aria-hidden="true"></span></button>
+      <div class="accion-principal"><a class="btn-principal" href="?estado=hoja"><span class="ico ico-plus" aria-hidden="true"></span>Nuevo insumo</a></div>
+    </div>
+  </div>
+
+  <section class="superficie" aria-label="Existencias" data-ocultar="vacio">
+    <table class="tabla tabla-movil">
+      <thead><tr><th scope="col">Insumo</th><th scope="col" class="num">Stock (kg)</th><th scope="col" class="num">Mínimo (kg)</th><th scope="col" class="num">Costo (S/ por kg)</th><th scope="col"><span class="visually-hidden">Estado</span></th></tr></thead>
+      <tbody>
+        <tr data-m="1"><td><span class="t-fuerte">Queso crema</span><span class="sub d-md-none">Mínimo 1.50 kg</span></td><td class="num m-derecha">0.80<span class="d-md-none">&#160;kg</span><span class="sub d-md-none"><span class="estado-alerta">Reponer</span></span></td><td class="num solo-ancho">1.50</td><td class="num solo-ancho">30.00</td><td class="solo-ancho text-end"><span class="estado-alerta">Reponer</span></td></tr>
+        <tr data-m="1"><td><span class="t-fuerte">Mantequilla</span><span class="sub d-md-none">Mínimo 3.00 kg</span></td><td class="num m-derecha">2.50<span class="d-md-none">&#160;kg</span><span class="sub d-md-none"><span class="estado-alerta">Reponer</span></span></td><td class="num solo-ancho">3.00</td><td class="num solo-ancho">32.00</td><td class="solo-ancho text-end"><span class="estado-alerta">Reponer</span></td></tr>
+        <tr data-m="1"><td><span class="t-fuerte">Cobertura de chocolate</span><span class="sub d-md-none">Mínimo 2.00 kg</span></td><td class="num m-derecha">1.80<span class="d-md-none">&#160;kg</span><span class="sub d-md-none"><span class="estado-alerta">Reponer</span></span></td><td class="num solo-ancho">2.00</td><td class="num solo-ancho">42.00</td><td class="solo-ancho text-end"><span class="estado-alerta">Reponer</span></td></tr>
+        <tr data-m="1"><td><span class="t-fuerte">Azúcar rubia</span><span class="sub d-md-none">Mínimo 5.00 kg</span></td><td class="num m-derecha">4.50<span class="d-md-none">&#160;kg</span><span class="sub d-md-none"><span class="estado-alerta">Reponer</span></span></td><td class="num solo-ancho">5.00</td><td class="num solo-ancho">4.20</td><td class="solo-ancho text-end"><span class="estado-alerta">Reponer</span></td></tr>
+        <tr data-m="1"><td><span class="t-fuerte">Harina de trigo</span><span class="sub d-md-none">Mínimo 10.00 kg</span></td><td class="num m-derecha">18.00<span class="d-md-none">&#160;kg</span></td><td class="num solo-ancho">10.00</td><td class="num solo-ancho">3.80</td><td class="solo-ancho"></td></tr>
+        <tr data-m="1"><td><span class="t-fuerte">Azúcar blanca</span><span class="sub d-md-none">Mínimo 4.00 kg</span></td><td class="num m-derecha">6.00<span class="d-md-none">&#160;kg</span></td><td class="num solo-ancho">4.00</td><td class="num solo-ancho">4.50</td><td class="solo-ancho"></td></tr>
+        <tr data-m="1"><td><span class="t-fuerte">Chispas de chocolate</span><span class="sub d-md-none">Mínimo 2.00 kg</span></td><td class="num m-derecha">3.20<span class="d-md-none">&#160;kg</span></td><td class="num solo-ancho">2.00</td><td class="num solo-ancho">38.00</td><td class="solo-ancho"></td></tr>
+        <tr data-m="2"><td><span class="t-fuerte">Manjar</span><span class="sub d-md-none">Mínimo 2.00 kg</span></td><td class="num m-derecha">4.00<span class="d-md-none">&#160;kg</span></td><td class="num solo-ancho">2.00</td><td class="num solo-ancho">14.00</td><td class="solo-ancho"></td></tr>
+        <tr data-m="2"><td><span class="t-fuerte">Maicena</span><span class="sub d-md-none">Mínimo 1.00 kg</span></td><td class="num m-derecha">1.20<span class="d-md-none">&#160;kg</span></td><td class="num solo-ancho">1.00</td><td class="num solo-ancho">9.00</td><td class="solo-ancho"></td></tr>
+      </tbody>
+    </table>
+    <nav class="paginas solo-m" aria-label="Páginas">
+      <span class="rango t-2" data-rango="1">1–7 de 9</span><span class="rango t-2" data-rango="2">8–9 de 9</span>
+      <a class="pagina" data-p="1" href="?pagina=1">1</a><a class="pagina" data-p="2" href="?pagina=2">2</a>
+    </nav>
+  </section>
+
+  <section class="superficie d-flex flex-column flex-fill" aria-label="Sin insumos" data-ver="vacio">
+    <div class="vacio"><img src="../assets/chef-galleta.png" alt=""><h2>Aún no hay insumos</h2></div>
+  </section>
+</main>
+
+<nav aria-label="Secciones"><ul class="barra-secciones">
+  <li><a href="tablero.html" aria-label="Tablero"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></a></li>
+  <li><a href="inventario.html" aria-current="page" aria-label="Insumos"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></a></li>
+  <li><a href="productos.html" aria-label="Productos"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></a></li>
+  <li><a href="kardex.html" aria-label="Kardex"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></a></li>
+  <li><a href="cierre-caja.html" aria-label="Caja"><span class="ico ico-wallet" aria-hidden="true"></span><span class="etq">Caja</span></a></li>
+</ul></nav>
+
+<!-- Hoja: nuevo insumo -->
+<div class="velo velo-hoja" data-ver="hoja error" role="dialog" aria-modal="true" aria-labelledby="h-titulo">
+  <form class="hoja" novalidate>
+    <div class="hoja-cabecera"><h2 id="h-titulo">Nuevo insumo</h2><a class="btn-icono" href="inventario.html" aria-label="Cerrar"><span class="ico ico-x" aria-hidden="true"></span></a></div>
+    <div class="campo">
+      <label class="form-label" for="codigo">Código</label>
+      <input class="form-control" id="codigo" value="INS-001" aria-describedby="codigo-error" data-invalido="error">
+      <p class="error-campo" id="codigo-error" data-ver="error">Ya existe un insumo con el código INS-001.</p>
+    </div>
+    <div class="campo"><label class="form-label" for="nombre">Nombre</label><input class="form-control" id="nombre" value="Harina de trigo"></div>
+    <div class="campo"><label class="form-label" for="unidad">Unidad</label><select class="form-select" id="unidad"><option>kg</option><option>litro</option><option>unidad</option></select></div>
+    <div class="campo row g-2">
+      <div class="col-4"><label class="form-label" for="stock">Stock</label><input class="form-control" id="stock" inputmode="decimal" value="25.00"></div>
+      <div class="col-4"><label class="form-label" for="minimo">Mínimo</label><input class="form-control" id="minimo" inputmode="decimal" value="10.00"></div>
+      <div class="col-4"><label class="form-label" for="costo">Costo</label><input class="form-control" id="costo" inputmode="decimal" value="3.80"></div>
+    </div>
+    <div class="hoja-pie"><button class="btn-principal" type="submit">Guardar insumo</button></div>
+  </form>
+</div>
+
+<div class="aviso-flotante" data-ver="exito" role="status"><span>Insumo registrado</span><button class="btn-texto" type="button"><span class="ico ico-undo-2 ico-16" aria-hidden="true"></span> Deshacer</button></div>
+
+<div class="velo velo-centro" data-ver="primera" role="dialog" aria-modal="true" aria-labelledby="o-titulo">
+  <div class="ventana">
+    <img class="ilustracion" src="../assets/chef-galleta.png" alt="">
+    <div class="puntos-paso" aria-hidden="true"><span aria-current="step"></span><span></span></div>
+    <p class="visually-hidden">Paso 1 de 2</p>
+    <h2 id="o-titulo" class="text-center">Tus insumos de cocina</h2>
+    <p class="text-center">«Reponer» aparece cuando un insumo llega a su mínimo. Si el conteo no coincide, toca el insumo y ajústalo.</p>
+    <div class="acciones"><button class="btn-principal" type="button">Siguiente</button></div>
+  </div>
+</div>
+
+<script src="js/lienzo.js"></script>
+</body>
+</html>

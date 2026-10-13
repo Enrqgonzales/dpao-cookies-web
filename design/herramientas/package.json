@@ -1,0 +1,14 @@
+{
+  "name": "dpao-lienzos-herramientas",
+  "private": true,
+  "description": "Verificación y capturas de los lienzos de diseño con Playwright y axe-core",
+  "scripts": {
+    "capturar": "node capturar.js ../lienzos ../capturas",
+    "iconos": "node generar_iconos.js"
+  },
+  "devDependencies": {
+    "playwright-core": "1.48.2",
+    "axe-core": "4.10.2",
+    "lucide-static": "0.460.0"
+  }
+}

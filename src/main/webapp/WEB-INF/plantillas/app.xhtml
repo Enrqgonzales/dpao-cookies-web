@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- Plantilla común de las pantallas con sesión: cabecera, secciones, cápsula, avisos y barra del celular.
+     Parámetros: seccion (tablero|insumos|productos|kardex). Zonas: metadatos, titulo, contenido, capas. -->
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+<f:view locale="es_PE" contentType="text/html" encoding="UTF-8">
+    <ui:insert name="metadatos"/>
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title><ui:insert name="titulo"/> | D'PAO COOKIES</title>
+        <link rel="icon" href="#{request.contextPath}/assets/img/logo.jpg"/>
+        <link rel="stylesheet" href="#{request.contextPath}/assets/vendor/bootstrap/bootstrap.min.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/assets/css/iconos.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/assets/css/dpao.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/assets/css/app-jsf.css"/>
+    </h:head>
+    <h:body>
+        <header class="app-cabecera">
+            <div class="contenedor">
+                <h:link outcome="tablero" styleClass="marca">
+                    <img src="#{request.contextPath}/assets/img/logo.jpg" alt="D'PAO COOKIES"/><span class="nombre">D'PAO COOKIES</span>
+                </h:link>
+                <nav aria-label="Secciones">
+                    <ul class="nav-secciones">
+                        <li><h:link outcome="tablero" p:title="Tablero" p:aria-current="#{seccion eq 'tablero' ? 'page' : null}"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></h:link></li>
+                        <li><h:link outcome="insumos" p:title="Insumos" p:aria-current="#{seccion eq 'insumos' ? 'page' : null}"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></h:link></li>
+                        <li><h:link outcome="productos" p:title="Productos" p:aria-current="#{seccion eq 'productos' ? 'page' : null}"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></h:link></li>
+                        <li><h:link outcome="kardex" p:title="Kardex" p:aria-current="#{seccion eq 'kardex' ? 'page' : null}"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></h:link></li>
+                    </ul>
+                </nav>
+                <!-- La cápsula: local · lo que pide atención hoy. -->
+                <span class="capsula">
+                    <span class="local">#{sesion.local}</span><span class="sep">·</span>
+                    <h:outputText styleClass="estado-alerta" rendered="#{tablero.resumen.cantidadAtencion gt 0}"
+                                  value="#{tablero.resumen.cantidadAtencion} por atender"/>
+                    <h:outputText styleClass="estado-ok" rendered="#{tablero.resumen.cantidadAtencion eq 0}" value="Todo en orden"/>
+                </span>
+                <h:form id="salir" styleClass="salir">
+                    <input type="hidden" name="csrf" value="#{sessionScope.csrf}"/>
+                    <span class="ico ico-log-out" aria-hidden="true"></span>
+                    <h:commandButton value="Salir" action="#{acceso.salir}" styleClass="btn-icono"
+                                     p:aria-label="Cerrar sesión" p:title="Cerrar sesión"/>
+                </h:form>
+            </div>
+        </header>
+
+        <main class="app-cuerpo contenedor">
+            <ui:insert name="contenido"/>
+        </main>
+
+        <nav aria-label="Secciones en el celular">
+            <ul class="barra-secciones">
+                <li><h:link outcome="tablero" p:aria-label="Tablero" p:aria-current="#{seccion eq 'tablero' ? 'page' : null}"><span class="ico ico-layout-dashboard" aria-hidden="true"></span><span class="etq">Tablero</span></h:link></li>
+                <li><h:link outcome="insumos" p:aria-label="Insumos" p:aria-current="#{seccion eq 'insumos' ? 'page' : null}"><span class="ico ico-wheat" aria-hidden="true"></span><span class="etq">Insumos</span></h:link></li>
+                <li><h:link outcome="productos" p:aria-label="Productos" p:aria-current="#{seccion eq 'productos' ? 'page' : null}"><span class="ico ico-cookie" aria-hidden="true"></span><span class="etq">Productos</span></h:link></li>
+                <li><h:link outcome="kardex" p:aria-label="Kardex" p:aria-current="#{seccion eq 'kardex' ? 'page' : null}"><span class="ico ico-arrow-left-right" aria-hidden="true"></span><span class="etq">Kardex</span></h:link></li>
+            </ul>
+        </nav>
+
+        <!-- Avisos de la operación (éxito tras redirigir, o error general). -->
+        <div role="status" aria-live="polite">
+            <h:messages globalOnly="true" styleClass="aviso-flotante" infoClass="aviso-ok" errorClass="aviso-error"/>
+        </div>
+
+        <ui:insert name="capas"/>
+
+        <script src="#{request.contextPath}/assets/js/dpao.js"></script>
+    </h:body>
+</f:view>
+</html>

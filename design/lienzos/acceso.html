@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acceso | D'PAO COOKIES</title>
+  <link rel="stylesheet" href="../vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="css/iconos.css">
+  <link rel="stylesheet" href="css/dpao.css">
+</head>
+<body>
+<main class="acceso">
+  <div class="tarjeta">
+    <div class="lado-marca">
+      <img src="../assets/03_logo.jpg" alt="D'PAO COOKIES: galleta chef con gorro levantando el pulgar">
+    </div>
+    <form novalidate>
+      <h1>Ingresa a tu tienda</h1>
+      <div>
+        <label class="form-label" for="usuario">Usuario</label>
+        <input class="form-control" id="usuario" name="usuario" autocomplete="username" value="plazamayor">
+      </div>
+      <div>
+        <label class="form-label" for="clave">Contraseña</label>
+        <input class="form-control" id="clave" name="clave" type="password" autocomplete="current-password" aria-describedby="clave-error" data-invalido="error">
+        <p class="error-campo" id="clave-error" data-ver="error">Usuario o contraseña incorrectos.</p>
+      </div>
+      <div>
+        <label class="form-label" for="tienda">Local</label>
+        <select class="form-select" id="tienda" name="tienda"><option selected>Plaza Mayor</option><option>Delivery</option></select>
+      </div>
+      <button class="btn-principal w-100" type="submit">Ingresar</button>
+    </form>
+  </div>
+</main>
+<script src="js/lienzo.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+<f:view locale="es_PE" contentType="text/html" encoding="UTF-8">
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Acceso | D'PAO COOKIES</title>
+        <link rel="icon" href="#{request.contextPath}/assets/img/logo.jpg"/>
+        <link rel="stylesheet" href="#{request.contextPath}/assets/vendor/bootstrap/bootstrap.min.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/assets/css/iconos.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/assets/css/dpao.css"/>
+        <link rel="stylesheet" href="#{request.contextPath}/assets/css/app-jsf.css"/>
+    </h:head>
+    <h:body>
+        <main class="acceso">
+            <div class="tarjeta">
+                <div class="lado-marca">
+                    <img src="#{request.contextPath}/assets/img/logo.jpg" alt="D'PAO COOKIES: galleta chef con gorro levantando el pulgar"/>
+                </div>
+                <h:form id="acceso" p:novalidate="novalidate">
+                    <input type="hidden" name="csrf" value="#{sessionScope.csrf}"/>
+                    <h1>Ingresa a tu tienda</h1>
+                    <div>
+                        <h:outputLabel for="usuario" styleClass="form-label" value="Usuario"/>
+                        <h:inputText id="usuario" value="#{acceso.usuario}" required="true" requiredMessage="Escribe tu usuario."
+                                     styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                     p:autocomplete="username" p:aria-describedby="acceso:usuario-error"
+                                     p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        <h:message id="usuario-error" for="usuario" styleClass="error-campo"/>
+                    </div>
+                    <div>
+                        <h:outputLabel for="clave" styleClass="form-label" value="Contraseña"/>
+                        <h:inputSecret id="clave" value="#{acceso.clave}" required="true" requiredMessage="Escribe tu contraseña."
+                                       styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                       p:autocomplete="current-password" p:aria-describedby="acceso:clave-error"
+                                       p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        <h:message id="clave-error" for="clave" styleClass="error-campo"/>
+                    </div>
+                    <div>
+                        <h:outputLabel for="local" styleClass="form-label" value="Local"/>
+                        <h:selectOneMenu id="local" value="#{acceso.local}" styleClass="form-select">
+                            <f:selectItems value="#{acceso.locales}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <h:commandButton value="Ingresar" action="#{acceso.ingresar}" styleClass="btn-principal w-100"/>
+                </h:form>
+            </div>
+        </main>
+    </h:body>
+</f:view>
+</html>

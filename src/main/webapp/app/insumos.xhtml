@@ -1,0 +1,169 @@
+<ui:composition template="/WEB-INF/plantillas/app.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:param name="seccion" value="insumos"/>
+    <ui:define name="metadatos">
+        <f:metadata>
+            <f:viewParam name="hoja" value="#{insumos.hoja}"/>
+            <f:viewParam name="id" value="#{insumos.id}"/>
+            <f:viewAction action="#{insumos.preparar}"/>
+        </f:metadata>
+    </ui:define>
+    <ui:define name="titulo">Insumos</ui:define>
+
+    <ui:define name="contenido">
+        <div class="titulo-fila">
+            <h1>Insumos</h1>
+            <div class="derecha accion-principal">
+                <h:link outcome="insumos" styleClass="btn-principal">
+                    <f:param name="hoja" value="nuevo"/>
+                    <span class="ico ico-plus" aria-hidden="true"></span>Nuevo insumo
+                </h:link>
+            </div>
+        </div>
+
+        <!-- Existencias desde MySQL (InventarioFacade.listarInsumos → InsumoDTO). -->
+        <h:panelGroup layout="block" styleClass="superficie" rendered="#{not empty insumos.lista}">
+          <div data-paginar="7 9 9">
+            <h:dataTable id="existencias" value="#{insumos.lista}" var="i" styleClass="tabla tabla-movil" captionClass="visually-hidden"
+                         columnClasses=",num m-derecha,num solo-ancho,num solo-ancho,solo-ancho text-end">
+                <f:facet name="caption">Existencias</f:facet>
+                <h:column>
+                    <f:facet name="header">Insumo</f:facet>
+                    <h:link outcome="insumos" styleClass="enlace-fila" value="#{i.nombre}" p:title="Ajustar por conteo">
+                        <f:param name="hoja" value="ajuste"/>
+                        <f:param name="id" value="#{i.idInsumo}"/>
+                    </h:link>
+                    <span class="sub d-md-none">Mínimo #{formato.monto(i.stockMinimo)} #{i.unidadMedida}</span>
+                </h:column>
+                <h:column headerClass="num">
+                    <f:facet name="header">Stock</f:facet>
+                    #{formato.monto(i.stockActual)}&#160;<span class="t-2">#{i.unidadMedida}</span>
+                    <ui:fragment rendered="#{i.bajoStock}"><span class="sub d-md-none"><span class="estado-alerta">Reponer</span></span></ui:fragment>
+                </h:column>
+                <h:column headerClass="num">
+                    <f:facet name="header">Mínimo</f:facet>
+                    #{formato.monto(i.stockMinimo)}
+                </h:column>
+                <h:column headerClass="num">
+                    <f:facet name="header">Costo (S/)</f:facet>
+                    #{formato.monto(i.costoUnitario)}
+                </h:column>
+                <h:column>
+                    <f:facet name="header"><span class="visually-hidden">Estado</span></f:facet>
+                    <h:outputText rendered="#{i.bajoStock}" styleClass="estado-alerta" value="Reponer"/>
+                </h:column>
+            </h:dataTable>
+          </div>
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" styleClass="superficie d-flex flex-column flex-fill" rendered="#{empty insumos.lista}">
+            <div class="vacio"><img src="#{request.contextPath}/assets/img/chef-galleta.png" alt=""/><h2>Aún no hay insumos</h2></div>
+        </h:panelGroup>
+    </ui:define>
+
+    <ui:define name="capas">
+        <!-- Hoja: nuevo insumo -->
+        <ui:fragment rendered="#{insumos.hojaNuevo}">
+            <div class="velo velo-hoja" role="dialog" aria-modal="true" aria-labelledby="h-nuevo">
+                <h:form id="formulario" styleClass="hoja" p:novalidate="novalidate">
+                    <input type="hidden" name="csrf" value="#{sessionScope.csrf}"/>
+                    <div class="hoja-cabecera">
+                        <h2 id="h-nuevo">Nuevo insumo</h2>
+                        <h:link outcome="insumos" styleClass="btn-icono hoja-cerrar" p:aria-label="Cerrar"><span class="ico ico-x" aria-hidden="true"></span></h:link>
+                    </div>
+                    <h:messages for="formulario" styleClass="mensajes-hoja"/>
+                    <div class="campo">
+                        <h:outputLabel for="codigo" styleClass="form-label" value="Código"/>
+                        <h:inputText id="codigo" value="#{insumos.nuevo.codigo}" p:autocomplete="off"
+                                     styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                     p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        <h:message for="codigo" styleClass="error-campo"/>
+                    </div>
+                    <div class="campo">
+                        <h:outputLabel for="nombre" styleClass="form-label" value="Nombre"/>
+                        <h:inputText id="nombre" value="#{insumos.nuevo.nombre}" p:autocomplete="off" styleClass="form-control"/>
+                    </div>
+                    <div class="campo row g-2">
+                        <div class="col-5">
+                            <h:outputLabel for="unidad" styleClass="form-label" value="Unidad"/>
+                            <h:selectOneMenu id="unidad" value="#{insumos.nuevo.unidadMedida}" styleClass="form-select">
+                                <f:selectItems value="#{insumos.unidades}"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col-7">
+                            <h:outputLabel for="categoria" styleClass="form-label" value="Categoría"/>
+                            <h:selectOneMenu id="categoria" value="#{insumos.nuevo.idCategoria}" styleClass="form-select">
+                                <f:selectItems value="#{insumos.categorias}" var="c" itemValue="#{c.idCategoria}" itemLabel="#{c.nombre}"/>
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                    <div class="campo row g-2">
+                        <div class="col-4">
+                            <h:outputLabel for="stock" styleClass="form-label" value="Stock"/>
+                            <h:inputText id="stock" value="#{insumos.nuevo.stockActual}" p:inputmode="decimal"
+                                         styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                     p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        </div>
+                        <div class="col-4">
+                            <h:outputLabel for="minimo" styleClass="form-label" value="Mínimo"/>
+                            <h:inputText id="minimo" value="#{insumos.nuevo.stockMinimo}" p:inputmode="decimal"
+                                         styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                     p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        </div>
+                        <div class="col-4">
+                            <h:outputLabel for="costo" styleClass="form-label" value="Costo"/>
+                            <h:inputText id="costo" value="#{insumos.nuevo.costoUnitario}" p:inputmode="decimal"
+                                         styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                     p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        </div>
+                        <div class="col-12">
+                            <h:message for="stock" styleClass="error-campo"/>
+                            <h:message for="minimo" styleClass="error-campo"/>
+                            <h:message for="costo" styleClass="error-campo"/>
+                        </div>
+                    </div>
+                    <div class="hoja-pie">
+                        <h:commandButton value="Guardar insumo" action="#{insumos.registrar}" styleClass="btn-principal"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:fragment>
+
+        <!-- Hoja: ajuste por conteo físico -->
+        <ui:fragment rendered="#{insumos.hojaAjuste}">
+            <div class="velo velo-hoja" role="dialog" aria-modal="true" aria-labelledby="h-ajuste">
+                <h:form id="ajuste" styleClass="hoja" p:novalidate="novalidate">
+                    <input type="hidden" name="csrf" value="#{sessionScope.csrf}"/>
+                    <div class="hoja-cabecera">
+                        <h2 id="h-ajuste">#{insumos.elegido.nombre}</h2>
+                        <h:link outcome="insumos" styleClass="btn-icono hoja-cerrar" p:aria-label="Cerrar"><span class="ico ico-x" aria-hidden="true"></span></h:link>
+                    </div>
+                    <p class="dato-actual"><span class="t-2">En sistema</span><span class="t-subtitulo">#{formato.monto(insumos.elegido.stockActual)} #{insumos.elegido.unidadMedida}</span></p>
+                    <h:messages for="ajuste" styleClass="mensajes-hoja"/>
+                    <div class="campo">
+                        <h:outputLabel for="contado" styleClass="form-label" value="Stock contado (#{insumos.elegido.unidadMedida})"/>
+                        <h:inputText id="contado" value="#{insumos.stockContado}" p:inputmode="decimal"
+                                     styleClass="form-control #{empty facesContext.getMessageList(component.clientId) ? '' : 'is-invalid'}"
+                                     p:aria-invalid="#{not empty facesContext.getMessageList(component.clientId)}"/>
+                        <h:message for="contado" styleClass="error-campo"/>
+                    </div>
+                    <div class="hoja-pie">
+                        <h:commandButton value="Guardar conteo" action="#{insumos.ajustar}" styleClass="btn-principal"/>
+                    </div>
+                </h:form>
+            </div>
+        </ui:fragment>
+
+        <ui:include src="/WEB-INF/plantillas/orientacion.xhtml">
+            <ui:param name="clave" value="insumos"/>
+            <ui:param name="titulo1" value="Tus insumos de cocina"/>
+            <ui:param name="texto1" value="«Reponer» aparece cuando un insumo llega a su mínimo."/>
+            <ui:param name="titulo2" value="¿El conteo no coincide?"/>
+            <ui:param name="texto2" value="Toca el insumo, escribe lo que contaste y queda registrado como ajuste en el Kardex."/>
+        </ui:include>
+    </ui:define>
+</ui:composition>

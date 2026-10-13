@@ -1,0 +1,43 @@
+/* Ajustes de las vistas JSF sobre dpao.css (el tema de los lienzos se copia sin cambios).
+   Lo que JSF dibuja distinto al lienzo: listas de h:messages, <input type="submit">, formularios
+   envolventes y la paginación que arma assets/js/dpao.js. */
+
+/* h:messages global: el aviso flotante es la propia lista. */
+ul.aviso-flotante { list-style: none; margin: 0; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px 24px; white-space: normal; }
+ul.aviso-flotante li { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+ul.aviso-flotante .aviso-error { color: var(--dp-alerta-sobre-oscuro); }
+ul.aviso-flotante .aviso-error::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+@media (max-width: 767.98px) { ul.aviso-flotante { white-space: normal; width: calc(100% - 32px); } }
+
+/* h:messages dentro de una hoja: error de la operación con punto y palabra. */
+ul.mensajes-hoja { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+ul.mensajes-hoja li { display: flex; align-items: center; gap: 8px; color: var(--dp-alerta); font-weight: 700; }
+ul.mensajes-hoja li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+
+/* h:message junto al campo: dpao.css ya define .error-campo; el punto lo pone esta regla. */
+.error-campo::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+
+/* El botón de salir es un h:commandButton (input) sobre el ícono: el foco se sigue viendo. */
+form.salir { position: relative; width: var(--alto-toque); height: var(--alto-toque); flex: none; margin: 0; }
+form.salir .ico { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+form.salir input[type="submit"] { position: absolute; inset: 0; width: 100%; height: 100%; color: transparent; cursor: pointer; }
+
+/* Hoja como formulario JSF: el <form> es la hoja. */
+form.hoja { margin: 0; }
+.hoja .dato-actual { display: flex; align-items: baseline; gap: 8px; }
+
+/* Enlace de una fila de tabla (abre la hoja de ajuste). */
+a.enlace-fila { color: var(--dp-chocolate); font-weight: 700; text-decoration: underline; text-decoration-color: var(--dp-campo); text-underline-offset: 4px; }
+a.enlace-fila:hover { text-decoration-color: var(--dp-chocolate); }
+
+/* Paginación armada por dpao.js: botones redondos como en los lienzos. */
+button.pagina { padding: 0; }
+button.pagina:disabled { opacity: .4; cursor: default; }
+.paginas .rango { white-space: nowrap; }
+.paginas[hidden] { display: none !important; }
+
+/* Mosaico de sabor como enlace. */
+a.sabor:hover { border-color: var(--dp-chocolate); color: var(--dp-chocolate); }
+
+/* Orientación de primera visita: oculta hasta que dpao.js decide mostrarla. */
+.orientacion .paso[hidden] { display: none !important; }

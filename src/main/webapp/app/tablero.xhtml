@@ -1,0 +1,120 @@
+<ui:composition template="/WEB-INF/plantillas/app.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:param name="seccion" value="tablero"/>
+    <ui:define name="metadatos">
+        <f:metadata>
+            <f:viewParam name="pestana" value="#{tablero.pestana}"/>
+        </f:metadata>
+    </ui:define>
+    <ui:define name="titulo">Tablero</ui:define>
+
+    <ui:define name="contenido">
+        <ui:param name="r" value="#{tablero.resumen}"/>
+        <div class="titulo-fila">
+            <h1>Tablero</h1>
+            <div class="derecha accion-principal">
+                <h:link outcome="kardex" styleClass="btn-principal">
+                    <f:param name="hoja" value="nuevo"/>
+                    <span class="ico ico-plus" aria-hidden="true"></span>Registrar movimiento
+                </h:link>
+            </div>
+        </div>
+
+        <!-- Resumen: cuatro mosaicos iguales (tablet y computadora). -->
+        <section class="mosaicos d-none d-md-grid" aria-label="Resumen del día">
+            <div class="superficie mosaico">
+                <p class="t-etiqueta">Vendido hoy</p>
+                <span class="t-cifra dinero"><span class="soles">S/</span>#{formato.entero(r.montoVendidoHoy)}<span class="dec">#{formato.decimales(r.montoVendidoHoy)}</span></span>
+                <p class="t-2">a precio de lista</p>
+            </div>
+            <div class="superficie mosaico">
+                <p class="t-etiqueta">Galletas vendidas</p>
+                <span class="t-cifra">#{formato.unidades(r.unidadesVendidasHoy)}</span>
+                <p class="t-2">#{r.totalProductos - r.agotados.size()} sabores en vitrina</p>
+            </div>
+            <div class="superficie mosaico">
+                <p class="t-etiqueta">Insumos por reponer</p>
+                <span class="t-cifra">#{r.cantidadAlertas}</span>
+                <p class="t-2">de #{r.totalInsumos}</p>
+            </div>
+            <div class="superficie mosaico">
+                <p class="t-etiqueta">Sabores agotados</p>
+                <span class="t-cifra">#{r.agotados.size()}</span>
+                <p class="t-2">de #{r.totalProductos}</p>
+            </div>
+        </section>
+
+        <!-- Resumen en el celular: una sola tarjeta oscura. -->
+        <section class="superficie resumen-oscuro d-md-none" aria-label="Resumen del día">
+            <p class="t-etiqueta">Vendido hoy</p>
+            <span class="t-cifra dinero d-block my-1"><span class="soles">S/</span>#{formato.entero(r.montoVendidoHoy)}<span class="dec">#{formato.decimales(r.montoVendidoHoy)}</span></span>
+            <p class="t-2">#{formato.unidades(r.unidadesVendidasHoy)} galletas · #{r.cantidadAlertas} por reponer</p>
+        </section>
+        <nav class="d-md-none" aria-label="Paneles del tablero">
+            <div class="pestanas w-100">
+                <h:link outcome="tablero" styleClass="flex-fill justify-content-center"
+                        p:aria-current="#{tablero.pestanaAtencion ? null : 'page'}">Más vendidos</h:link>
+                <h:link outcome="tablero" styleClass="flex-fill justify-content-center"
+                        p:aria-current="#{tablero.pestanaAtencion ? 'page' : null}">
+                    <f:param name="pestana" value="atencion"/>Atención · #{r.cantidadAtencion}
+                </h:link>
+            </div>
+        </nav>
+
+        <div class="dos-columnas iguales">
+            <section class="superficie #{tablero.pestanaAtencion ? 'd-none d-md-block' : ''}" aria-labelledby="t-vendidos">
+                <div class="superficie-encabezado d-none d-md-flex"><h2 id="t-vendidos">Más vendidos</h2><span class="derecha t-etiqueta">Und. · S/</span></div>
+                <ui:fragment rendered="#{empty r.masVendidos}">
+                    <div class="vacio"><img src="#{request.contextPath}/assets/img/chef-galleta.png" alt=""/><h2>Aún no hay ventas hoy</h2></div>
+                </ui:fragment>
+                <ul class="lista-simple">
+                    <ui:repeat value="#{r.masVendidos}" var="v" varStatus="s">
+                        <li class="#{s.index ge 5 ? 'd-none d-md-flex' : ''}">
+                            <div class="flex-fill">
+                                <div class="d-flex"><span class="t-fuerte">#{v.nombre}</span><span class="ms-auto num">#{formato.unidades(v.unidades)} · #{formato.monto(v.monto)}</span></div>
+                                <div class="barra-progreso"><span style="width:#{v.porcentaje}%"></span></div>
+                            </div>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </section>
+
+            <section class="superficie #{tablero.pestanaAtencion ? '' : 'd-none d-md-block'}" aria-labelledby="t-atencion">
+                <div class="superficie-encabezado d-none d-md-flex">
+                    <h2 id="t-atencion">Atención</h2>
+                    <h:link outcome="insumos" styleClass="derecha t-fuerte" value="Ver insumos"/>
+                </div>
+                <ui:fragment rendered="#{r.cantidadAtencion eq 0}">
+                    <p class="estado-ok py-2">Todo en orden</p>
+                </ui:fragment>
+                <ul class="lista-simple">
+                    <ui:repeat value="#{tablero.atencion}" var="a" varStatus="s">
+                        <li class="#{s.index ge 4 ? 'd-none d-md-flex' : ''}"><span class="t-fuerte">#{a.nombre}</span>
+                            <h:outputText rendered="#{a.agotado}" styleClass="derecha estado-alerta" value="#{a.detalle}"/>
+                            <h:outputText rendered="#{not a.agotado}" styleClass="derecha num" value="#{a.detalle}"/></li>
+                    </ui:repeat>
+                    <ui:fragment rendered="#{tablero.atencionRestanteMovil gt 0}">
+                        <li class="t-2 d-md-none">y #{tablero.atencionRestanteMovil} más</li>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{tablero.atencionRestante gt 0}">
+                        <li class="t-2 d-none d-md-flex">y #{tablero.atencionRestante} más</li>
+                    </ui:fragment>
+                </ul>
+            </section>
+        </div>
+    </ui:define>
+
+    <ui:define name="capas">
+        <ui:include src="/WEB-INF/plantillas/orientacion.xhtml">
+            <ui:param name="clave" value="tablero"/>
+            <ui:param name="titulo1" value="Tu día de un vistazo"/>
+            <ui:param name="texto1" value="Lo vendido hoy y lo que necesita atención en tu tienda."/>
+            <ui:param name="titulo2" value="Todo sale del Kardex"/>
+            <ui:param name="texto2" value="Cada venta, entrada o merma que registras actualiza estas cifras al instante."/>
+        </ui:include>
+    </ui:define>
+</ui:composition>
